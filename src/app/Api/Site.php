@@ -17,6 +17,7 @@ class Site extends Api {
                 'username' 	=> array('name' => 'username', 'default' => 'PhalApi'),
             ),
         );
+        
 	}
 	
 	/**

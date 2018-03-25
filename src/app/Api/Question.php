@@ -33,6 +33,9 @@ class Question extends Api {
             ),
             'getById' => array(
                 'id' => array("name" => "id")
+            ),
+            'deleteById' => array(
+                'id'=> array("name" => "id")
             )
         );
 	}
@@ -66,7 +69,13 @@ class Question extends Api {
 
         return $data;
     }
+    public function deleteById()
+    {
+        $model = new QuestionModel();
+        $data = $model->deleteById($this->id);
 
+        return $data;
+    }
     public function add() {
         $insert = array(
         'type'=>$this->type,

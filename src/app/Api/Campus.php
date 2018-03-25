@@ -22,6 +22,9 @@ class Campus extends Api {
             ),
             'getById' => array(
                 'id' => array("name" => "id")
+            ),
+            'deleteById' => array(
+                'id' => array("name" => "id")
             )
         );
 	}
@@ -52,6 +55,13 @@ class Campus extends Api {
     public function getById() {
         $model = new CampusModel();
         $data = $model->getById($this->id);
+
+        return $data;
+    }
+
+    public function deleteById(){
+        $model =new CampusModel();
+        $data  =$model->deleteById($this->id);
 
         return $data;
     }

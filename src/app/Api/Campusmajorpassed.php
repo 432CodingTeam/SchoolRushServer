@@ -24,6 +24,9 @@ class Campusmajorpassed extends Api {
             ),
             'getById' => array(
                 'id' => array("name" => "id")
+            ),
+            'deleteById' => array(
+                'id'=> array("name" => "id")
             )
         );
 	}
@@ -57,7 +60,13 @@ class Campusmajorpassed extends Api {
 
         return $data;
     }
+    public function deleteById()
+    {
+        $model = new CampusmajorpassedModel();
+        $data = $model->deleteById($this->id);
 
+        return $data;
+    }
     public function add() {
         $insert = array(
             'majorId'=>$this->majorID,

@@ -23,6 +23,9 @@ class Group extends Api {
             ),
             'getById' => array(
                 'id' => array("name" => "id")
+            ),
+            'deleteById' => array(
+                'id' => array("name" => "id")
             )
         );
 	}
@@ -56,11 +59,17 @@ class Group extends Api {
 
         return $data;
     }
+    public function deleteById()
+    {
+        $model = new GroupModel();
+        $data = $model->deleteById($this->id);
 
+        return $data;
+    }
     public function add() {
         $insert = array(
             "name"=>$this->name,
-            "creator"=>(int)$this->creator,
+            "creator"=>$this->creator,
             "members"=>$this->members,
         );
 

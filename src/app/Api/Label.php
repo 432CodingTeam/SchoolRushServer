@@ -21,6 +21,9 @@ class Label extends Api {
             ),
             'getById' => array(
                 'id' => array("name" => "id")
+            ),
+            'deleteById' => array(
+                'id'=> array("name" => "id")
             )
         );
 	}
@@ -54,7 +57,13 @@ class Label extends Api {
 
         return $data;
     }
+    public function deleteById()
+    {
+        $model = new LabelModel();
+        $data = $model->deleteById($this->id);
 
+        return $data;
+    }
     public function add() {
         $insert = array(
         'name'=>$this->name,

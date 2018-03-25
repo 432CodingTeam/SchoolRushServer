@@ -19,6 +19,12 @@ class Campusmajorpassed extends NotORM {
         $data=$model->where("id",$id);
         return data;
     }
+    public function deleteById($id) {
+        $model = $this->getORM();
+
+        $data = $model->where("id",$id)->delete();
+        return $data;
+    }
     public function add($insert_data)
     {
         $model=$this->getORM();
