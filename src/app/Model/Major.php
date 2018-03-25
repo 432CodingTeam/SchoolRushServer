@@ -17,7 +17,7 @@ class Major extends NotORM {
     {
         $model=$this->getORM();
         $data=$model->where("id",$id);
-        return data;
+        return $data;
     }
     public function deleteById($id) {
         $model = $this->getORM();

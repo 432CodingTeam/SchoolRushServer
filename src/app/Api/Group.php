@@ -17,9 +17,9 @@ class Group extends Api {
                 'username' 	=> array('name' => 'username'),
             ),
             'add' => array(
-                'name' => array('name' => "n"),
-                'creator'=>array('name'=>"c"),
-                'members'=>array('name'=>"m"),
+                'name' => array('name' => "name"),
+                'creator'=>array('name'=>"creator"),
+                'members'=>array('name'=>"members"),
             ),
             'getById' => array(
                 'id' => array("name" => "id")
@@ -46,6 +46,12 @@ class Group extends Api {
         );
     }
 
+    /**
+     * 获取所有群组信息
+     * @desc 获取所有信息
+     * @return array data 所有群组的信息
+     */
+
     public function getAll() {
         $model = new GroupModel();
         $data = $model->getAll();
@@ -53,12 +59,27 @@ class Group extends Api {
         return $data;
     }
 
+    /**
+     * 根据id获取群组信息
+     * @desc 根据id获取所有群组的信息，群组人数限制100
+     * @param int id 查询的群组id
+     * @return data data 查询的群组信息
+     */
+
     public function getById() {
         $model = new GroupModel();
         $data = $model->getById($this->id);
 
         return $data;
     }
+
+    /**
+     * 根据id删除
+     * @desc 根据id删除
+     * @param int id 要删除群组的id
+     * @return int 删除群组的id
+     */
+
     public function deleteById()
     {
         $model = new GroupModel();
@@ -66,6 +87,16 @@ class Group extends Api {
 
         return $data;
     }
+
+    /**
+     * 增加群组
+     * @desc 增加群组
+     * @param string name 群组名称
+     * @param string creator 群组创建者
+     * @param int members 群组人数（一般为0）
+     * @return data id 增加群组信息
+     */
+
     public function add() {
         $insert = array(
             "name"=>$this->name,

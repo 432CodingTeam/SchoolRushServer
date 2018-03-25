@@ -4,7 +4,7 @@ namespace App\Api;
 use PhalApi\Api;
 use App\Model\Campusmajorpassed as CampusmajorpassedModel;
 /**
- * 专业接口类
+ * 学校-分类-通过数关系接口类
  *
  * @author: dogstar <chanzonghuang@gmail.com> 2014-10-04
  */
@@ -17,9 +17,9 @@ class Campusmajorpassed extends Api {
                 'username' 	=> array('name' => 'username'),
             ),
             'add' => array(
-                'majorID' => array('name' => "m"),
-                'campusID'=>array('name'=>"c"),
-                'passed'=>array('name'=>'p'),
+                'majorID' => array('name' => "majorID"),
+                'campusID'=>array('name'=>"campusID"),
+                'passed'=>array('name'=>'passed'),
 
             ),
             'getById' => array(
@@ -47,6 +47,12 @@ class Campusmajorpassed extends Api {
         );
     }
 
+    /**
+     * 获取所有学校通过数
+     * @desc 获取所有学校通过数
+     * @return array data 所有学校通过数
+     */
+
     public function getAll() {
         $model = new CampusmajorpassedModel();
         $data = $model->getAll();
@@ -54,12 +60,25 @@ class Campusmajorpassed extends Api {
         return $data;
     }
 
+    /**
+     * 根据id获取学校通过数
+     * @desc 根据id获取学校通过数
+     * @param int id 要获取学校的id
+     * @return data data 该id指定的内容
+     */
     public function getById() {
         $model = new CampusmajorpassedModel();
         $data = $model->getById($this->id);
 
         return $data;
     }
+
+    /**
+     * 根据id删除
+     * @desc 根据id删除
+     * @param int id 要删除学校的id
+     * @return int data 删除的学校id
+     */
     public function deleteById()
     {
         $model = new CampusmajorpassedModel();
@@ -67,6 +86,16 @@ class Campusmajorpassed extends Api {
 
         return $data;
     }
+
+    /**
+     * 增加学校通过数
+     * @desc 增加学校通过数
+     * @param int majorId 专业id
+     * @param int campusID 学校id
+     * @param int passed 通过人数
+     * @return data id 该学校的通过数信息
+     */
+
     public function add() {
         $insert = array(
             'majorId'=>$this->majorID,

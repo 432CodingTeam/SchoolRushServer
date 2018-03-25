@@ -64,7 +64,7 @@ class Campus extends Api {
      * @desc 根据ID获取学校信息
      * @param int id 要获取的内容的id
      * 
-     * @return data 该id指定的内容
+     * @return data id 该id指定的内容
      */
     public function getById() {
         $model = new CampusModel();
@@ -77,9 +77,9 @@ class Campus extends Api {
      * 根据ID删除
      * @desc 根据ID删除学校信息
      * 
-     * @param int 要删除的的id
+     * @param int id 要删除的的id
      * 
-     * @return array data 删除指定id之后的内容
+     * @return int data 删除的id
      */
     public function deleteById(){
         $model =new CampusModel();
@@ -92,9 +92,9 @@ class Campus extends Api {
      * 增加学校信息
      * @desc 增加学校的信息
      * 
-     * @param string 增加的学校名称
-     * @param int   增加的学校成员数（一般为0）
-     * @return data 增加的学校id
+     * @param string name 学校名称
+     * @param int members 学校成员数（一般为0）
+     * @return data id 增加的学校的信息
      */
     public function add() {
         $insert = array(

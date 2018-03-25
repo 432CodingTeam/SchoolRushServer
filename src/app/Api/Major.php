@@ -61,9 +61,9 @@ class Major extends Api {
     /**
      * 根据id获取专业信息
      * @desc 根据id获取专业信息
-     * @param int 要获取的专业的id
+     * @param int id 要获取的专业的id
      * 
-     * @return data 该id指定的内容
+     * @return data data 该id指定的内容
      */
 
     public function getById() {
@@ -76,9 +76,9 @@ class Major extends Api {
     /**
      * 根据id删除专业
      * @desc 根据id删除专业
-     * @param int 要删除的专业id
+     * @param int id 要删除的专业id
      * 
-     * @return array data 删除指定id后的内容
+     * @return int data 删除的专业id
      */
 
     public function deleteById()
@@ -92,10 +92,10 @@ class Major extends Api {
      * 增加专业
      * @desc 增加专业信息
      * 
-     * @param string 增加的专业名称
-     * @param int   增加的专业的id
-     * @param string 增加的专业排名（一般为0）
-     * @return data 返回增加专业的id
+     * @param string 专业名称
+     * @param int parent 专业的id
+     * @param string ranklist 增加的专业排名（一般为0）
+     * @return data id 增加的专业信息
      */
     public function add() {
         $insert = array(
