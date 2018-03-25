@@ -17,9 +17,9 @@ class Major extends Api {
                 'username' 	=> array('name' => 'username'),
             ),
             'add' => array(
-                'name' => array('name' => "n"),
-                'parent'=>array('name'=>"p"),
-                'ranklist'=>array('name'=>'r'),
+                'name' => array('name' => "name"),
+                'parent'=>array('name'=>"parent"),
+                'ranklist'=>array('name'=>'ranklist'),
 
             ),
             'getById' => array(
@@ -46,7 +46,11 @@ class Major extends Api {
             'time' => $_SERVER['REQUEST_TIME'],
         );
     }
-
+/**
+ * 获取所有的专业
+ * @desc 获取所有的专业
+ * @return array data 所有专业信息
+ */
     public function getAll() {
         $model = new MajorModel();
         $data = $model->getAll();
@@ -54,12 +58,29 @@ class Major extends Api {
         return $data;
     }
 
+    /**
+     * 根据id获取专业信息
+     * @desc 根据id获取专业信息
+     * @param int 要获取的专业的id
+     * 
+     * @return data 该id指定的内容
+     */
+
     public function getById() {
         $model = new MajorModel();
         $data = $model->getById($this->id);
 
         return $data;
     }
+
+    /**
+     * 根据id删除专业
+     * @desc 根据id删除专业
+     * @param int 要删除的专业id
+     * 
+     * @return array data 删除指定id后的内容
+     */
+
     public function deleteById()
     {
         $model = new MajorModel();
@@ -67,6 +88,15 @@ class Major extends Api {
 
         return $data;
     }
+   /**
+     * 增加专业
+     * @desc 增加专业信息
+     * 
+     * @param string 增加的专业名称
+     * @param int   增加的专业的id
+     * @param string 增加的专业排名（一般为0）
+     * @return data 返回增加专业的id
+     */
     public function add() {
         $insert = array(
             'name'=>$this->name,
