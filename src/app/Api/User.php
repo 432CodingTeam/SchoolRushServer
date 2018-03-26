@@ -95,8 +95,15 @@ class User extends Api {
     /**
      * 增加用户
      * @desc 增加用户信息 
-     * @param array data 增加的用户信息
-     * @return array id 增加的用户信息
+     * @param string name 增加的用户名称
+     * @param string pass 密码
+     * @param int identify 身份
+     * @param string email email
+     * @param string tel 电话
+     * @param int campusID 所在学校ID
+     * @param int major 所在专业ID
+     * @param int vice 副专业ID
+     * @return array id 增加的用户Id
      */
 
     public function add() {

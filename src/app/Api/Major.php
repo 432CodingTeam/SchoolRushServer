@@ -102,7 +102,7 @@ class Major extends Api {
      * 增加专业
      * @desc 增加专业信息
      * 
-     * @param string 专业名称
+     * @param string insert专业名称
      * @param int parent 专业的id
      * @param string ranklist 增加的专业排名（一般为0）
      * @return array id 增加的专业信息

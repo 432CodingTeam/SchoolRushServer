@@ -18,18 +18,18 @@ class Question extends Api {
             ),
             'add' => array(
                 'type'=>array('name'=>"t"),
-                'q'=>array('name'=>q),
-                'A'=>array('name'=>A),
-                'B'=>array('name'=>B),
-                'C'=>array('name'=>C),
-                'D'=>array('name'=>D),
-                'TF'=>array('name'=>TF),
-                'correct'=>array('name'=>correct),
-                'majorID'=>array('name'=>majorID),
-                'challenges'=>array('name'=>challenges),
-                'passed'=>array('name'=>passed),
-                'level'=>array('name'=>level),
-                'balels'=>array('name'=>balels),
+                'q'=>array('name'=>"q"),
+                'A'=>array('name'=>"A"),
+                'B'=>array('name'=>"B"),
+                'C'=>array('name'=>"C"),
+                'D'=>array('name'=>"D"),
+                'TF'=>array('name'=>"TF"),
+                'correct'=>array('name'=>"correct"),
+                'majorID'=>array('name'=>"majorID"),
+                'challenges'=>array('name'=>"challenges"),
+                'passed'=>array('name'=>"passed"),
+                'level'=>array('name'=>"level"),
+                'balels'=>array('name'=>"balels"),
             ),
             'getById' => array(
                 'id' => array("name" => "id")
@@ -102,7 +102,18 @@ class Question extends Api {
     /**
      * 增加题目
      * @desc 增加题目
-     * @param array 增加题目的内容
+     * @param int  type 题目类型
+     * @param string A 选项A
+     * @param string B 选项B
+     * @param string C 选项C
+     * @param string D 选项D
+     * @param string TF 对错
+     * @param string correct 正确答案
+     * @param string majorID 所在分裂ID
+     * @param string challenges 挑战人数
+     * @param string passed 通过人数
+     * @param int level 问题难度星级
+     * @param int balels 标签，用逗号隔开
      * @return int id 增加题目内容
      */
 
@@ -110,7 +121,7 @@ class Question extends Api {
         $insert = array(
         'type'=>$this->type,
         'q'=>$this->q,
-        'A'=>$this->A,
+        'A'=>$this->A, 
         'B'=>$this->B,
         'C'=>$this->C,
         'D'=>$this->D,

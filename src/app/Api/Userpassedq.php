@@ -49,7 +49,11 @@ class Userpassedq extends Api {
             'time' => $_SERVER['REQUEST_TIME'],
         );
     }
-
+    /**
+     * 获取用户通过题目数
+     * @desc 获取所有的用户通过题目的胡
+     * @return array data 获取的所有用户通过数
+     */
     public function getAll() {
         $model = new UserpassedqModel();
         $data = $model->getAll();
@@ -57,12 +61,27 @@ class Userpassedq extends Api {
         return $data;
     }
 
+    /**
+     * 根据id获取
+     * @desc 根据提供的id获取该id指定的信息
+     * @param int data 要获取的信息的id
+     * @return data data 该id指定得信息
+     */
+
     public function getById() {
         $model = new UserpassedqModel();
         $data = $model->getById($this->id);
 
         return $data;
     }
+
+    /**
+     * 根据id删除
+     * @desc 根据提供的id删除对应的信息
+     * @param int id 要删除信息的id
+     * @return int data 删除的id
+     */
+
     public function deleteById()
     {
         $model = new UserpassedqModel();
@@ -70,6 +89,11 @@ class Userpassedq extends Api {
 
         return $data;
     }
+    /**
+     * 增加用户通过题目数
+     * @param int uid 用户id
+     * @return int qid 通过题目id
+     */
     public function add() {
         $insert = array(
             'uid'=>$this->uid,

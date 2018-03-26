@@ -93,7 +93,7 @@ class Campusmajorpassed extends Api {
      * @param int majorId 专业id
      * @param int campusID 学校id
      * @param int passed 通过人数
-     * @return array id 该学校的通过数信息
+     * @return int id 增加的学校id
      */
 
     public function add() {

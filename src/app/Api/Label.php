@@ -91,7 +91,8 @@ class Label extends Api {
     /**
      * 增加标签
      * @desc 增加一条标签
-     * @param array data 增加的标签内容
+     * @param string name 增加的标签内容
+     * @return int id 增加的标签id
      */
 
     public function add() {
