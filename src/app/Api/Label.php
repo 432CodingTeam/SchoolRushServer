@@ -47,7 +47,11 @@ class Label extends Api {
             'time' => $_SERVER['REQUEST_TIME'],
         );
     }
-
+    /**
+     * 获取所有标签
+     * @desc 获取所有标签
+     * @return array data 所有标签
+     */
     public function getAll() {
         $model = new LabelModel();
         $data = $model->getAll();
@@ -55,12 +59,27 @@ class Label extends Api {
         return $data;
     }
 
+    /**
+     * 根据id获取
+     * @desc 根据id获取内容
+     * @param int id 要获取内容的id
+     * @return data data 该id指定的内容
+     */
+
     public function getById() {
         $model = new LabelModel();
         $data = $model->getById($this->id);
 
         return $data;
     }
+
+    /**
+     * 根据id删除
+     * @desc 根据id删除数据库中的内容
+     * @param int id 要删除标签的id
+     * @return data data 该id指定的内容
+     */
+
     public function deleteById()
     {
         $model = new LabelModel();
@@ -68,6 +87,13 @@ class Label extends Api {
 
         return $data;
     }
+
+    /**
+     * 增加标签
+     * @desc 增加一条标签
+     * @param array data 增加的标签内容
+     */
+
     public function add() {
         $insert = array(
         'name'=>$this->name,

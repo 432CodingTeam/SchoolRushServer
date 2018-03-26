@@ -17,14 +17,14 @@ class User extends Api {
                 'username' 	=> array('name' => 'username'),
             ),
             'add' => array(
-                'name' => array('name' => "n"),
-                'pass'=>array('name'=>"p"),
-                'identify'=>array('name'=>"i"),
-                'email'=>array('name'=>"e"),
-                'tel'=>array('name'=>"t"),
-                'campusID'=>array('name'=>"c"),
-                'major'=>array('name'=>"m"),
-                'vice'=>array('name'=>"v"),
+                'name' => array('name' => "name"),
+                'pass'=>array('name'=>"pass"),
+                'identify'=>array('name'=>"identify"),
+                'email'=>array('name'=>"email"),
+                'tel'=>array('name'=>"tel"),
+                'campusID'=>array('name'=>"campusID"),
+                'major'=>array('name'=>"major"),
+                'vice'=>array('name'=>"vice"),
             ),
             'getById' => array(
                 'id' => array("name" => "id")
@@ -51,6 +51,12 @@ class User extends Api {
         );
     }
 
+    /**
+     * 获取所有用户
+     * @desc 获取所有用户信息
+     * @return array data 获取的所有用户信息
+     * 
+     */
     public function getAll() {
         $model = new UserModel();
         $data = $model->getAll();
@@ -58,12 +64,26 @@ class User extends Api {
         return $data;
     }
 
+    /**
+     * 根据id获取
+     * @desc 根据id获取用户信息
+     * @param int id 要获取的用户id
+     * @return data data 改id指定的用户信息
+     */
+
     public function getById() {
         $model = new UserModel();
         $data = $model->getById($this->id);
 
         return $data;
     }
+
+    /**
+     * 根据id删除
+     * @desc 根据id删除用户信息
+     * @param int id 要删除的用户id
+     * @return int data 要删除的用户id
+     */
     public function deleteById()
     {
         $model = new UserModel();
@@ -71,6 +91,14 @@ class User extends Api {
 
         return $data;
     }
+
+    /**
+     * 增加用户
+     * @desc 增加用户信息 
+     * @param array data 增加的用户信息
+     * @return array id 增加的用户信息
+     */
+
     public function add() {
         $insert = array(
             'name'=>$this->name,

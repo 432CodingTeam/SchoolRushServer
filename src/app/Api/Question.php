@@ -24,12 +24,12 @@ class Question extends Api {
                 'C'=>array('name'=>C),
                 'D'=>array('name'=>D),
                 'TF'=>array('name'=>TF),
-                'correct'=>array('name'=>co),
-                'majorID'=>array('name'=>m),
-                'challenges'=>array('name'=>ch),
-                'passed'=>array('name'=>p),
-                'level'=>array('name'=>l),
-                'balels'=>array('name'=>b),
+                'correct'=>array('name'=>correct),
+                'majorID'=>array('name'=>majorID),
+                'challenges'=>array('name'=>challenges),
+                'passed'=>array('name'=>passed),
+                'level'=>array('name'=>level),
+                'balels'=>array('name'=>balels),
             ),
             'getById' => array(
                 'id' => array("name" => "id")
@@ -56,6 +56,12 @@ class Question extends Api {
         );
     }
 
+    /**
+     * 获取所有的问题
+     * @desc获取所有的问题
+     * @return array data 获取的所有问题
+     */
+
     public function getAll() {
         $model = new QuestionModel();
         $data = $model->getAll();
@@ -63,12 +69,28 @@ class Question extends Api {
         return $data;
     }
 
+    /**
+     * 根据id获取
+     * @desc 根据id获取问题
+     * @param int id 要获取的问题的id
+     * @return data data 该id指定的问题
+     */
+
     public function getById() {
         $model = new QuestionModel();
         $data = $model->getById($this->id);
 
         return $data;
     }
+
+    /**
+     * 根据id删除
+     * @desc根据id删除问题
+     * @param int id 要删除的问题的id
+     * @return int data 要删除的问题id
+     * 
+     */
+
     public function deleteById()
     {
         $model = new QuestionModel();
@@ -76,6 +98,14 @@ class Question extends Api {
 
         return $data;
     }
+
+    /**
+     * 增加题目
+     * @desc 增加题目
+     * @param array 增加题目的内容
+     * @return int id 增加题目内容
+     */
+
     public function add() {
         $insert = array(
         'type'=>$this->type,

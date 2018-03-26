@@ -94,7 +94,7 @@ class Group extends Api {
      * @param string name 群组名称
      * @param string creator 群组创建者
      * @param int members 群组人数（一般为0）
-     * @return data id 增加群组信息
+     * @return array id 增加群组信息
      */
 
     public function add() {

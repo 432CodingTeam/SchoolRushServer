@@ -27,6 +27,9 @@ class Major extends Api {
             ),
             'deleteById' => array(
                 'id'=> array("name" => "id")
+            ),
+            'getIdByName'=>array(
+                'name'=>array('name'=>'name')
             )
         );
 	}
@@ -88,6 +91,13 @@ class Major extends Api {
 
         return $data;
     }
+     public function getIdByName()
+     {
+        $model = new MajorModel();
+        $data = $model->GetIdByName($this->name);
+
+        return $data;
+     }
    /**
      * 增加专业
      * @desc 增加专业信息
@@ -95,7 +105,7 @@ class Major extends Api {
      * @param string 专业名称
      * @param int parent 专业的id
      * @param string ranklist 增加的专业排名（一般为0）
-     * @return data id 增加的专业信息
+     * @return array id 增加的专业信息
      */
     public function add() {
         $insert = array(
