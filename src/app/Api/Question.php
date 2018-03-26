@@ -4,7 +4,7 @@ namespace App\Api;
 use PhalApi\Api;
 use App\Model\Question as QuestionModel;
 /**
- * 专业接口类
+ * 问题接口类
  *
  * @author: dogstar <chanzonghuang@gmail.com> 2014-10-04
  */
