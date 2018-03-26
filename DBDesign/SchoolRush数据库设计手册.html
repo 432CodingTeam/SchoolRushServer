@@ -1,0 +1,766 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+        <style>
+
+body {
+    font: normal normal normal 14px Helvetica, Arial, Sans-serif;
+    background: white;
+}
+
+div.header { text-align: center; }
+
+table {
+    border-spacing: 0;
+    border-collapse: collapse;
+}
+
+th, td {
+    border: 1px solid black;
+    padding: 0.5em;
+}
+
+pre {
+    white-space: pre-wrap;
+}
+
+</style>
+    </head>
+    <body>
+        <div class="header">
+            <p>
+                <img src="data:image/jpg;base64,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" alt="Created with Vertabelo">
+            </p>
+            <h1 class="main-header">
+schoolrush - database model documentation            </h1>
+        </div>
+        <div class="generalInfo">
+            <p class="infoField">
+                <strong>
+Database engine:                 </strong>
+ MySQL            </p>
+            <p class="infoField">
+                <strong>
+Version:                 </strong>
+2.3            </p>
+            <p class="infoField">
+                <strong>
+Description:                 </strong>
+            </p>
+        </div>
+        <div class="tableOfContents">
+            <h2>
+Table of contents            </h2>
+            <ol type="1" class="contentsList">
+                <li>
+                    <a href="#tables">
+Tables                    </a>
+                    <ol class="contentsSublist">
+                        <li>
+                            <a href="#tableMajor">
+major                            </a>
+                        </li>
+                        <li>
+                            <a href="#tableGroup">
+group                            </a>
+                        </li>
+                        <li>
+                            <a href="#tableCampus">
+campus                            </a>
+                        </li>
+                        <li>
+                            <a href="#tableUser">
+user                            </a>
+                        </li>
+                        <li>
+                            <a href="#tableQuestion">
+question                            </a>
+                        </li>
+                        <li>
+                            <a href="#tableCampusmajorpassed">
+CampusMajorPassed                            </a>
+                        </li>
+                        <li>
+                            <a href="#tableUserpassedq">
+UserpassedQ                            </a>
+                        </li>
+                        <li>
+                            <a href="#tableLabel">
+label                            </a>
+                        </li>
+                    </ol>
+                </li>
+            </ol>
+        </div>
+        <div id="tablesDiv">
+            <h2 id="tables">
+1. Tables            </h2>
+            <h3 id="tableMajor">
+1.1. Table major            </h3>
+            <p class="infoField">
+                <strong>
+Description:                 </strong>
+专业表            </p>
+            <h4>
+1.1.1. Columns            </h4>
+            <table class="columnsTable">
+                <thead>
+                    <tr class="titleRow">
+                        <th>
+Column name                        </th>
+                        <th>
+Type                        </th>
+                        <th>
+Properties                        </th>
+                        <th>
+Description                        </th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>
+id                        </td>
+                        <td>
+bigint                        </td>
+                        <td>
+PK                        </td>
+                        <td>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+name                        </td>
+                        <td>
+char(20)                        </td>
+                        <td>
+null                        </td>
+                        <td>
+专业名字                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+parent                        </td>
+                        <td>
+bigint                        </td>
+                        <td>
+null                        </td>
+                        <td>
+专业类的id                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+ranklist                        </td>
+                        <td>
+varchar(100)                        </td>
+                        <td>
+                        </td>
+                        <td>
+该专业排行的学校，用“，”分开                        </td>
+                    </tr>
+                </tbody>
+            </table>
+            <h3 id="tableGroup">
+1.2. Table group            </h3>
+            <p class="infoField">
+                <strong>
+Description:                 </strong>
+群组表 群组人数限制100            </p>
+            <h4>
+1.2.1. Columns            </h4>
+            <table class="columnsTable">
+                <thead>
+                    <tr class="titleRow">
+                        <th>
+Column name                        </th>
+                        <th>
+Type                        </th>
+                        <th>
+Properties                        </th>
+                        <th>
+Description                        </th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>
+id                        </td>
+                        <td>
+bigint                        </td>
+                        <td>
+PK                        </td>
+                        <td>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+name                        </td>
+                        <td>
+varchar(15)                        </td>
+                        <td>
+null                        </td>
+                        <td>
+群组名字                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+creator                        </td>
+                        <td>
+bigint                        </td>
+                        <td>
+null                        </td>
+                        <td>
+创建者ID                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+members                        </td>
+                        <td>
+varchar(500)                        </td>
+                        <td>
+                        </td>
+                        <td>
+群组成员ID 以“，”分隔 最多100个                        </td>
+                    </tr>
+                </tbody>
+            </table>
+            <h3 id="tableCampus">
+1.3. Table campus            </h3>
+            <p class="infoField">
+                <strong>
+Description:                 </strong>
+高校表            </p>
+            <h4>
+1.3.1. Columns            </h4>
+            <table class="columnsTable">
+                <thead>
+                    <tr class="titleRow">
+                        <th>
+Column name                        </th>
+                        <th>
+Type                        </th>
+                        <th>
+Properties                        </th>
+                        <th>
+Description                        </th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>
+id                        </td>
+                        <td>
+bigint                        </td>
+                        <td>
+PK                        </td>
+                        <td>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+name                        </td>
+                        <td>
+varchar(30)                        </td>
+                        <td>
+null                        </td>
+                        <td>
+学校名字                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+members                        </td>
+                        <td>
+int                        </td>
+                        <td>
+null                        </td>
+                        <td>
+成员数                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+badge                        </td>
+                        <td>
+varchar(200)                        </td>
+                        <td>
+                        </td>
+                        <td>
+校徽图片地址                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+locate                        </td>
+                        <td>
+varchar(20)                        </td>
+                        <td>
+null                        </td>
+                        <td>
+学校所在的省份                        </td>
+                    </tr>
+                </tbody>
+            </table>
+            <h3 id="tableUser">
+1.4. Table user            </h3>
+            <p class="infoField">
+                <strong>
+Description:                 </strong>
+用户表            </p>
+            <h4>
+1.4.1. Columns            </h4>
+            <table class="columnsTable">
+                <thead>
+                    <tr class="titleRow">
+                        <th>
+Column name                        </th>
+                        <th>
+Type                        </th>
+                        <th>
+Properties                        </th>
+                        <th>
+Description                        </th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>
+id                        </td>
+                        <td>
+bigint                        </td>
+                        <td>
+PK                        </td>
+                        <td>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+name                        </td>
+                        <td>
+varchar(15)                        </td>
+                        <td>
+null                        </td>
+                        <td>
+用户名                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+pass                        </td>
+                        <td>
+varchar(20)                        </td>
+                        <td>
+null                        </td>
+                        <td>
+密码                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+identify                        </td>
+                        <td>
+int                        </td>
+                        <td>
+null                        </td>
+                        <td>
+管理员1 普通用户2                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+email                        </td>
+                        <td>
+varchar(40)                        </td>
+                        <td>
+                        </td>
+                        <td>
+用户邮箱                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+tel                        </td>
+                        <td>
+varchar(20)                        </td>
+                        <td>
+                        </td>
+                        <td>
+用户电话                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+campusID                        </td>
+                        <td>
+bigint                        </td>
+                        <td>
+                        </td>
+                        <td>
+所在学校ID                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+major                        </td>
+                        <td>
+bigint                        </td>
+                        <td>
+                        </td>
+                        <td>
+所在专业ID                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+vice                        </td>
+                        <td>
+varchar(50)                        </td>
+                        <td>
+                        </td>
+                        <td>
+副专业id 多个用“，”分隔 最多10个                        </td>
+                    </tr>
+                </tbody>
+            </table>
+            <h3 id="tableQuestion">
+1.5. Table question            </h3>
+            <p class="infoField">
+                <strong>
+Description:                 </strong>
+问题表            </p>
+            <h4>
+1.5.1. Columns            </h4>
+            <table class="columnsTable">
+                <thead>
+                    <tr class="titleRow">
+                        <th>
+Column name                        </th>
+                        <th>
+Type                        </th>
+                        <th>
+Properties                        </th>
+                        <th>
+Description                        </th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>
+id                        </td>
+                        <td>
+bigint                        </td>
+                        <td>
+PK                        </td>
+                        <td>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+uid                        </td>
+                        <td>
+bigint                        </td>
+                        <td>
+null                        </td>
+                        <td>
+出题人的id                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+type                        </td>
+                        <td>
+int                        </td>
+                        <td>
+null                        </td>
+                        <td>
+题型 选择1 判断2 填空3                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+q                        </td>
+                        <td>
+varchar(255)                        </td>
+                        <td>
+null                        </td>
+                        <td>
+问题内容                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+A                        </td>
+                        <td>
+char(1)                        </td>
+                        <td>
+                        </td>
+                        <td>
+选项A                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+B                        </td>
+                        <td>
+char(1)                        </td>
+                        <td>
+                        </td>
+                        <td>
+选项B                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+C                        </td>
+                        <td>
+char(1)                        </td>
+                        <td>
+                        </td>
+                        <td>
+选项C                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+D                        </td>
+                        <td>
+char(1)                        </td>
+                        <td>
+                        </td>
+                        <td>
+选项D                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+TF                        </td>
+                        <td>
+char(1)                        </td>
+                        <td>
+                        </td>
+                        <td>
+正确/错误选项 只可能有T/F两种值                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+correct                        </td>
+                        <td>
+varchar(10)                        </td>
+                        <td>
+null                        </td>
+                        <td>
+正确答案                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+majorID                        </td>
+                        <td>
+bigint                        </td>
+                        <td>
+null                        </td>
+                        <td>
+所在分类ID                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+challenges                        </td>
+                        <td>
+int                        </td>
+                        <td>
+null                        </td>
+                        <td>
+挑战人数                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+passed                        </td>
+                        <td>
+int                        </td>
+                        <td>
+null                        </td>
+                        <td>
+通过人数                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+levels                        </td>
+                        <td>
+int                        </td>
+                        <td>
+null                        </td>
+                        <td>
+问题难度星级                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+balels                        </td>
+                        <td>
+varchar(255)                        </td>
+                        <td>
+                        </td>
+                        <td>
+标签 多个用逗号分开 最多5个                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+toAnswer                        </td>
+                        <td>
+varchar(50)                        </td>
+                        <td>
+null                        </td>
+                        <td>
+给答题者的话，最多50字                        </td>
+                    </tr>
+                </tbody>
+            </table>
+            <h3 id="tableCampusmajorpassed">
+1.6. Table CampusMajorPassed            </h3>
+            <p class="infoField">
+                <strong>
+Description:                 </strong>
+学校-分类-通过数
+关系表 用于排行            </p>
+            <h4>
+1.6.1. Columns            </h4>
+            <table class="columnsTable">
+                <thead>
+                    <tr class="titleRow">
+                        <th>
+Column name                        </th>
+                        <th>
+Type                        </th>
+                        <th>
+Properties                        </th>
+                        <th>
+Description                        </th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>
+id                        </td>
+                        <td>
+bigint                        </td>
+                        <td>
+PK                        </td>
+                        <td>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+majorID                        </td>
+                        <td>
+bigint                        </td>
+                        <td>
+null                        </td>
+                        <td>
+专业ID                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+campusID                        </td>
+                        <td>
+bigint                        </td>
+                        <td>
+null                        </td>
+                        <td>
+学校ID                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+passed                        </td>
+                        <td>
+int                        </td>
+                        <td>
+null                        </td>
+                        <td>
+通过人数                        </td>
+                    </tr>
+                </tbody>
+            </table>
+            <h3 id="tableUserpassedq">
+1.7. Table UserpassedQ            </h3>
+            <p class="infoField">
+                <strong>
+Description:                 </strong>
+用户-通过的题目 关系表
+用于统计用户通过了哪些题目
+统计用户通过的题目分类占比            </p>
+            <h4>
+1.7.1. Columns            </h4>
+            <table class="columnsTable">
+                <thead>
+                    <tr class="titleRow">
+                        <th>
+Column name                        </th>
+                        <th>
+Type                        </th>
+                        <th>
+Properties                        </th>
+                        <th>
+Description                        </th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>
+id                        </td>
+                        <td>
+bigint                        </td>
+                        <td>
+PK                        </td>
+                        <td>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+uid                        </td>
+                        <td>
+bigint                        </td>
+                        <td>
+null                        </td>
+                        <td>
+用户ID                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+qid                        </td>
+                        <td>
+bigint                        </td>
+                        <td>
+null                        </td>
+                        <td>
+通过的题目ID                        </td>
+                    </tr>
+                </tbody>
+            </table>
+            <h3 id="tableLabel">
+1.8. Table label            </h3>
+            <p class="infoField">
+                <strong>
+Description:                 </strong>
+标签表            </p>
+            <h4>
+1.8.1. Columns            </h4>
+            <table class="columnsTable">
+                <thead>
+                    <tr class="titleRow">
+                        <th>
+Column name                        </th>
+                        <th>
+Type                        </th>
+                        <th>
+Properties                        </th>
+                        <th>
+Description                        </th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>
+id                        </td>
+                        <td>
+bigint                        </td>
+                        <td>
+PK                        </td>
+                        <td>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+name                        </td>
+                        <td>
+varchar(10)                        </td>
+                        <td>
+null                        </td>
+                        <td>
+标签名 不可重复                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </body>
+</html>

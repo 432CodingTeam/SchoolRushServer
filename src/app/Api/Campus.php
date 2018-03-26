@@ -18,7 +18,9 @@ class Campus extends Api {
             ),
             'add' => array(
                 'name' => array('name' => "name"),
-                'members'=>array('name'=>"members")
+                'members'=>array('name'=>"members"),
+                'badge' => array('name' => "badge"),
+                'locate' => array('name' => "locate"),
             ),
             'getById' => array(
                 'id' => array("name" => "id")
