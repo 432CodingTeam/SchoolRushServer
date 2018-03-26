@@ -21,8 +21,8 @@ class Userpassedq extends Api {
                 'username' 	=> array('name' => 'username'),
             ),
             'add' => array(
-                'uid' => array('name' => "u"),
-                'qid'=>array('name'=>"q"),
+                'uid' => array('name' => "uid"),
+                'qid'=>array('name'=>"qid"),
 
             ),
             'getById' => array(
@@ -33,8 +33,8 @@ class Userpassedq extends Api {
             ),
             'updateById' => array(
                 'id' => array("name" => 'id'),
-                'uid' => array('name' => "u"),
-                'qid'=>array('name'=>"q"),
+                'uid' => array('name' => "uid"),
+                'qid'=>array('name'=>"qid"),
             )
         );
 	}
@@ -111,6 +111,15 @@ class Userpassedq extends Api {
 
         return $id;
     }
+
+        /**
+     * 根据名字获取id
+     * @desc 根据名字获取id
+     * @param string name 要获取的id的名字
+     * @return int id 该名字对应的id
+     */
+
+  
 
     public function updateById() {
         $data = array(

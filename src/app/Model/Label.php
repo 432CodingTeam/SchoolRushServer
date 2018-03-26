@@ -35,6 +35,13 @@ class Label extends NotORM {
         return $id;
     }
 
+    public function GetIdByName($name)
+    {
+        $model=$this->getORM();
+        $data=$model->where("name",$name);
+        //var_dump($data);
+        return $data;
+    }
     public function updateById($id, $data) {
         $model = $this->getORM();
 

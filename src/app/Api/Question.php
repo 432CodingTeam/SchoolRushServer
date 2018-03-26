@@ -17,7 +17,6 @@ class Question extends Api {
                 'username' 	=> array('name' => 'username'),
             ),
             'add' => array(
-<<<<<<< HEAD
                 'type' => array('name'=>"type"),
                 'q' => array('name'=>'q'),
                 'A' => array('name'=>'A'),
@@ -25,27 +24,12 @@ class Question extends Api {
                 'C' => array('name'=>'C'),
                 'D' => array('name'=>'D'),
                 'TF' => array('name'=>'TF'),
-                'correct' => array('name'=>'co'),
-                'majorID' => array('name'=>'m'),
-                'challenges' => array('name'=>'ch'),
-                'passed' => array('name'=>'p'),
-                'level' => array('name'=>'l'),
-                'balels' => array('name'=>'b'),
-=======
-                'type'=>array('name'=>"t"),
-                'q'=>array('name'=>"q"),
-                'A'=>array('name'=>"A"),
-                'B'=>array('name'=>"B"),
-                'C'=>array('name'=>"C"),
-                'D'=>array('name'=>"D"),
-                'TF'=>array('name'=>"TF"),
-                'correct'=>array('name'=>"correct"),
-                'majorID'=>array('name'=>"majorID"),
-                'challenges'=>array('name'=>"challenges"),
-                'passed'=>array('name'=>"passed"),
-                'level'=>array('name'=>"level"),
-                'balels'=>array('name'=>"balels"),
->>>>>>> 1bbb2963d832078d9d23e7b3cfca4646d47534df
+                'correct' => array('name'=>'correct'),
+                'majorID' => array('name'=>'majorId'),
+                'challenges' => array('name'=>'challength'),
+                'passed' => array('name'=>'passed'),
+                'level' => array('name'=>'level'),
+                'balels' => array('name'=>'balels'),
             ),
             'getById' => array(
                 'id' => array("name" => "id")
@@ -62,14 +46,14 @@ class Question extends Api {
                 'C' => array('name'=>'C'),
                 'D' => array('name'=>'D'),
                 'TF' => array('name'=>'TF'),
-                'correct' => array('name'=>'co'),
-                'majorID' => array('name'=>'m'),
-                'challenges' => array('name'=>'ch'),
-                'passed' => array('name'=>'p'),
-                'level' => array('name'=>'l'),
-                'balels' => array('name'=>'b'),
+                'correct' => array('name'=>'correct'),
+                'majorID' => array('name'=>'majorID'),
+                'challenges' => array('name'=>'challenges'),
+                'passed' => array('name'=>'passed'),
+                'level' => array('name'=>'level'),
+                'balels' => array('name'=>'balels'),
                 'toAnswer' => array('name'=>'toAnswer')
-            )
+            ),
         );
 	}
 	
@@ -173,6 +157,12 @@ class Question extends Api {
 
         return $id;
     }
+     /**
+     * 根据名字获取id
+     * @desc 根据名字获取id
+     * @param string name 要获取的id的名字
+     * @return int id 该名字对应的id
+     */
 
     public function updateById() {
         $data = array(

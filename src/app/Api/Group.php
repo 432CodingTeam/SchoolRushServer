@@ -32,7 +32,13 @@ class Group extends Api {
                 'name' => array('name' => "name"),
                 'creator'=>array('name'=>"creator"),
                 'members'=>array('name'=>"members"),
-            )
+            ),
+            'getIdByName'=>array(
+                'name'=>array('name'=>"name"),
+            ),
+            'getIdByName'=>array(
+                'name'=>array('name'=>"name"),
+            ),
         );
 	}
 	
@@ -92,6 +98,21 @@ class Group extends Api {
         $data = $model->deleteById($this->id);
 
         return $data;
+    }
+
+    /**
+     * 根据名字获取id
+     * @desc 根据名字获取id
+     * @param string name 要获取的id的名字
+     * @return int id 该名字对应的id
+     */
+
+    public function getIdByName()
+    {
+       $model = new GroupModel();
+       $data = $model->GetIdByName($this->name);
+
+       return $data;
     }
 
     /**

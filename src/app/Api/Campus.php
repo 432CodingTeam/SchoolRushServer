@@ -35,6 +35,9 @@ class Campus extends Api {
                 'badge' => array('name' => "badge"),
                 'locate' => array('name' => "locate")
             ),
+            'getIdByName'=>array(
+                'name'=>array('name'=>"name"),
+            ),
         );
 	}
 	
@@ -123,6 +126,21 @@ class Campus extends Api {
         return $id;
     }
 
+        /**
+     * 根据名字获取id
+     * @desc 根据名字获取id
+     * @param string name 要获取的id的名字
+     * @return int id 该名字对应的id
+     */
+
+    public function getIdByName()
+    {
+       $model = new CampusModel();
+       $data = $model->GetIdByName($this->name);
+
+       return $data;
+    }
+
     /**
      * 更新学校信息
      * @desc 根据id更新学校的信息
@@ -134,7 +152,7 @@ class Campus extends Api {
      * 
      * @return data id 更新后的学校的信息
      */
-
+     
     public function updateById() {
         $data = array(
             "id" => $this->id,

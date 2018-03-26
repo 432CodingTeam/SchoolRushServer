@@ -33,7 +33,7 @@ class Campusmajorpassed extends Api {
                 'majorID' => array('name' => "majorID"),
                 'campusID'=>array('name'=>"campusID"),
                 'passed'=>array('name'=>'passed'),
-            )
+            ),
         );
 	}
 	
@@ -115,6 +115,8 @@ class Campusmajorpassed extends Api {
 
         return $id;
     }
+
+
 
     /**
      * 更新学校通过数

@@ -34,14 +34,17 @@ class User extends Api {
             ),
             'updateById' => array(
                 'id' => array('name' => 'id'),
-                'name' => array('name' => "n"),
-                'pass'=>array('name'=>"p"),
-                'identify'=>array('name'=>"i"),
-                'email'=>array('name'=>"e"),
-                'tel'=>array('name'=>"t"),
-                'campusID'=>array('name'=>"c"),
-                'major'=>array('name'=>"m"),
-                'vice'=>array('name'=>"v"),
+                'name' => array('name' => "name"),
+                'pass'=>array('name'=>"pass"),
+                'identify'=>array('name'=>"identify"),
+                'email'=>array('name'=>"email"),
+                'tel'=>array('name'=>"tel"),
+                'campusID'=>array('name'=>"campusID"),
+                'major'=>array('name'=>"major"),
+                'vice'=>array('name'=>"vice"),
+            ),
+            'getIdByName'=>array(
+                'name'=>array('name'=>'name'),
             ),
                 
         );
@@ -137,6 +140,20 @@ class User extends Api {
         return $id;
     }
 
+        /**
+     * 根据名字获取id
+     * @desc 根据名字获取id
+     * @param string name 要获取的id的名字
+     * @return int id 该名字对应的id
+     */
+
+    public function getIdByName()
+    {
+       $model = new UserModel();
+       $data = $model->GetIdByName($this->name);
+
+       return $data;
+    }
     public function updateById() {
         $data = array(
             'id'=>$this->id,

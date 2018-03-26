@@ -28,18 +28,15 @@ class Major extends Api {
             'deleteById' => array(
                 'id'=> array("name" => "id")
             ),
-<<<<<<< HEAD
             'updateById' => array(
                 'id' => array('name' => 'id'),
                 'name' => array('name' => "name"),
                 'parent'=>array('name'=>"parent"),
                 'ranklist'=>array('name'=>'ranklist'),
-=======
             'getIdByName'=>array(
-                'name'=>array('name'=>'name')
->>>>>>> 1bbb2963d832078d9d23e7b3cfca4646d47534df
+                'name'=>array('name'=>'name'),
+            ),
             )
-        );
 	}
 	
 	/**
@@ -99,6 +96,13 @@ class Major extends Api {
 
         return $data;
     }
+
+    /**
+     * 根据名字获取id
+     * @desc 根据名字获取id
+     * @param string name 要获取的id的名字
+     * @return int id 该名字对应的id
+     */
      public function getIdByName()
      {
         $model = new MajorModel();
