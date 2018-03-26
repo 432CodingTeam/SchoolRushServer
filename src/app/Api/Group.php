@@ -26,6 +26,12 @@ class Group extends Api {
             ),
             'deleteById' => array(
                 'id' => array("name" => "id")
+            ),
+            'updateById' => array(
+                'id' => array('name' => "id"),
+                'name' => array('name' => "name"),
+                'creator'=>array('name'=>"creator"),
+                'members'=>array('name'=>"members"),
             )
         );
 	}
@@ -111,4 +117,24 @@ class Group extends Api {
         return $id;
     }
 
+    /**
+     * 更新群组
+     * @desc 根据id更新群组
+     * @param string name 群组名称
+     * @param string creator 群组创建者
+     * @param int members 群组人数（一般为0）
+     * @return data id 更新后群组信息
+     */
+    public function updateById(){
+        $data = array(
+            "id"=>$this->id,
+            "name"=>$this->name,
+            "creator"=>$this->creator,
+            "members"=>$this->members
+        );
+
+        $model = new GroupModel();
+
+        return $model->updateById($this->id, $data);
+    }
 }

@@ -17,25 +17,42 @@ class Question extends Api {
                 'username' 	=> array('name' => 'username'),
             ),
             'add' => array(
-                'type'=>array('name'=>"t"),
-                'q'=>array('name'=>q),
-                'A'=>array('name'=>A),
-                'B'=>array('name'=>B),
-                'C'=>array('name'=>C),
-                'D'=>array('name'=>D),
-                'TF'=>array('name'=>TF),
-                'correct'=>array('name'=>co),
-                'majorID'=>array('name'=>m),
-                'challenges'=>array('name'=>ch),
-                'passed'=>array('name'=>p),
-                'level'=>array('name'=>l),
-                'balels'=>array('name'=>b),
+                'type' => array('name'=>"type"),
+                'q' => array('name'=>'q'),
+                'A' => array('name'=>'A'),
+                'B' => array('name'=>'B'),
+                'C' => array('name'=>'C'),
+                'D' => array('name'=>'D'),
+                'TF' => array('name'=>'TF'),
+                'correct' => array('name'=>'co'),
+                'majorID' => array('name'=>'m'),
+                'challenges' => array('name'=>'ch'),
+                'passed' => array('name'=>'p'),
+                'level' => array('name'=>'l'),
+                'balels' => array('name'=>'b'),
             ),
             'getById' => array(
                 'id' => array("name" => "id")
             ),
             'deleteById' => array(
                 'id'=> array("name" => "id")
+            ),
+            'updateById' => array(
+                'id' => array('name' => 'id'),
+                'type' => array('name'=>"type"),
+                'q' => array('name'=>'q'),
+                'A' => array('name'=>'A'),
+                'B' => array('name'=>'B'),
+                'C' => array('name'=>'C'),
+                'D' => array('name'=>'D'),
+                'TF' => array('name'=>'TF'),
+                'correct' => array('name'=>'co'),
+                'majorID' => array('name'=>'m'),
+                'challenges' => array('name'=>'ch'),
+                'passed' => array('name'=>'p'),
+                'level' => array('name'=>'l'),
+                'balels' => array('name'=>'b'),
+                'toAnswer' => array('name'=>'toAnswer')
             )
         );
 	}
@@ -98,6 +115,29 @@ class Question extends Api {
         $id = $model->add($insert);
 
         return $id;
+    }
+
+    public function updateById() {
+        $data = array(
+            'id' => $this->id,
+            'type' => $this->type,
+            'q' => $this->q,
+            'A' => $this->A,
+            'B' => $this->B,
+            'C' => $this->C,
+            'D' => $this->D,
+            'TF' => $this->TF,
+            'correct' => $this->correct,
+            'majorID' => $this->majorID,
+            'challenges' => $this->challenges,
+            'passed' => $this->passed,
+            'level' => $this->level,
+            'balels' => $this->balels,
+        );
+
+        $model = new QuestionModel();
+
+        return $model->updateById($this->id,$data);
     }
 
 }

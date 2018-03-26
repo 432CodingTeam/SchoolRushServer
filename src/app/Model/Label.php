@@ -31,7 +31,13 @@ class Label extends NotORM {
     public function add($insert_data) {
         $model = $this->getORM();
         $id = $model->insert($insert_data);
-
+        
         return $id;
+    }
+
+    public function updateById($id, $data) {
+        $model = $this->getORM();
+
+        return $model->where("id", $id)->update($data);
     }
 }

@@ -26,6 +26,11 @@ class Userpassedq extends Api {
             ),
             'deleteById' => array(
                 'id'=> array("name" => "id")
+            ),
+            'updateById' => array(
+                'id' => array("name" => 'id'),
+                'uid' => array('name' => "u"),
+                'qid'=>array('name'=>"q"),
             )
         );
 	}
@@ -79,4 +84,14 @@ class Userpassedq extends Api {
         return $id;
     }
 
+    public function updateById() {
+        $data = array(
+            'uid'=>$this->uid,
+            'qid'=>$this->qid,
+        );
+
+        $model = new UserpassedqModel();
+
+        return $model->updateById($this->id,$data);
+    }
 }

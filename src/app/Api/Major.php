@@ -27,6 +27,12 @@ class Major extends Api {
             ),
             'deleteById' => array(
                 'id'=> array("name" => "id")
+            ),
+            'updateById' => array(
+                'id' => array('name' => 'id'),
+                'name' => array('name' => "name"),
+                'parent'=>array('name'=>"parent"),
+                'ranklist'=>array('name'=>'ranklist'),
             )
         );
 	}
@@ -111,4 +117,25 @@ class Major extends Api {
         return $id;
     }
 
+    /**
+     * 更新专业
+     * @desc 根据id更新专业信息
+     * 
+     * @param string 专业名称
+     * @param int parent 专业的id
+     * @param string ranklist 更新的专业排名
+     * @return data id 更新后的专业信息
+     */
+    public function updateById(){
+        $data = array(
+            'id' => $this->id,
+            'name' => $this->name,
+            'parent' => $this->parent,
+            'ranklist' => $this->ranklist
+        );
+
+        $model = new MajorModel();
+
+        return $model->updateById($this->id,$data);
+    }
 }

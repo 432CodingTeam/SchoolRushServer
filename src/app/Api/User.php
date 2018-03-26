@@ -31,7 +31,19 @@ class User extends Api {
             ),
             'deleteById' => array(
                 'id'=> array("name" => "id")
-            )
+            ),
+            'updateById' => array(
+                'id' => array('name' => 'id'),
+                'name' => array('name' => "n"),
+                'pass'=>array('name'=>"p"),
+                'identify'=>array('name'=>"i"),
+                'email'=>array('name'=>"e"),
+                'tel'=>array('name'=>"t"),
+                'campusID'=>array('name'=>"c"),
+                'major'=>array('name'=>"m"),
+                'vice'=>array('name'=>"v"),
+            ),
+                
         );
 	}
 	
@@ -90,4 +102,21 @@ class User extends Api {
         return $id;
     }
 
+    public function updateById() {
+        $data = array(
+            'id'=>$this->id,
+            'name'=>$this->name,
+            'pass'=>$this->pass,
+            'identify'=>$this->identify,
+            'email'=>$this->email,
+            'tel'=>$this->tel,
+            'campusID'=>$this->campusID,
+            'major'=>$this->major,
+            'vice'=>$this->vice,
+        );
+
+        $model = new UserModel();
+
+        return $model->updateById($this->id,$data);
+    }
 }

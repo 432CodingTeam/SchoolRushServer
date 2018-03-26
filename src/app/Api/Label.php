@@ -24,7 +24,11 @@ class Label extends Api {
             ),
             'deleteById' => array(
                 'id'=> array("name" => "id")
-            )
+            ),
+            'updateById' => array(
+                'id' => array("name" => "id"),
+                'name' => array("name" => "name"),
+            ),
         );
 	}
 	
@@ -74,6 +78,22 @@ class Label extends Api {
         $id = $model->add($insert);
 
         return $id;
+    }
+
+    /**
+     * 更新标签
+     * @desc 根据id更新标签
+     * @param string name 标签名称
+     * @return data id 更新后标签信息
+     */
+    public function updateById() {
+        $data = array(
+            "id" => $this->id,
+            "name" => $this->name,
+        );
+
+        $model = new LabelModel();
+        return $model->updateById($this->id, $data);
     }
 
 }

@@ -34,4 +34,10 @@ class Question extends NotORM {
 
         return $id;
     }
+
+    public function updateById($id,$data) {
+        $model = $this->getORM();
+
+        return $model->where("id", $id)->update($data);
+    }
 }
