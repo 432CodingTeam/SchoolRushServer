@@ -106,7 +106,7 @@ class Campus extends Api {
      * @param string badge 校徽图片地址
      * @param string locate 学校省份地址
      * 
-     * @return data id 增加的学校的信息
+     * @return array id 增加的学校的标签
      */
     public function add() {
         $insert = array(

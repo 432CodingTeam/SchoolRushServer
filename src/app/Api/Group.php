@@ -4,7 +4,7 @@ namespace App\Api;
 use PhalApi\Api;
 use App\Model\Group as GroupModel;
 /**
- * 专业接口类
+ * 群组接口类
  *
  * @author: dogstar <chanzonghuang@gmail.com> 2014-10-04
  */
@@ -100,7 +100,7 @@ class Group extends Api {
      * @param string name 群组名称
      * @param string creator 群组创建者
      * @param int members 群组人数（一般为0）
-     * @return data id 增加群组信息
+     * @return int id 增加群组id
      */
 
     public function add() {

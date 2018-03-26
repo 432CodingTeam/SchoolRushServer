@@ -4,7 +4,7 @@ namespace App\Api;
 use PhalApi\Api;
 use App\Model\Question as QuestionModel;
 /**
- * 专业接口类
+ * 问题接口类
  *
  * @author: dogstar <chanzonghuang@gmail.com> 2014-10-04
  */
@@ -17,6 +17,7 @@ class Question extends Api {
                 'username' 	=> array('name' => 'username'),
             ),
             'add' => array(
+<<<<<<< HEAD
                 'type' => array('name'=>"type"),
                 'q' => array('name'=>'q'),
                 'A' => array('name'=>'A'),
@@ -30,6 +31,21 @@ class Question extends Api {
                 'passed' => array('name'=>'p'),
                 'level' => array('name'=>'l'),
                 'balels' => array('name'=>'b'),
+=======
+                'type'=>array('name'=>"t"),
+                'q'=>array('name'=>"q"),
+                'A'=>array('name'=>"A"),
+                'B'=>array('name'=>"B"),
+                'C'=>array('name'=>"C"),
+                'D'=>array('name'=>"D"),
+                'TF'=>array('name'=>"TF"),
+                'correct'=>array('name'=>"correct"),
+                'majorID'=>array('name'=>"majorID"),
+                'challenges'=>array('name'=>"challenges"),
+                'passed'=>array('name'=>"passed"),
+                'level'=>array('name'=>"level"),
+                'balels'=>array('name'=>"balels"),
+>>>>>>> 1bbb2963d832078d9d23e7b3cfca4646d47534df
             ),
             'getById' => array(
                 'id' => array("name" => "id")
@@ -73,6 +89,12 @@ class Question extends Api {
         );
     }
 
+    /**
+     * 获取所有的问题
+     * @desc获取所有的问题
+     * @return array data 获取的所有问题
+     */
+
     public function getAll() {
         $model = new QuestionModel();
         $data = $model->getAll();
@@ -80,12 +102,28 @@ class Question extends Api {
         return $data;
     }
 
+    /**
+     * 根据id获取
+     * @desc 根据id获取问题
+     * @param int id 要获取的问题的id
+     * @return data data 该id指定的问题
+     */
+
     public function getById() {
         $model = new QuestionModel();
         $data = $model->getById($this->id);
 
         return $data;
     }
+
+    /**
+     * 根据id删除
+     * @desc根据id删除问题
+     * @param int id 要删除的问题的id
+     * @return int data 要删除的问题id
+     * 
+     */
+
     public function deleteById()
     {
         $model = new QuestionModel();
@@ -93,11 +131,30 @@ class Question extends Api {
 
         return $data;
     }
+
+    /**
+     * 增加题目
+     * @desc 增加题目
+     * @param int  type 题目类型
+     * @param string A 选项A
+     * @param string B 选项B
+     * @param string C 选项C
+     * @param string D 选项D
+     * @param string TF 对错
+     * @param string correct 正确答案
+     * @param string majorID 所在分裂ID
+     * @param string challenges 挑战人数
+     * @param string passed 通过人数
+     * @param int level 问题难度星级
+     * @param int balels 标签，用逗号隔开
+     * @return int id 增加题目内容
+     */
+
     public function add() {
         $insert = array(
         'type'=>$this->type,
         'q'=>$this->q,
-        'A'=>$this->A,
+        'A'=>$this->A, 
         'B'=>$this->B,
         'C'=>$this->C,
         'D'=>$this->D,
