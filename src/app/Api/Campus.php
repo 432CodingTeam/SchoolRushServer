@@ -94,14 +94,19 @@ class Campus extends Api {
      * 增加学校信息
      * @desc 增加学校的信息
      * 
-     * @param string name 学校名称
+     * @param string true name 学校名称
      * @param int members 学校成员数（一般为0）
+     * @param string badge 校徽图片地址
+     * @param string locate 学校省份地址
+     * 
      * @return data id 增加的学校的信息
      */
     public function add() {
         $insert = array(
             'name'=>$this->name,
             'members'=>$this->members,
+            'badge' => $this->badge,
+            'locate' => $this->locate,
         );
 
         $model = new CampusModel();
