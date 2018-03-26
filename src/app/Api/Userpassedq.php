@@ -35,7 +35,7 @@ class Userpassedq extends Api {
                 'id' => array("name" => 'id'),
                 'uid' => array('name' => "uid"),
                 'qid'=>array('name'=>"qid"),
-            )
+            ),
         );
 	}
 	

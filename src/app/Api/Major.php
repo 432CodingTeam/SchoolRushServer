@@ -33,10 +33,11 @@ class Major extends Api {
                 'name' => array('name' => "name"),
                 'parent'=>array('name'=>"parent"),
                 'ranklist'=>array('name'=>'ranklist'),
+            ),
             'getIdByName'=>array(
                 'name'=>array('name'=>'name'),
             ),
-            )
+        );
 	}
 	
 	/**
