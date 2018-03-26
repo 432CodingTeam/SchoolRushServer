@@ -4,7 +4,11 @@ namespace App\Api;
 use PhalApi\Api;
 use App\Model\Userpassedq as UserpassedqModel;
 /**
+<<<<<<< HEAD
  * 用户通过题目关系表接口类
+=======
+ * 用户-题目通过接口类
+>>>>>>> c23b7bb6410626681acffaf8d793dceccb34ef28
  *
  * @author: dogstar <chanzonghuang@gmail.com> 2014-10-04
  */

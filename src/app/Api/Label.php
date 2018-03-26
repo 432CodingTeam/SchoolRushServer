@@ -4,7 +4,11 @@ namespace App\Api;
 use PhalApi\Api;
 use App\Model\Label as LabelModel;
 /**
+<<<<<<< HEAD
  * 标签服务类
+=======
+ * 标签类
+>>>>>>> c23b7bb6410626681acffaf8d793dceccb34ef28
  *
  * @author: dogstar <chanzonghuang@gmail.com> 2014-10-04
  */

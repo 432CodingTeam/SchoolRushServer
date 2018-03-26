@@ -18,9 +18,8 @@
 ```
 ...
 - DBDesign
-    - backups # 数据库备份
-        - create_schema.sql # 建库脚本
-        - schoolrush_create_table.sql  # 建表脚本
-    - SchoolRush数据库设计手册.html # 数据库字段说明
-
+    - backups                               # 数据库备份s
+        - create_schema.sql                 # 建库脚本
+        - schoolrush_create_table.sql       # 建表脚本
+    - SchoolRush数据库设计手册.html          # 数据库字段说明
 ```

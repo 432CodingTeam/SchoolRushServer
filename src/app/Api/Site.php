@@ -35,8 +35,4 @@ class Site extends Api {
             'time' => $_SERVER['REQUEST_TIME'],
         );
     }
-    
-    public function a()  {
-        return "000";
-    }
 }
