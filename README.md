@@ -10,3 +10,17 @@
 2. clone此仓库。
 3. 访问```你的Apache主机路径/SchoolRush/public/docs.php```
 4. 就可以看到接口文档了
+
+
+### 数据库设计
+
+位于DBDesign文件夹下
+```
+...
+- DBDesign
+    - backups # 数据库备份
+        - create_schema.sql # 建库脚本
+        - schoolrush_create_table.sql  # 建表脚本
+    - SchoolRush数据库设计手册.html # 数据库字段说明
+
+```
