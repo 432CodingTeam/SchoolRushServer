@@ -127,6 +127,22 @@ CREATE TABLE user
   COMMENT '用户表'
   ENGINE = InnoDB;
 
+CREATE TABLE userliveness
+(
+  id     BIGINT AUTO_INCREMENT
+    PRIMARY KEY,
+  time   DATE            NOT NULL
+  COMMENT '记录的日期',
+  uid    BIGINT          NOT NULL
+  COMMENT '用户id',
+  answer INT DEFAULT '0' NOT NULL
+  COMMENT '回答数',
+  quiz   INT DEFAULT '0' NOT NULL
+  COMMENT '提问数'
+)
+  COMMENT '用户活跃度 记录用户在每一天 回答问题 提问数量'
+  ENGINE = InnoDB;
+
 CREATE TABLE userpassedq
 (
   id  BIGINT AUTO_INCREMENT
