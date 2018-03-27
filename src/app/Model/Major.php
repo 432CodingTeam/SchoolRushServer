@@ -13,7 +13,7 @@ class Major extends NotORM {
         $data=$model->select("*");
          return $data;
     }
-    public function GetById($id)
+    public function getById($id)
     {
         $model=$this->getORM();
         $data=$model->where("id",$id);

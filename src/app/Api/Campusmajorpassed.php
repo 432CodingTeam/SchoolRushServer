@@ -131,7 +131,7 @@ class Campusmajorpassed extends Api {
             "id" => $this->id,
             "majorID" => $this->majorID,
             "campusID" => $this->campusID,
-            "passed" => $this->passed
+            "passed" => $this->passed,
         );
 
         $model = new CampusmajorpassedModel();
