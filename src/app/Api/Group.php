@@ -30,7 +30,7 @@ class Group extends Api {
             'updateById' => array(
                 'id' => array('name' => "id"),
                 'name' => array('name' => "name"),
-                'creator'=>array('name'=>"creator"),
+                'creator'=>array(   'name'=>"creator"),
                 'members'=>array('name'=>"members"),
             ),
             'getIdByName'=>array(

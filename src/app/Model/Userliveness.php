@@ -3,10 +3,10 @@ namespace App\Model;
 
 use PhalApi\Model\NotORMModel as NotORM;
 
-class User extends NotORM {
+class Userliveness extends NotORM {
 
     protected function getTableName($id) {
-        return 'user';
+        return 'userliveness';
     }
     public function getAll(){
         $model=$this->getORM();
@@ -31,17 +31,25 @@ class User extends NotORM {
         $id=$model->insert($insert_data);
         return $id;
     }
-    public function GetIdByName($name)
-    {
-        $model=$this->getORM();
-        $data=$model->where("name",$name);
-        //var_dump($data);
-        return $data;
-    }
 
     public function updateById($id,$data) {
         $model = $this->getORM();
 
         return $model->where("id", $id)->update($data);
+    }
+    public function getByTime($starttime,$endtime)
+    {
+        $model=$this->getORM();
+       //$start_time=date($starttime,time());
+        //$end_time=date($endtime,time());
+       // $data=array();
+        //$data=$map['publishtime']=array('between','$start_ttime,$end_time');
+      
+        $start_time=strtotime('starttime');
+        $end_time=strtotime('endtime');
+        for($i=strtotime($start_time);$i<=strrtotime($end_time);$i+=86400)
+        {
+        }
+        return $data;
     }
 }
