@@ -143,14 +143,17 @@ CREATE TABLE userliveness
   COMMENT '用户活跃度 记录用户在每一天 回答问题 提问数量'
   ENGINE = InnoDB;
 
-CREATE TABLE userpassedq
+CREATE TABLE usertoq
 (
-  id  BIGINT AUTO_INCREMENT
+  id     BIGINT AUTO_INCREMENT
     PRIMARY KEY,
-  uid BIGINT NOT NULL
+  uid    BIGINT NOT NULL
   COMMENT '用户ID',
-  qid BIGINT NOT NULL
-  COMMENT '通过的题目ID'
+  qid    BIGINT NOT NULL
+  COMMENT '通过的题目ID',
+  status INT    NOT NULL
+  COMMENT '0 未通过
+	1 已通过'
 )
   COMMENT '用户-通过的题目 关系表
 用于统计用户通过了哪些题目
@@ -159,7 +162,7 @@ CREATE TABLE userpassedq
 
 CREATE TRIGGER user_passed_a_question
   BEFORE INSERT
-  ON userpassedq
+  ON usertoq
   FOR EACH ROW
   BEGIN
     DECLARE cam_id BIGINT;
