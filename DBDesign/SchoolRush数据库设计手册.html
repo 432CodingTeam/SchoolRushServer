@@ -89,6 +89,10 @@ UserpassedQ                            </a>
                             <a href="#tableLabel">
 label                            </a>
                         </li>
+                        <li>
+                            <a href="#tableUserliveness">
+userliveness                            </a>
+                        </li>
                     </ol>
                 </li>
             </ol>
@@ -758,6 +762,80 @@ varchar(10)                        </td>
 null                        </td>
                         <td>
 标签名 不可重复                        </td>
+                    </tr>
+                </tbody>
+            </table>
+            <h3 id="tableUserliveness">
+1.9. Table userliveness            </h3>
+            <p class="infoField">
+                <strong>
+Description:                 </strong>
+用户活跃度 记录用户在每一天 回答问题 提问数量            </p>
+            <h4>
+1.9.1. Columns            </h4>
+            <table class="columnsTable">
+                <thead>
+                    <tr class="titleRow">
+                        <th>
+Column name                        </th>
+                        <th>
+Type                        </th>
+                        <th>
+Properties                        </th>
+                        <th>
+Description                        </th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>
+id                        </td>
+                        <td>
+bigint                        </td>
+                        <td>
+PK                        </td>
+                        <td>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+time                        </td>
+                        <td>
+date                        </td>
+                        <td>
+null                        </td>
+                        <td>
+记录的日期                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+uid                        </td>
+                        <td>
+bigint                        </td>
+                        <td>
+null                        </td>
+                        <td>
+用户id                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+answer                        </td>
+                        <td>
+int                        </td>
+                        <td>
+null                        </td>
+                        <td>
+用户在记录的日期回答问题数                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+quiz                        </td>
+                        <td>
+int                        </td>
+                        <td>
+null                        </td>
+                        <td>
+用户在当天提问数                        </td>
                     </tr>
                 </tbody>
             </table>
