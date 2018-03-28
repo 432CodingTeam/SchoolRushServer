@@ -107,22 +107,24 @@ CREATE TABLE user
 (
   id       BIGINT AUTO_INCREMENT
     PRIMARY KEY,
-  name     VARCHAR(15) NULL
+  name     VARCHAR(15)  NULL
   COMMENT '用户名',
-  pass     VARCHAR(20) NULL
+  pass     VARCHAR(20)  NULL
   COMMENT '密码',
-  identify INT         NULL
+  identify INT          NULL
   COMMENT '管理员1 普通用户2',
-  email    VARCHAR(40) NOT NULL
+  email    VARCHAR(40)  NOT NULL
   COMMENT '用户邮箱',
-  tel      VARCHAR(20) NOT NULL
+  tel      VARCHAR(20)  NOT NULL
   COMMENT '用户电话',
-  campusID BIGINT      NOT NULL
+  campusID BIGINT       NOT NULL
   COMMENT '所在学校ID',
-  major    BIGINT      NOT NULL
+  major    BIGINT       NOT NULL
   COMMENT '所在专业ID',
-  vice     INT         NOT NULL
-  COMMENT '副专业 多个用“，”分隔'
+  vice     INT          NOT NULL
+  COMMENT '副专业 多个用“，”分隔',
+  avatar   VARCHAR(200) NULL
+  COMMENT '用户头像地址'
 )
   COMMENT '用户表'
   ENGINE = InnoDB;
