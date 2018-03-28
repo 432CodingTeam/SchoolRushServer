@@ -93,6 +93,10 @@ label                            </a>
                             <a href="#tableUserliveness">
 userliveness                            </a>
                         </li>
+                        <li>
+                            <a href="#tableMajor-rank">
+major-rank                            </a>
+                        </li>
                     </ol>
                 </li>
             </ol>
@@ -151,16 +155,6 @@ bigint                        </td>
 null                        </td>
                         <td>
 专业类的id                        </td>
-                    </tr>
-                    <tr>
-                        <td>
-ranklist                        </td>
-                        <td>
-varchar(100)                        </td>
-                        <td>
-                        </td>
-                        <td>
-该专业排行的学校，用“，”分开                        </td>
                     </tr>
                 </tbody>
             </table>
@@ -423,6 +417,16 @@ varchar(200)                        </td>
                         </td>
                         <td>
 用户头像图片地址                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+describe                        </td>
+                        <td>
+varchar(30)                        </td>
+                        <td>
+                        </td>
+                        <td>
+一句话描述自己                        </td>
                     </tr>
                 </tbody>
             </table>
@@ -857,6 +861,62 @@ int                        </td>
 null                        </td>
                         <td>
 用户在当天提问数                        </td>
+                    </tr>
+                </tbody>
+            </table>
+            <h3 id="tableMajor-rank">
+1.10. Table major-rank            </h3>
+            <p class="infoField">
+                <strong>
+Description:                 </strong>
+专业 排行榜 关系表            </p>
+            <h4>
+1.10.1. Columns            </h4>
+            <table class="columnsTable">
+                <thead>
+                    <tr class="titleRow">
+                        <th>
+Column name                        </th>
+                        <th>
+Type                        </th>
+                        <th>
+Properties                        </th>
+                        <th>
+Description                        </th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>
+id                        </td>
+                        <td>
+bigint                        </td>
+                        <td>
+PK                        </td>
+                        <td>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+list                        </td>
+                        <td>
+varchar(300)                        </td>
+                        <td>
+null                        </td>
+                        <td>
+此专业下排行榜列表  将学校的id用，分隔开                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+type                        </td>
+                        <td>
+int                        </td>
+                        <td>
+null                        </td>
+                        <td>
+1 日榜（统计前一天）
+2 周榜 (上一周)
+3 月榜  (上个月)                        </td>
                     </tr>
                 </tbody>
             </table>

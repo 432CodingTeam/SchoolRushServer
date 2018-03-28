@@ -54,15 +54,27 @@ CREATE TABLE label
 
 CREATE TABLE major
 (
-  id       BIGINT AUTO_INCREMENT
+  id     BIGINT AUTO_INCREMENT
     PRIMARY KEY,
-  name     CHAR(20)     NULL
+  name   CHAR(20) NULL
   COMMENT '专业名字',
-  parent   BIGINT       NULL
-  COMMENT '专业类的id',
-  ranklist VARCHAR(100) NOT NULL
+  parent BIGINT   NULL
+  COMMENT '专业类的id'
 )
   COMMENT '专业表'
+  ENGINE = InnoDB;
+
+CREATE TABLE majorrank
+(
+  id   BIGINT AUTO_INCREMENT
+    PRIMARY KEY,
+  list VARCHAR(300) NOT NULL
+  COMMENT '此专业下排行榜列表  将学校的id用，分隔开',
+  type INT          NOT NULL
+  COMMENT '1 日榜（统计前一天）
+	2 周榜 (上一周)
+	3 月榜  (上个月)'
+)
   ENGINE = InnoDB;
 
 CREATE TABLE question
@@ -105,26 +117,30 @@ CREATE TABLE question
 
 CREATE TABLE user
 (
-  id       BIGINT AUTO_INCREMENT
+  id         BIGINT AUTO_INCREMENT
     PRIMARY KEY,
-  name     VARCHAR(15)  NULL
+  name       VARCHAR(15)  NULL
   COMMENT '用户名',
-  pass     VARCHAR(20)  NULL
+  pass       VARCHAR(20)  NULL
   COMMENT '密码',
-  identify INT          NULL
+  identify   INT          NULL
   COMMENT '管理员1 普通用户2',
-  email    VARCHAR(40)  NOT NULL
+  email      VARCHAR(40)  NOT NULL
   COMMENT '用户邮箱',
-  tel      VARCHAR(20)  NOT NULL
+  tel        VARCHAR(20)  NOT NULL
   COMMENT '用户电话',
-  campusID BIGINT       NOT NULL
+  campusID   BIGINT       NOT NULL
   COMMENT '所在学校ID',
-  major    BIGINT       NOT NULL
+  major      BIGINT       NOT NULL
   COMMENT '所在专业ID',
-  vice     INT          NOT NULL
+  vice       INT          NOT NULL
   COMMENT '副专业 多个用“，”分隔',
-  avatar   VARCHAR(200) NULL
-  COMMENT '用户头像地址'
+  avatar     VARCHAR(200) NULL
+  COMMENT '用户头像地址',
+  `describe` VARCHAR(30)  NULL
+  COMMENT '一句话描述自己',
+  gender     INT          NULL
+  COMMENT '0 女 1 男'
 )
   COMMENT '用户表'
   ENGINE = InnoDB;
