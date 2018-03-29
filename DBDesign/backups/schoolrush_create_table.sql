@@ -15,14 +15,24 @@ CREATE TABLE campus
 
 CREATE TABLE campusmajorpassed
 (
-  id       BIGINT AUTO_INCREMENT
+  id        BIGINT AUTO_INCREMENT
     PRIMARY KEY,
-  majorID  BIGINT          NULL
+  majorID   BIGINT          NULL
   COMMENT '专业ID',
-  campusID BIGINT          NULL
+  campusID  BIGINT          NULL
   COMMENT '学校ID',
-  passed   INT DEFAULT '0' NULL
-  COMMENT '通过人数'
+  aday      INT DEFAULT '0' NOT NULL
+  COMMENT '今天通过题数',
+  aweek     INT DEFAULT '0' NOT NULL
+  COMMENT '本周通过题数',
+  amonth    INT DEFAULT '0' NOT NULL
+  COMMENT '本月通过题数',
+  lastday   INT DEFAULT '0' NOT NULL
+  COMMENT '上一天以及之前共通过数',
+  lastweek  INT DEFAULT '0' NOT NULL
+  COMMENT '上一周以及之前共通过数',
+  lastmonth INT DEFAULT '0' NOT NULL
+  COMMENT '上一天以及之前共通过数'
 )
   COMMENT '学校-分类-通过数
 关系表 用于排行'
