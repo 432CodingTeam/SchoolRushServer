@@ -13,7 +13,7 @@ class Campusmajorpassed extends NotORM {
         $data=$model->select("*");
          return $data;
     }
-    public function GetById($id)
+    public function getById($id)
     {
         $model=$this->getORM();
         $data=$model->where("id",$id);
@@ -31,5 +31,8 @@ class Campusmajorpassed extends NotORM {
         $id=$model->insert($insert_data);
         return $id;
     }
-
+    public function updateById($id, $data){
+        $model = $this->getORM();
+        return $model->where("id",$id)->update($data);
+    }
 }

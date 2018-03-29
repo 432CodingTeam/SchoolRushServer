@@ -28,9 +28,15 @@ class Major extends Api {
             'deleteById' => array(
                 'id'=> array("name" => "id")
             ),
+            'updateById' => array(
+                'id' => array('name' => 'id'),
+                'name' => array('name' => "name"),
+                'parent'=>array('name'=>"parent"),
+                'ranklist'=>array('name'=>'ranklist'),
+            ),
             'getIdByName'=>array(
-                'name'=>array('name'=>'name')
-            )
+                'name'=>array('name'=>'name'),
+            ),
         );
 	}
 	
@@ -91,6 +97,13 @@ class Major extends Api {
 
         return $data;
     }
+
+    /**
+     * 根据名字获取id
+     * @desc 根据名字获取id
+     * @param string name 要获取的id的名字
+     * @return int id 该名字对应的id
+     */
      public function getIdByName()
      {
         $model = new MajorModel();
@@ -102,7 +115,7 @@ class Major extends Api {
      * 增加专业
      * @desc 增加专业信息
      * 
-     * @param string 专业名称
+     * @param string insert专业名称
      * @param int parent 专业的id
      * @param string ranklist 增加的专业排名（一般为0）
      * @return array id 增加的专业信息
@@ -121,4 +134,25 @@ class Major extends Api {
         return $id;
     }
 
+    /**
+     * 更新专业
+     * @desc 根据id更新专业信息
+     * 
+     * @param string 专业名称
+     * @param int parent 专业的id
+     * @param string ranklist 更新的专业排名
+     * @return data id 更新后的专业信息
+     */
+    public function updateById(){
+        $data = array(
+            'id' => $this->id,
+            'name' => $this->name,
+            'parent' => $this->parent,
+            'ranklist' => $this->ranklist
+        );
+
+        $model = new MajorModel();
+
+        return $model->updateById($this->id,$data);
+    }
 }

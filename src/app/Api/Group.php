@@ -26,7 +26,19 @@ class Group extends Api {
             ),
             'deleteById' => array(
                 'id' => array("name" => "id")
-            )
+            ),
+            'updateById' => array(
+                'id' => array('name' => "id"),
+                'name' => array('name' => "name"),
+                'creator'=>array(   'name'=>"creator"),
+                'members'=>array('name'=>"members"),
+            ),
+            'getIdByName'=>array(
+                'name'=>array('name'=>"name"),
+            ),
+            'getIdByName'=>array(
+                'name'=>array('name'=>"name"),
+            ),
         );
 	}
 	
@@ -89,12 +101,27 @@ class Group extends Api {
     }
 
     /**
+     * 根据名字获取id
+     * @desc 根据名字获取id
+     * @param string name 要获取的id的名字
+     * @return int id 该名字对应的id
+     */
+
+    public function getIdByName()
+    {
+       $model = new GroupModel();
+       $data = $model->GetIdByName($this->name);
+
+       return $data;
+    }
+
+    /**
      * 增加群组
      * @desc 增加群组
      * @param string name 群组名称
      * @param string creator 群组创建者
      * @param int members 群组人数（一般为0）
-     * @return array id 增加群组信息
+     * @return int id 增加群组id
      */
 
     public function add() {
@@ -111,4 +138,24 @@ class Group extends Api {
         return $id;
     }
 
+    /**
+     * 更新群组
+     * @desc 根据id更新群组
+     * @param string name 群组名称
+     * @param string creator 群组创建者
+     * @param int members 群组人数（一般为0）
+     * @return data id 更新后群组信息
+     */
+    public function updateById(){
+        $data = array(
+            "id"=>$this->id,
+            "name"=>$this->name,
+            "creator"=>$this->creator,
+            "members"=>$this->members
+        );
+
+        $model = new GroupModel();
+
+        return $model->updateById($this->id, $data);
+    }
 }

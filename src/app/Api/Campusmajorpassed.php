@@ -27,7 +27,13 @@ class Campusmajorpassed extends Api {
             ),
             'deleteById' => array(
                 'id'=> array("name" => "id")
-            )
+            ),
+            'updateById' => array(
+                'id' => array("name" => "id"),
+                'majorID' => array('name' => "majorID"),
+                'campusID'=>array('name'=>"campusID"),
+                'passed'=>array('name'=>'passed'),
+            ),
         );
 	}
 	
@@ -93,7 +99,7 @@ class Campusmajorpassed extends Api {
      * @param int majorId 专业id
      * @param int campusID 学校id
      * @param int passed 通过人数
-     * @return array id 该学校的通过数信息
+     * @return int id 增加的学校id
      */
 
     public function add() {
@@ -110,4 +116,25 @@ class Campusmajorpassed extends Api {
         return $id;
     }
 
+
+
+    /**
+     * 更新学校通过数
+     * @desc 更新学校通过数
+     * @param int majorId 专业id
+     * @param int campusID 学校id
+     * @param int passed 通过人数
+     * @return data id 更新后该学校的通过数信息
+     */
+    public function updateById() {
+        $data = array(
+            "id" => $this->id,
+            "majorID" => $this->majorID,
+            "campusID" => $this->campusID,
+            "passed" => $this->passed,
+        );
+
+        $model = new CampusmajorpassedModel();
+        return $model->updateById($this->id, $data);
+    }
 }

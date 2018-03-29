@@ -31,7 +31,22 @@ class User extends Api {
             ),
             'deleteById' => array(
                 'id'=> array("name" => "id")
-            )
+            ),
+            'updateById' => array(
+                'id' => array('name' => 'id'),
+                'name' => array('name' => "name"),
+                'pass'=>array('name'=>"pass"),
+                'identify'=>array('name'=>"identify"),
+                'email'=>array('name'=>"email"),
+                'tel'=>array('name'=>"tel"),
+                'campusID'=>array('name'=>"campusID"),
+                'major'=>array('name'=>"major"),
+                'vice'=>array('name'=>"vice"),
+            ),
+            'getIdByName'=>array(
+                'name'=>array('name'=>'name'),
+            ),
+                
         );
 	}
 	
@@ -95,8 +110,15 @@ class User extends Api {
     /**
      * 增加用户
      * @desc 增加用户信息 
-     * @param array data 增加的用户信息
-     * @return array id 增加的用户信息
+     * @param string name 增加的用户名称
+     * @param string pass 密码
+     * @param int identify 身份
+     * @param string email email
+     * @param string tel 电话
+     * @param int campusID 所在学校ID
+     * @param int major 所在专业ID
+     * @param int vice 副专业ID
+     * @return array id 增加的用户Id
      */
 
     public function add() {
@@ -118,4 +140,35 @@ class User extends Api {
         return $id;
     }
 
+        /**
+     * 根据名字获取id
+     * @desc 根据名字获取id
+     * @param string name 要获取的id的名字
+     * @return int id 该名字对应的id
+     */
+
+    public function getIdByName()
+    {
+       $model = new UserModel();
+       $data = $model->GetIdByName($this->name);
+
+       return $data;
+    }
+    public function updateById() {
+        $data = array(
+            'id'=>$this->id,
+            'name'=>$this->name,
+            'pass'=>$this->pass,
+            'identify'=>$this->identify,
+            'email'=>$this->email,
+            'tel'=>$this->tel,
+            'campusID'=>$this->campusID,
+            'major'=>$this->major,
+            'vice'=>$this->vice,
+        );
+
+        $model = new UserModel();
+
+        return $model->updateById($this->id,$data);
+    }
 }

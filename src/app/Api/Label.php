@@ -4,11 +4,7 @@ namespace App\Api;
 use PhalApi\Api;
 use App\Model\Label as LabelModel;
 /**
-<<<<<<< HEAD
  * 标签服务类
-=======
- * 标签类
->>>>>>> c23b7bb6410626681acffaf8d793dceccb34ef28
  *
  * @author: dogstar <chanzonghuang@gmail.com> 2014-10-04
  */
@@ -21,14 +17,21 @@ class Label extends Api {
                 'username' 	=> array('name' => 'username'),
             ),
             'add' => array(
-                'name'=>array('name'=>"n"),
+                'name'=>array('name'=>"name"),
             ),
             'getById' => array(
                 'id' => array("name" => "id")
             ),
             'deleteById' => array(
                 'id'=> array("name" => "id")
-            )
+            ),
+            'updateById' => array(
+                'id' => array("name" => "id"),
+                'name' => array("name" => "name"),
+            ),
+            'getIdByName'=>array(
+                'name'=>array('name'=>'name'),
+            ),
         );
 	}
 	
@@ -91,7 +94,8 @@ class Label extends Api {
     /**
      * 增加标签
      * @desc 增加一条标签
-     * @param array data 增加的标签内容
+     * @param string name 增加的标签内容
+     * @return int id 增加的标签id
      */
 
     public function add() {
@@ -104,6 +108,36 @@ class Label extends Api {
         $id = $model->add($insert);
 
         return $id;
+    }
+
+        /**
+     * 根据名字获取id
+     * @desc 根据名字获取id
+     * @param string name 要获取的id的名字
+     * @return int id 该名字对应的id
+     */
+    public function getIdByName()
+    {
+       $model = new LabeLModel();
+       $data = $model->GetIdByName($this->name);
+
+       return $data;
+    }
+
+    /**
+     * 更新标签
+     * @desc 根据id更新标签
+     * @param string name 标签名称
+     * @return data id 更新后标签信息
+     */
+    public function updateById() {
+        $data = array(
+            "id" => $this->id,
+            "name" => $this->name,
+        );
+
+        $model = new LabelModel();
+        return $model->updateById($this->id, $data);
     }
 
 }

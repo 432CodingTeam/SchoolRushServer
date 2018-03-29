@@ -27,7 +27,17 @@ class Campus extends Api {
             ),
             'deleteById' => array(
                 'id' => array("name" => "id")
-            )
+            ),
+            'updateById' => array(
+                'id' => array('name'=> 'id'),
+                'name' => array('name' => "name"),
+                'members'=>array('name'=>"members"),
+                'badge' => array('name' => "badge"),
+                'locate' => array('name' => "locate")
+            ),
+            'getIdByName'=>array(
+                'name'=>array('name'=>"name"),
+            ),
         );
 	}
 	
@@ -94,12 +104,12 @@ class Campus extends Api {
      * 增加学校信息
      * @desc 增加学校的信息
      * 
-     * @param string true name 学校名称
+     * @param string name 学校名称
      * @param int members 学校成员数（一般为0）
      * @param string badge 校徽图片地址
      * @param string locate 学校省份地址
      * 
-     * @return array id 增加的学校的信息
+     * @return array id 增加的学校的标签
      */
     public function add() {
         $insert = array(
@@ -116,4 +126,43 @@ class Campus extends Api {
         return $id;
     }
 
+        /**
+     * 根据名字获取id
+     * @desc 根据名字获取id
+     * @param string name 要获取的id的名字
+     * @return int id 该名字对应的id
+     */
+
+    public function getIdByName()
+    {
+       $model = new CampusModel();
+       $data = $model->GetIdByName($this->name);
+
+       return $data;
+    }
+
+    /**
+     * 更新学校信息
+     * @desc 根据id更新学校的信息
+     * 
+     * @param string name 学校名称
+     * @param int members 学校成员数（一般为0）
+     * @param string badge 校徽图片地址
+     * @param string locate 学校省份地址
+     * 
+     * @return data id 更新后的学校的信息
+     */
+     
+    public function updateById() {
+        $data = array(
+            "id" => $this->id,
+            "name" => $this->name,
+            "members" => $this->members,
+            "badge" => $this->badge,
+            "locate" => $this->locate
+        );
+
+        $model = new CampusModel();
+        return $model->updateById($this->id, $data);
+    }
 }

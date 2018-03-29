@@ -31,5 +31,9 @@ class Userpassedq extends NotORM {
         $id=$model->insert($insert_data);
         return $id;
     }
+    public function updateById($id,$data) {
+        $model = $this->getORM();
 
+        return $model->where("id", $id)->update($data);
+    }
 }

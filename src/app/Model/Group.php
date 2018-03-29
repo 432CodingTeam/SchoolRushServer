@@ -15,7 +15,15 @@ class Group extends NotORM {
         $data = $model->select("*");
         return $data;
     }
-
+    
+    public function GetIdByName($name)
+    {
+        $model=$this->getORM();
+        $data=$model->where("name",$name);
+        //var_dump($data);
+        return $data;
+    }
+    
     public function getById($id) {
         $model = $this->getORM();
 
@@ -33,5 +41,9 @@ class Group extends NotORM {
         $id = $model->insert($insert_data);
 
         return $id;
+    }
+    public function updateById($id,$data){
+        $model = $this->getORM();
+        return $model->where("id",$id)->update($data);
     }
 }

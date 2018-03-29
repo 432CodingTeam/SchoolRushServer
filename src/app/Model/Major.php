@@ -13,19 +13,19 @@ class Major extends NotORM {
         $data=$model->select("*");
          return $data;
     }
-    public function GetById($id)
+    public function getById($id)
     {
         $model=$this->getORM();
         $data=$model->where("id",$id);
         return $data;
     }
-    public function GetIdByName($name)
+  public function GetIdByName($name)
     {
         $model=$this->getORM();
         $data=$model->where("name",$name);
         //var_dump($data);
         return $data;
-    }
+    }  
     public function deleteById($id) {
         $model = $this->getORM();
 
@@ -38,5 +38,9 @@ class Major extends NotORM {
         $id=$model->insert($insert_data);
         return $id;
     }
+    public function updateById($id,$data) {
+        $model = $this->getORM();
 
+        return $model->where("id", $id)->update($data);
+    }
 }

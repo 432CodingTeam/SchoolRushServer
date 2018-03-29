@@ -23,7 +23,13 @@ class Campus extends NotORM {
         return $data;
     }
 
- 
+    public function GetIdByName($name)
+    {
+        $model=$this->getORM();
+        $data=$model->where("name",$name);
+        //var_dump($data);
+        return $data;
+    }
     public function deleteById($id) {
         $model = $this->getORM();
 
@@ -35,5 +41,11 @@ class Campus extends NotORM {
         $id = $model->insert($insert_data);
 
         return $id;
+    }
+
+    public function updateById($id,$data) {
+        $model = $this->getORM();
+
+        return $model->where("id", $id)->update($data);
     }
 }
