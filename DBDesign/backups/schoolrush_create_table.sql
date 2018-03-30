@@ -1,3 +1,25 @@
+DROP TABLE campus;
+
+DROP TABLE campusmajorpassed;
+
+DROP TABLE `group`;
+
+DROP TABLE label;
+
+DROP TABLE major;
+
+DROP TABLE majorrank;
+
+DROP TABLE question;
+
+DROP TABLE user;
+
+DROP TABLE userliveness;
+
+DROP TABLE usertoq;
+
+
+
 CREATE TABLE campus
 (
   id      BIGINT AUTO_INCREMENT
@@ -187,39 +209,4 @@ CREATE TABLE usertoq
 用于统计用户通过了哪些题目
 统计用户通过的题目分类占比'
   ENGINE = InnoDB;
-
-CREATE TRIGGER user_passed_a_question
-  BEFORE INSERT
-  ON usertoq
-  FOR EACH ROW
-  BEGIN
-    DECLARE cam_id BIGINT;
-    DECLARE major_id BIGINT;
-    #获取学校id
-    SET cam_id = (SELECT campusID
-                  FROM user
-                  WHERE id = NEW.uid);
-    #获取专业id
-    SET major_id = (SELECT majorID
-                    FROM question
-                    WHERE id = NEW.qid);
-    #如果有相同的学校对应相同的专业则不插入
-    INSERT INTO campusmajorpassed
-    (majorID, campusID, passed)
-      SELECT
-        major_id,
-        cam_id,
-        0
-      FROM dual
-      WHERE NOT exists(SELECT
-                         majorID,
-                         campusID
-                       FROM campusmajorpassed
-                       WHERE campusID = cam_id AND majorID = major_id);
-
-    UPDATE campusmajorpassed
-    SET passed = passed + 1
-    WHERE campusID = cam_id AND majorID = major_id;
-  END;
-
 
