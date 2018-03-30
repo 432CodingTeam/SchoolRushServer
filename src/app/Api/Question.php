@@ -23,12 +23,12 @@ class Question extends Api {
                 'B' => array('name'=>'B'),
                 'C' => array('name'=>'C'),
                 'D' => array('name'=>'D'),
-                'TF' => array('name'=>'TF'),
+                'F' => array('name'=>'F'),
                 'correct' => array('name'=>'correct'),
                 'majorID' => array('name'=>'majorId'),
                 'challenges' => array('name'=>'challength'),
                 'passed' => array('name'=>'passed'),
-                'level' => array('name'=>'level'),
+                'levels' => array('name'=>'levels'),
                 'balels' => array('name'=>'balels'),
             ),
             'getById' => array(
@@ -45,12 +45,12 @@ class Question extends Api {
                 'B' => array('name'=>'B'),
                 'C' => array('name'=>'C'),
                 'D' => array('name'=>'D'),
-                'TF' => array('name'=>'TF'),
+                'F' => array('name'=>'F'),
                 'correct' => array('name'=>'correct'),
                 'majorID' => array('name'=>'majorID'),
                 'challenges' => array('name'=>'challenges'),
                 'passed' => array('name'=>'passed'),
-                'level' => array('name'=>'level'),
+                'levels' => array('name'=>'levels'),
                 'balels' => array('name'=>'balels'),
                 'toAnswer' => array('name'=>'toAnswer')
             ),
@@ -124,12 +124,12 @@ class Question extends Api {
      * @param string B 选项B
      * @param string C 选项C
      * @param string D 选项D
-     * @param string TF 对错
+     * @param string F 错误答案
      * @param string correct 正确答案
      * @param string majorID 所在分裂ID
      * @param string challenges 挑战人数
      * @param string passed 通过人数
-     * @param int level 问题难度星级
+     * @param int levels 问题难度星级
      * @param int balels 标签，用逗号隔开
      * @return int id 增加题目内容
      */
@@ -142,12 +142,12 @@ class Question extends Api {
         'B'=>$this->B,
         'C'=>$this->C,
         'D'=>$this->D,
-        'TF'=>$this->TF,
+        'F'=>$this->F,
         'correct'=>$this->correct,
         'majorID'=>$this->majorID,
         'challenges'=>$this->challenges,
         'passed'=>$this->passed,
-        'level'=>$this->level,
+        'levels'=>$this->levels,
         'balels'=>$this->balels,
         );
 
@@ -173,12 +173,12 @@ class Question extends Api {
             'B' => $this->B,
             'C' => $this->C,
             'D' => $this->D,
-            'TF' => $this->TF,
+            'F' => $this->F,
             'correct' => $this->correct,
             'majorID' => $this->majorID,
             'challenges' => $this->challenges,
             'passed' => $this->passed,
-            'level' => $this->level,
+            'levels' => $this->levels,
             'balels' => $this->balels,
         );
 

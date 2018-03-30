@@ -19,8 +19,12 @@ class Campusmajorpassed extends Api {
             'add' => array(
                 'majorID' => array('name' => "majorID"),
                 'campusID'=>array('name'=>"campusID"),
-                'passed'=>array('name'=>'passed'),
-
+                'aday'=>array('name'=>'aday'),
+                'aweek'=>array('name'=>'aweek'),
+                'amonth'=>array('name'=>'amonth'),
+                'lastday'=>array('name'=>'lastday'),
+                'lastweek'=>array('name'=>'lastweek'),
+                'lastmonth'=>array('name'=>'lastmonth'),
             ),
             'getById' => array(
                 'id' => array("name" => "id")
@@ -32,7 +36,12 @@ class Campusmajorpassed extends Api {
                 'id' => array("name" => "id"),
                 'majorID' => array('name' => "majorID"),
                 'campusID'=>array('name'=>"campusID"),
-                'passed'=>array('name'=>'passed'),
+                'aday'=>array('name'=>'aday'),
+                'aweek'=>array('name'=>'aweek'),
+                'amonth'=>array('name'=>'amonth'),
+                'lastday'=>array('name'=>'lastday'),
+                'lastweek'=>array('name'=>'lastweek'),
+                'lastmonth'=>array('name'=>'lastmonth'),
             ),
         );
 	}
@@ -106,7 +115,12 @@ class Campusmajorpassed extends Api {
         $insert = array(
             'majorId'=>$this->majorID,
             'campusID'=>$this->campusID,
-            'passed'=>$this->passed,
+            'aday'=> $this->aday,
+            'aweek'=> $this->aweek,
+            'amonth'=> $this->amonth,
+            'lastday'=> $this->lastday,
+            'lastmonth'=> $this->lastmonth,
+            'lastweek'=> $this->lastweek,
         );
 
         $model = new CampusmajorpassedModel();
@@ -131,7 +145,12 @@ class Campusmajorpassed extends Api {
             "id" => $this->id,
             "majorID" => $this->majorID,
             "campusID" => $this->campusID,
-            "passed" => $this->passed,
+            'aday'=> $this->aday,
+            'aweek'=> $this->aweek,
+            'amonth'=> $this->amonth,
+            'lastday'=> $this->lastday,
+            'lastmonth'=> $this->lastmonth,
+            'lastweek'=> $this->lastweek,
         );
 
         $model = new CampusmajorpassedModel();
