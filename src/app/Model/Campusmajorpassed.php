@@ -35,4 +35,5 @@ class Campusmajorpassed extends NotORM {
         $model = $this->getORM();
         return $model->where("id",$id)->update($data);
     }
+    //添加
 }
