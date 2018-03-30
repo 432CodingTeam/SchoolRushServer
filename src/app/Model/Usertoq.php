@@ -42,25 +42,27 @@ class Usertoq extends NotORM {
         return $model->where("id", $id)->update($data);
     }
 
-    public function getPassingRate($id ){
-        $model = $this->getORM();
+    public function getPassingRate($id){
+        $model = $this->getORM();  
+        $passedq = $model->where('uid',$id)->and('status',1);
         
-        $passedq = $model->where('id',$id)->and('status',1);
-        $allq = $model->where('id',$id)->and('status',array(0,1));
-        $rate = $passedq / $allq;
+        $new_model = $this->getORM();
+        $unpassq = $new_model->where('uid',$id)->and('status',0);
+
+        $rate = count($passedq) / (count($passedq)+count($unpassq));
         
         return $rate;
     }
 
-    public function getTobeSolved($id){
+    public function getTobeSolved($uid){
         $model = $this->getORM();
 
-        return $model->where('id',$id)->and('status',0);
+        return $model->where('uid',$uid)->and('status',0);
     }
 
     public function getPassed($id){
         $model = $this->getORM();
 
-        return $model->where('id',$id)->and('status',1);
+        return $model->where('uid',$id)->and('status',1);
     }
 }

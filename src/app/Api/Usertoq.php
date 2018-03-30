@@ -33,19 +33,13 @@ class Usertoq extends Api {
                 'qid'=>array('name'=>"qid"),
             ),
             'getPassingRate' => array(
-                'id' => array('name' => 'id'),
                 'uid' => array('name' => 'uid'),
-                'rate' => array('name' => 'rate'),
             ),
             'getTobeSolved' => array(
-                'id' => array('name' => 'id'),
                 'uid' => array('name' => 'uid'),
-                'unpass' => array('name' => 'unpass'),
             ),
             'getPassed' => array(
-                'id' => array('name' => 'id'),
                 'uid' => array('name' => 'uid'),
-                'passed' => array('name' => 'passed'), 
             ),
         );
 	}
@@ -152,14 +146,10 @@ class Usertoq extends Api {
      * @return float rate 通过率
      */
     public function getPassingRate(){
-        $data = array(
-            'uid' => $this->uid,
-            'rate' => $this->rate,
-        );
 
         $model = new UsertoqModel();
 
-        return $model->getPassingRate($this->id,$data);
+        return $model->getPassingRate($this->uid);
     }
     /**
      * 获取用户待解决的问题
@@ -167,14 +157,10 @@ class Usertoq extends Api {
      * @return array data 用户待解决的问题
      */
     public function getTobeSolved(){
-        $data = array(
-            'uid' => $this->uid,
-            'unpass' => $this->unpass,
-        );
 
         $model = new UsertoqModel();
 
-        return $model->getTobeSolved($this->id,$data);
+        return $model->getTobeSolved($this->uid);
     }
 
      /**
@@ -183,13 +169,9 @@ class Usertoq extends Api {
       * @return array data 用户已经解决的问题
       */
       public function getPassed(){
-          $data = array(
-              'uid' => $this->uid,
-              'passed' => $this->passed,
-          );
 
           $model = new UsertoqModel();
 
-          return $model->getPassed($this->id,$data);
+          return $model->getPassed($this->uid);
       }
 }
