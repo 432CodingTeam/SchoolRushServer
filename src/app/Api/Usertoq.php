@@ -2,18 +2,14 @@
 namespace App\Api;
 
 use PhalApi\Api;
-use App\Model\Userpassedq as UserpassedqModel;
+use App\Model\Usertoq as UsertoqModel;
 /**
-<<<<<<< HEAD
  * 用户通过题目关系表接口类
-=======
- * 用户-题目通过接口类
->>>>>>> c23b7bb6410626681acffaf8d793dceccb34ef28
  *
  * @author: dogstar <chanzonghuang@gmail.com> 2014-10-04
  */
 
-class Userpassedq extends Api {
+class Usertoq extends Api {
 
 	public function getRules() {
         return array(
@@ -35,6 +31,21 @@ class Userpassedq extends Api {
                 'id' => array("name" => 'id'),
                 'uid' => array('name' => "uid"),
                 'qid'=>array('name'=>"qid"),
+            ),
+            'getPassingRate' => array(
+                'id' => array('name' => 'id'),
+                'uid' => array('name' => 'uid'),
+                'rate' => array('name' => 'rate'),
+            ),
+            'getTobeSolved' => array(
+                'id' => array('name' => 'id'),
+                'uid' => array('name' => 'uid'),
+                'unpass' => array('name' => 'unpass'),
+            ),
+            'getPassed' => array(
+                'id' => array('name' => 'id'),
+                'uid' => array('name' => 'uid'),
+                'passed' => array('name' => 'passed'), 
             ),
         );
 	}
@@ -60,7 +71,7 @@ class Userpassedq extends Api {
      * @return array data 获取的所有用户通过数
      */
     public function getAll() {
-        $model = new UserpassedqModel();
+        $model = new UsertoqModel();
         $data = $model->getAll();
 
         return $data;
@@ -70,11 +81,11 @@ class Userpassedq extends Api {
      * 根据id获取
      * @desc 根据提供的id获取该id指定的信息
      * @param int data 要获取的信息的id
-     * @return data data 该id指定得信息
+     * @return array data 该id指定得信息
      */
 
     public function getById() {
-        $model = new UserpassedqModel();
+        $model = new UsertoqModel();
         $data = $model->getById($this->id);
 
         return $data;
@@ -89,7 +100,7 @@ class Userpassedq extends Api {
 
     public function deleteById()
     {
-        $model = new UserpassedqModel();
+        $model = new UsertoqModel();
         $data = $model->deleteById($this->id);
 
         return $data;
@@ -101,18 +112,18 @@ class Userpassedq extends Api {
      */
     public function add() {
         $insert = array(
-            'uid'=>$this->uid,
-            'qid'=>$this->qid,
+            'uid' => $this->uid,
+            'qid' => $this->qid,
         );
 
-        $model = new UserpassedqModel();
+        $model = new UsertoqModel();
 
         $id = $model->add($insert);
 
         return $id;
     }
 
-        /**
+    /**
      * 根据名字获取id
      * @desc 根据名字获取id
      * @param string name 要获取的id的名字
@@ -120,15 +131,65 @@ class Userpassedq extends Api {
      */
 
   
-
+    /**
+     * 更新用户通过题目数
+     * @param int uid 用户id
+     * @return int qid 通过题目id
+     */
     public function updateById() {
         $data = array(
             'uid'=>$this->uid,
             'qid'=>$this->qid,
         );
 
-        $model = new UserpassedqModel();
+        $model = new UsertoqModel();
 
         return $model->updateById($this->id,$data);
     }
+    /**
+     * 获取用户的通过率
+     * @param int uid 用户id
+     * @return float rate 通过率
+     */
+    public function getPassingRate(){
+        $data = array(
+            'uid' => $this->uid,
+            'rate' => $this->rate,
+        );
+
+        $model = new UsertoqModel();
+
+        return $model->getPassingRate($this->id,$data);
+    }
+    /**
+     * 获取用户待解决的问题
+     * @param int uid 用户id
+     * @return array data 用户待解决的问题
+     */
+    public function getTobeSolved(){
+        $data = array(
+            'uid' => $this->uid,
+            'unpass' => $this->unpass,
+        );
+
+        $model = new UsertoqModel();
+
+        return $model->getTobeSolved($this->id,$data);
+    }
+
+     /**
+      * 获取用户已经解决的问题
+      * @param int uid 用户id
+      * @return array data 用户已经解决的问题
+      */
+      public function getPassed(){
+          $data = array(
+              'uid' => $this->uid,
+              'passed' => $this->passed,
+          );
+
+          $model = new UsertoqModel();
+
+          return $model->getPassed($this->id,$data);
+      }
 }
