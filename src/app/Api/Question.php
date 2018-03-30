@@ -56,7 +56,7 @@ class Question extends Api {
                 'toAnswer' => array('name'=>'toAnswer')
             ),
             
-            'getQuestionByuid'=>array(
+            'getQByuid'=>array(
                 'uid'=>array('name'=>'uid'),
                 'num'=>array('name'=>'num'),
             ),
@@ -64,13 +64,18 @@ class Question extends Api {
                 'uid'=>array('name'=>'uid'),
                 'num'=>array('name'=>'num'),
             ),
+            'getAllPQByuid'=>array(
+                'uid'=>array('name'=>'uid'),
+            ),
+            'getAllUnPQByuid'=>array(
+                'uid'=>array('name'=>'uid'),
+            ),
         );
 	}
 	
 	/**
 	 * 默认接口服务
-     * @desc 默认接口服务，当未指定接口服务时执行此接口服务
-	 * @return string title 标题
+     * @desc 默认接口服务， 标题
 	 * @return string content 内容
 	 * @return string version 版本，格式：X.X.X
 	 * @return int time 当前时间戳
@@ -196,18 +201,80 @@ class Question extends Api {
 
         return $model->updateById($this->id,$data);
     }
-    public function getQuestionByuid()
+    /**
+     * 获取用户最近提出的问题
+     * @desc 根据用户id倒序获取用户最近提出的问题信息
+     * @param int uid 用户id
+     * @param int num 要获取的天数（在该天数内获取用户的提问）
+     * @return array data 获取的问题信息
+     */
+    public function getQByuid()
     {
         $model=new QuestionModel();
-        return $model->getQuestionByuid($this->uid,$this->num);
+        $model = $model->getQByuid($this->uid)->order('id DESC');
+        return $model->limit($this->num);
         //缺少时间限制
     }
+     /**
+     * 获取用户最近解决的问题
+     * @desc 根据用户id倒序获取用户最近解决的问题信息
+     * @param int uid 用户的id
+     * @param int num 要获取的天数（获取该天数以内的问题）
+     * @return array data 获取的解决问题的信息
+     */
     public function getPQByuid()
     {
         $model1=new QuestionModel();
         $model2=new UsertoqModel();
-        $pqid=$model2->getPQIdByuid($this->uid);
+        $pq=$model2->getPQIdByuid($this->uid);
+        $pqid=array();
+        foreach($pq as $pq)
+        {
+            $pqid[]=$pq['qid'];
+        }
+        $model1=$model1->getById($pqid)->order('id DESC');
+        return $model1->limit($this->num);
+    }
+
+    /**
+     * 获取用户所有解决的问题
+     * @desc 根据用户id倒序获取用户所有解决的问题
+     * @param int uid 用户的id
+     * @return array data 用户所有的解决的问题
+     */
+    public function getAllPQByuid()
+    {
+        $model1=new QuestionModel();
+        $model2=new UsertoqModel();
+        $pq=$model2->getPQIdByuid($this->uid);
+        $pqid=array();
+        foreach($pq as $pq)
+        {
+            $pqid[]=$pq['qid'];
+        }
         
-        return $model1->where("id",$pqid)->limit($this->num);
+        $model1=$model1->getById($pqid)->order('id DESC');
+        return $model1;
+    }
+
+    /**
+     * 获取用户所有未解决的问题
+     * @desc 根据用户id倒序获取用户所有未解决的问题
+     * @param int uid 用户的id
+     * @return array data 用户所有的未解决的问题
+     */
+    public function getAllUnPQByuid()
+    {
+        $model1=new QuestionModel();
+        $model2=new UsertoqModel();
+        $pq=$model2->getUnPQIdByuid($this->uid);
+        $pqid=array();
+        foreach($pq as $pq)
+        {
+            $pqid[]=$pq['qid'];
+        }
+        
+        $model1=$model1->getById($pqid)->order('id DESC');
+        return $model1;
     }
 }

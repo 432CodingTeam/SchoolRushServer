@@ -41,15 +41,19 @@ class Usertoq extends NotORM {
 
         return $model->where("id", $id)->update($data);
     }
-<<<<<<< HEAD:src/app/Model/Usertoq.php
     public function getPQIdByuid($uid)
     {
         $model=$this->getORM();
         $data= $model->where("uid",$uid)->and('status',1);
         //把data赋值成问题id
         return $data;
-=======
-
+    }
+    
+    public function getUnPQIdByuid($uid)
+    {
+        $model=$this->getORM();
+        return $model->where('uid',$uid)->and('status',0);
+    }
     public function getPassingRate($id){
         $model = $this->getORM();  
         $passedq = $model->where('uid',$id)->and('status',1);
@@ -72,6 +76,5 @@ class Usertoq extends NotORM {
         $model = $this->getORM();
 
         return $model->where('uid',$id)->and('status',1);
->>>>>>> 384e669305b070625ea3bf11c86cfe34b2f78b66:src/app/Model/Usertoq.php
     }
 }
