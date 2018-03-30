@@ -48,4 +48,10 @@ class Campus extends NotORM {
 
         return $model->where("id", $id)->update($data);
     }
+    public function getmembersById($id)
+    {
+        $model=$this->getORM();
+        $members = $model->where("id",$id)->fetchOne();
+        return $members['members'];
+    }
 }

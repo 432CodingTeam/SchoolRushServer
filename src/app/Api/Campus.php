@@ -36,7 +36,10 @@ class Campus extends Api {
                 'locate' => array('name' => "locate")
             ),
             'getIdByName'=>array(
-                'name'=>array('name'=>"name"),
+                'id'=>array('name'=>"id"),
+            ),
+            'getmembersById'=>array(
+                'id'=>array('name'=>'id'),
             ),
         );
 	}
@@ -159,10 +162,16 @@ class Campus extends Api {
             "name" => $this->name,
             "members" => $this->members,
             "badge" => $this->badge,
-            "locate" => $this->locate
+            "locate" => $this->locate,
         );
 
         $model = new CampusModel();
         return $model->updateById($this->id, $data);
     }
+    public function GetmembersById()
+    {
+        $model=new CampusModel();
+        return $model->getmembersById($this->id);
+    }
 }
+

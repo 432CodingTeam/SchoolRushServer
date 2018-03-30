@@ -3,6 +3,7 @@ namespace App\Api;
 
 use PhalApi\Api;
 use App\Model\User as UserModel;
+use app\Model\Question as QuestionModel;
 /**
  * 用户接口类
  *
@@ -171,4 +172,5 @@ class User extends Api {
 
         return $model->updateById($this->id,$data);
     }
+
 }

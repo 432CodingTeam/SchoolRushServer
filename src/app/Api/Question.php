@@ -3,6 +3,7 @@ namespace App\Api;
 
 use PhalApi\Api;
 use App\Model\Question as QuestionModel;
+use App\Model\Usertoq as UsertoqModel;
 /**
  * 问题接口类
  *
@@ -53,6 +54,14 @@ class Question extends Api {
                 'levels' => array('name'=>'levels'),
                 'balels' => array('name'=>'balels'),
                 'toAnswer' => array('name'=>'toAnswer')
+            ),
+            
+            'getQuestionByuid'=>array(
+                'uid'=>array('name'=>'uid'),
+                'num'=>array('name'=>'num'),
+            ),
+            'getPQByuid'=>array(
+                'uid'=>array('name'=>'uid'),
             ),
         );
 	}
@@ -186,5 +195,18 @@ class Question extends Api {
 
         return $model->updateById($this->id,$data);
     }
-
+    public function getQuestionByuid()
+    {
+        $model=new QuestionModel();
+        return $model->getQuestionByuid($this->uid,$this->num);
+        //缺少时间限制
+    }
+    public function getPQByuid()
+    {
+        $model1=new QuestionModel();
+        $model2=new UsertoqModel();
+        $pqid=$model2->getPQIdByuid($this->uid);
+        
+        return $model1->where("id",$pqid);
+    }
 }

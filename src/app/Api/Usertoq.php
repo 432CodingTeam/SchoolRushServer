@@ -2,7 +2,7 @@
 namespace App\Api;
 
 use PhalApi\Api;
-use App\Model\Userpassedq as UserpassedqModel;
+use App\Model\Usertoq as UsertoqModel;
 /**
 <<<<<<< HEAD
  * 用户通过题目关系表接口类
@@ -13,7 +13,7 @@ use App\Model\Userpassedq as UserpassedqModel;
  * @author: dogstar <chanzonghuang@gmail.com> 2014-10-04
  */
 
-class Userpassedq extends Api {
+class UsertoqModel extends Api {
 
 	public function getRules() {
         return array(
@@ -60,7 +60,7 @@ class Userpassedq extends Api {
      * @return array data 获取的所有用户通过数
      */
     public function getAll() {
-        $model = new UserpassedqModel();
+        $model = new UsertoqModel();
         $data = $model->getAll();
 
         return $data;
@@ -74,7 +74,7 @@ class Userpassedq extends Api {
      */
 
     public function getById() {
-        $model = new UserpassedqModel();
+        $model = new UsertoqModel();
         $data = $model->getById($this->id);
 
         return $data;
@@ -89,7 +89,7 @@ class Userpassedq extends Api {
 
     public function deleteById()
     {
-        $model = new UserpassedqModel();
+        $model = new UsertoqModel();
         $data = $model->deleteById($this->id);
 
         return $data;
@@ -105,7 +105,7 @@ class Userpassedq extends Api {
             'qid'=>$this->qid,
         );
 
-        $model = new UserpassedqModel();
+        $model = new UsertoqModel();
 
         $id = $model->add($insert);
 
@@ -127,7 +127,7 @@ class Userpassedq extends Api {
             'qid'=>$this->qid,
         );
 
-        $model = new UserpassedqModel();
+        $model = new UsertoqModel();
 
         return $model->updateById($this->id,$data);
     }

@@ -3,10 +3,10 @@ namespace App\Model;
 
 use PhalApi\Model\NotORMModel as NotORM;
 
-class Userpassedq extends NotORM {
+class Usertoq extends NotORM {
 
     protected function getTableName($id) {
-        return 'userpassedq';
+        return 'usertoq';
     }
     public function getAll(){
         $model=$this->getORM();
@@ -35,5 +35,12 @@ class Userpassedq extends NotORM {
         $model = $this->getORM();
 
         return $model->where("id", $id)->update($data);
+    }
+    public function getPQIdByuid($uid)
+    {
+        $model=$this->getORM();
+        $data= $model->where("uid",$uid)->and('status',1);
+        //把data赋值成问题id
+        return $data;
     }
 }
