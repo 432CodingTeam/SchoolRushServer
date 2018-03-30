@@ -178,4 +178,5 @@ class Usertoq extends Api {
 
           return $model->getPassed($this->uid);
       }
+      //测试merge
 }
