@@ -40,4 +40,11 @@ class Question extends NotORM {
 
         return $model->where("id", $id)->update($data);
     }
+    public function getQuestionByuid($uid,$num)
+    {
+        $model=$this->getORM();
+        $data=$model->where("uid",$uid);
+        $data=$data->order('id DESC')->limit($num);
+        return $data;
+    }
 }
