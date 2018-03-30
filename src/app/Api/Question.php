@@ -62,6 +62,7 @@ class Question extends Api {
             ),
             'getPQByuid'=>array(
                 'uid'=>array('name'=>'uid'),
+                'num'=>array('name'=>'num'),
             ),
         );
 	}
@@ -207,6 +208,6 @@ class Question extends Api {
         $model2=new UsertoqModel();
         $pqid=$model2->getPQIdByuid($this->uid);
         
-        return $model1->where("id",$pqid);
+        return $model1->where("id",$pqid)->limit($this->num);
     }
 }

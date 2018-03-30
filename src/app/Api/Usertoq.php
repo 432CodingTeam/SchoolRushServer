@@ -4,16 +4,16 @@ namespace App\Api;
 use PhalApi\Api;
 use App\Model\Usertoq as UsertoqModel;
 /**
-<<<<<<< HEAD
  * 用户通过题目关系表接口类
-=======
- * 用户-题目通过接口类
->>>>>>> c23b7bb6410626681acffaf8d793dceccb34ef28
  *
  * @author: dogstar <chanzonghuang@gmail.com> 2014-10-04
  */
 
+<<<<<<< HEAD:src/app/Api/Usertoq.php
 class UsertoqModel extends Api {
+=======
+class Usertoq extends Api {
+>>>>>>> 384e669305b070625ea3bf11c86cfe34b2f78b66:src/app/Api/Usertoq.php
 
 	public function getRules() {
         return array(
@@ -35,6 +35,15 @@ class UsertoqModel extends Api {
                 'id' => array("name" => 'id'),
                 'uid' => array('name' => "uid"),
                 'qid'=>array('name'=>"qid"),
+            ),
+            'getPassingRate' => array(
+                'uid' => array('name' => 'uid'),
+            ),
+            'getTobeSolved' => array(
+                'uid' => array('name' => 'uid'),
+            ),
+            'getPassed' => array(
+                'uid' => array('name' => 'uid'),
             ),
         );
 	}
@@ -70,7 +79,7 @@ class UsertoqModel extends Api {
      * 根据id获取
      * @desc 根据提供的id获取该id指定的信息
      * @param int data 要获取的信息的id
-     * @return data data 该id指定得信息
+     * @return array data 该id指定得信息
      */
 
     public function getById() {
@@ -101,8 +110,8 @@ class UsertoqModel extends Api {
      */
     public function add() {
         $insert = array(
-            'uid'=>$this->uid,
-            'qid'=>$this->qid,
+            'uid' => $this->uid,
+            'qid' => $this->qid,
         );
 
         $model = new UsertoqModel();
@@ -112,7 +121,7 @@ class UsertoqModel extends Api {
         return $id;
     }
 
-        /**
+    /**
      * 根据名字获取id
      * @desc 根据名字获取id
      * @param string name 要获取的id的名字
@@ -120,7 +129,11 @@ class UsertoqModel extends Api {
      */
 
   
-
+    /**
+     * 更新用户通过题目数
+     * @param int uid 用户id
+     * @return int qid 通过题目id
+     */
     public function updateById() {
         $data = array(
             'uid'=>$this->uid,
@@ -131,4 +144,38 @@ class UsertoqModel extends Api {
 
         return $model->updateById($this->id,$data);
     }
+    /**
+     * 获取用户的通过率
+     * @param int uid 用户id
+     * @return float rate 通过率
+     */
+    public function getPassingRate(){
+
+        $model = new UsertoqModel();
+
+        return $model->getPassingRate($this->uid);
+    }
+    /**
+     * 获取用户待解决的问题
+     * @param int uid 用户id
+     * @return array data 用户待解决的问题
+     */
+    public function getTobeSolved(){
+
+        $model = new UsertoqModel();
+
+        return $model->getTobeSolved($this->uid);
+    }
+
+     /**
+      * 获取用户已经解决的问题
+      * @param int uid 用户id
+      * @return array data 用户已经解决的问题
+      */
+      public function getPassed(){
+
+          $model = new UsertoqModel();
+
+          return $model->getPassed($this->uid);
+      }
 }
