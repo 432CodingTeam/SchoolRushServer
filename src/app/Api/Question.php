@@ -164,9 +164,25 @@ class Question extends Api {
      * @return int id 该名字对应的id
      */
 
+     /**
+     * 更新题目
+     * @desc 更新题目
+     * @param int  type 题目类型
+     * @param string A 选项A
+     * @param string B 选项B
+     * @param string C 选项C
+     * @param string D 选项D
+     * @param string F 错误答案
+     * @param string correct 正确答案
+     * @param string majorID 所在分裂ID
+     * @param string challenges 挑战人数
+     * @param string passed 通过人数
+     * @param int levels 问题难度星级
+     * @param int balels 标签，用逗号隔开
+     * @return int id 更新题目内容
+     */
     public function updateById() {
         $data = array(
-            'id' => $this->id,
             'type' => $this->type,
             'q' => $this->q,
             'A' => $this->A,
@@ -180,6 +196,7 @@ class Question extends Api {
             'passed' => $this->passed,
             'levels' => $this->levels,
             'balels' => $this->balels,
+            'toAnswer' => $this->toAnswer,
         );
 
         $model = new QuestionModel();
