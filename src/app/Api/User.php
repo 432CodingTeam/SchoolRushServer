@@ -121,12 +121,21 @@ class User extends Api {
      * @param int campusID 所在学校ID
      * @param int major 所在专业ID
      * @param int vice 副专业ID
-     * @return array id 增加的用户Id
+     * @return array id 增加的用户Id false 表示用户名重复
      */
 
     public function add() {
         $model = new UserModel();
+        
+        //对用户名查重
+        $isNameRepeat = $model->isRepeat("name", $this->name);
 
+        if($isNameRepeat)
+            return array(
+                "res" => false,
+                "error" => "用户名重复"
+            );
+        
         $insert = array(
             'name'=>$this->name,
             'pass'=>$this->pass,
@@ -138,6 +147,7 @@ class User extends Api {
             'vice'=>$this->vice,
             'avatar'=> "",  //头像地址先留空 后面上传之后更新
         );
+        
         $id = $model->add($insert);
 
         return $id;

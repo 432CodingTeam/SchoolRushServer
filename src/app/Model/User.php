@@ -43,6 +43,14 @@ class User extends NotORM {
 
         return $model->where("id", $id)->update($data);
     }
+
+    public function isRepeat($key, $value) {
+        $model = $this->getORM();
+        
+        $res = $model->where($key, $value);
+        
+        return count($res) == 0 ? false : true;
+    }
     
     //将base64转为图片 返回布尔
     public function base64toImg($base64, $imgName) {
