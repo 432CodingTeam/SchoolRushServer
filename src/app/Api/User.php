@@ -3,7 +3,7 @@ namespace App\Api;
 
 use PhalApi\Api;
 use App\Model\User as UserModel;
-use app\Model\Question as QuestionModel;
+use App\Common\Upload;
 /**
  * 用户接口类
  *
@@ -26,6 +26,7 @@ class User extends Api {
                 'campusID'=>array('name'=>"campusID"),
                 'major'=>array('name'=>"major"),
                 'vice'=>array('name'=>"vice"),
+                'avatar'=>array('name'=>"avatar"),
             ),
             'getById' => array(
                 'id' => array("name" => "id")
@@ -43,6 +44,7 @@ class User extends Api {
                 'campusID'=>array('name'=>"campusID"),
                 'major'=>array('name'=>"major"),
                 'vice'=>array('name'=>"vice"),
+                'avatar'=>array('name'=>"avatar"),
             ),
             'getIdByName'=>array(
                 'name'=>array('name'=>'name'),
@@ -123,6 +125,8 @@ class User extends Api {
      */
 
     public function add() {
+        $model = new UserModel();
+
         $insert = array(
             'name'=>$this->name,
             'pass'=>$this->pass,
@@ -132,10 +136,8 @@ class User extends Api {
             'campusID'=>$this->campusID,
             'major'=>$this->major,
             'vice'=>$this->vice,
+            'avatar'=> "",  //头像地址先留空 后面上传之后更新
         );
-
-        $model = new UserModel();
-
         $id = $model->add($insert);
 
         return $id;
@@ -155,7 +157,35 @@ class User extends Api {
 
        return $data;
     }
+
+    /**
+     * 根据ID更新用户信息
+     * @param id 用户id
+     * @param name 用户名
+     * @param pass 用户密码
+     * @param identify 用户身份
+     * @param email 用户邮箱
+     * @param tel 用户电话
+     * @param campusID 用户学校ID
+     * @param major 用户专业ID
+     * @param vice 用户兴趣专业ID
+     * @param avatar base64编码的图片 将会存储为图片并保存到七牛云，最后将图片外链存到数据库中
+     * 
+     * @return res 1: 有更改 0:无更改 false: 更新失败
+     */
     public function updateById() {
+        $model = new UserModel();
+
+        $base64 = $this->avatar;
+        $saveRes = $model->base64toImg($base64, $this->id);
+        if(!$saveRes) 
+            return array("res"=>false, "error"=>"保存本地图片失败");
+        //上传到七牛云 将avatar设置为外链地址
+        $upload = new Upload();
+        $upRes = $upload->uploadToQNY($saveRes["filePath"],$saveRes["fileName"]);
+        if(array_key_exists("res", $upRes))
+            return array("res"=>false, "msg"=>"图片上传失败", "error"=>$upRes["error"]);
+        $this->avatar = $upRes;
         $data = array(
             'id'=>$this->id,
             'name'=>$this->name,
@@ -166,11 +196,12 @@ class User extends Api {
             'campusID'=>$this->campusID,
             'major'=>$this->major,
             'vice'=>$this->vice,
+            'avatar'=>$this->avatar,
         );
 
-        $model = new UserModel();
 
-        return $model->updateById($this->id,$data);
+        $id = $model->updateById($this->id,$data);
+        return array("res"=>$id);
     }
 
 }

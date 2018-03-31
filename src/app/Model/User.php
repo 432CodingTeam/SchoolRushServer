@@ -35,7 +35,6 @@ class User extends NotORM {
     {
         $model=$this->getORM();
         $data=$model->where("name",$name);
-        //var_dump($data);
         return $data;
     }
 
@@ -43,5 +42,21 @@ class User extends NotORM {
         $model = $this->getORM();
 
         return $model->where("id", $id)->update($data);
+    }
+    
+    //将base64转为图片 返回布尔
+    public function base64toImg($base64, $imgName) {
+        $imgName = "user_" . $imgName . '.png';
+        if (strstr($base64,",")) {
+            $base64 = explode(',',$base64);
+            $base64 = $base64[1];
+        }
+
+        $img = base64_decode($base64);
+        $path = './upload/';
+        $a = file_put_contents($path. $imgName, $img);
+        if($a)
+            return array("filePath"=>$path.$imgName, "fileName"=>$imgName);
+        return false;
     }
 }
