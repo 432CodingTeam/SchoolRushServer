@@ -16,7 +16,7 @@ class Group extends NotORM {
         return $data;
     }
     
-    public function GetIdByName($name)
+    public function getIdByName($name)
     {
         $model=$this->getORM();
         $data=$model->where("name",$name);

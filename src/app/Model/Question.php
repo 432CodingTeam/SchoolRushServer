@@ -46,4 +46,10 @@ class Question extends NotORM {
         $data=$model->where("uid",$uid);
         return $data;
     }
+    public function getQBykey()
+    {
+        $model=$this->getORM();
+        $data=$model->where("q",$uid);
+        return $data;
+    }
 }

@@ -70,6 +70,9 @@ class Question extends Api {
             'getAllUnPQByuid'=>array(
                 'uid'=>array('name'=>'uid'),
             ),
+            'getQByKey'=>array(
+                'key'=>array('name'=>'key'),
+            ),
         );
 	}
 	
@@ -292,5 +295,53 @@ class Question extends Api {
         
         $model1=$model1->getById($pqid)->order('id DESC');
         return $model1;
+    }
+    /**
+     * 按照关键字索引题目
+     * @desc 根据题目内容关键字出现次数对题目进行排序（关键字按照空格分割，未出现关键字的题目不显示）
+     * @param string key 关键字
+     * @return array question 返回的题目
+     */
+    public function getQByKey()
+    {
+        $model=new QuestionModel();
+        $question=$model->getAll()->fetchall();//将所有数据复制到该数组
+        $keys=explode(' ',$this->key);//将传入的关键的按照空格分割
+        for($i=0;$i<sizeof($question);$i++)//初始化数据
+        {
+            $question[$i]["num"]=0;
+            $nums[$i]=0;
+        }
+        for($i=0;$i<sizeof($keys);$i++)//根据关键字来计数
+        {
+            for($j=0;$j<sizeof($question);$j++)
+            {
+                if(strstr($question[$j]["q"],$keys[$i]))
+                {
+                 $question[$j]["num"]=$question[$j]["num"]+1;//关键字个数
+                 $nums[$j]++;
+                }
+            }
+        }
+     
+       array_multisort($nums,SORT_DESC,$question);//按照关键字数出现次数排序
+       $d=0;
+       for($i=0;$i<sizeof($question);$i++)
+       {
+           /*if($question[$i]["num"]==0)
+           { 
+                unset($question[$i]);
+               //$i=0;
+            }//删除关键字为0的元素
+           else {unset($question[$i]["num"]);}//删除计数元素*/
+           if($question[$i]["num"]>0)
+           {
+               $q[$d]=$question[$i];
+               unset($q[$d]["num"]);
+               $d=$d+1;
+           }
+       }
+       
+       return $q;
     }
 }

@@ -31,7 +31,7 @@ class User extends NotORM {
         $id=$model->insert($insert_data);
         return $id;
     }
-    public function GetIdByName($name)
+    public function getIdByName($name)
     {
         $model=$this->getORM();
         $data=$model->where("name",$name);

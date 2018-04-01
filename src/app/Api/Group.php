@@ -110,7 +110,7 @@ class Group extends Api {
     public function getIdByName()
     {
        $model = new GroupModel();
-       $data = $model->GetIdByName($this->name);
+       $data = $model->getIdByName($this->name);
 
        return $data;
     }

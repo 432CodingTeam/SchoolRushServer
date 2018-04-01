@@ -107,7 +107,7 @@ class Major extends Api {
      public function getIdByName()
      {
         $model = new MajorModel();
-        $data = $model->GetIdByName($this->name);
+        $data = $model->getIdByName($this->name);
 
         return $data;
      }

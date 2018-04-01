@@ -119,7 +119,7 @@ class Label extends Api {
     public function getIdByName()
     {
        $model = new LabeLModel();
-       $data = $model->GetIdByName($this->name);
+       $data = $model->getIdByName($this->name);
 
        return $data;
     }
