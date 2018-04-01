@@ -36,7 +36,7 @@ class Token {
         return $tokenModel->deleteByUid($uid);  //如果有的话会删除 没有也不会出错
     }
 
-    //token延时
+    //延长token的过期时间
     public function addExpireTime($uid) {
         $tokenModel = new TokenModel();
 
@@ -54,6 +54,25 @@ class Token {
     }
 
     //判断token是否过期
-    
+    public function isExpire($uid) {
+        $tokenModel = new TokenModel();
+
+        $token = $tokenModel->getByUid($uid);
+
+        if(count($token) == 0)
+            return array("res" => false, "msg" => "没有此条token");
+        
+        $token = $token->fetchOne();
+
+        $tokenExpire = $token["expiretime"];
+
+        $now = date("Y-m-d H:i:s");
+
+        if((strtotime($now) - strtotime($tokenExpire)) > 0) {
+            $this->deleteByUid($uid); //删除过期的token
+            return array("res" => true, "msg" => "该token已过期，已经被删除");
+        }
+        return array("res" => false, "msg" => "该token未过期");
+    }
 
 }

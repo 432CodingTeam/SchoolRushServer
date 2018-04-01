@@ -172,7 +172,7 @@ class User extends Api {
         $model = new UserModel();
         $data = $model->getByName($this->name);
 
-       return $data;
+        return $data;
     }
 
     /**
