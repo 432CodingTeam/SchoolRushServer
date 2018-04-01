@@ -151,6 +151,24 @@ CREATE TABLE question
   COMMENT '问题表'
   ENGINE = InnoDB;
 
+CREATE TABLE token
+(
+  id         BIGINT AUTO_INCREMENT
+    PRIMARY KEY,
+  uid        BIGINT      NOT NULL
+  COMMENT '用户id',
+  token      VARCHAR(32) NOT NULL
+  COMMENT '签名',
+  expiretime DATETIME    NOT NULL
+  COMMENT '签名过期时间',
+  CONSTRAINT token_id_uindex
+  UNIQUE (id),
+  CONSTRAINT token_uid_uindex
+  UNIQUE (uid)
+)
+  COMMENT '用户签名验证'
+  ENGINE = InnoDB;
+
 CREATE TABLE user
 (
   id         BIGINT AUTO_INCREMENT
@@ -215,6 +233,3 @@ CREATE TABLE usertoq
 用于统计用户通过了哪些题目
 统计用户通过的题目分类占比'
   ENGINE = InnoDB;
-
-
-
