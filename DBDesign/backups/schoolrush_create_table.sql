@@ -18,6 +18,10 @@ DROP TABLE userliveness;
 
 DROP TABLE usertoq;
 
+DROP TABLE token;
+
+
+
 
 
 CREATE TABLE campus
@@ -151,28 +155,30 @@ CREATE TABLE user
 (
   id         BIGINT AUTO_INCREMENT
     PRIMARY KEY,
-  name       VARCHAR(15)  NULL
+  name       VARCHAR(15)     NOT NULL
   COMMENT '用户名',
-  pass       VARCHAR(20)  NULL
+  pass       VARCHAR(20)     NOT NULL
   COMMENT '密码',
-  identify   INT          NULL
+  identify   INT DEFAULT '2' NULL
   COMMENT '管理员1 普通用户2',
-  email      VARCHAR(40)  NOT NULL
+  email      VARCHAR(40)     NOT NULL
   COMMENT '用户邮箱',
-  tel        VARCHAR(20)  NOT NULL
+  tel        VARCHAR(20)     NULL
   COMMENT '用户电话',
-  campusID   BIGINT       NOT NULL
+  campusID   BIGINT          NULL
   COMMENT '所在学校ID',
-  major      BIGINT       NOT NULL
+  major      BIGINT          NULL
   COMMENT '所在专业ID',
-  vice       INT          NOT NULL
+  vice       INT             NULL
   COMMENT '副专业 多个用“，”分隔',
-  avatar     VARCHAR(200) NULL
+  avatar     VARCHAR(200)    NULL
   COMMENT '用户头像地址',
-  `describe` VARCHAR(30)  NULL
+  `describe` VARCHAR(30)     NULL
   COMMENT '一句话描述自己',
-  gender     INT          NULL
-  COMMENT '0 女 1 男'
+  gender     INT             NULL
+  COMMENT '0 女 1 男',
+  CONSTRAINT user_name_uindex
+  UNIQUE (name)
 )
   COMMENT '用户表'
   ENGINE = InnoDB;
@@ -209,4 +215,6 @@ CREATE TABLE usertoq
 用于统计用户通过了哪些题目
 统计用户通过的题目分类占比'
   ENGINE = InnoDB;
+
+
 
