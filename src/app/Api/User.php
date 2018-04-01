@@ -136,12 +136,18 @@ class User extends Api {
         
         //对用户名查重
         $isNameRepeat = $model->isRepeat("name", $this->name);
+        $isMailRepeat = $model->isRepeat("email", $this->email);
 
         if($isNameRepeat)
             return array(
                 "res" => false,
                 "error" => "用户名重复"
             );
+        if($isMailRepeat)
+        return array(
+            "res" => false,
+            "error" => "邮箱重复"
+        );
         
         $insert = array(
             'name'=>$this->name,
@@ -160,7 +166,7 @@ class User extends Api {
         return $id;
     }
 
-        /**
+    /**
      * 根据名字获取id
      * @desc 根据名字获取id
      * @param string name 要获取的id的名字
@@ -232,7 +238,15 @@ class User extends Api {
     public function login() {
         $userModel = new UserModel();
 
-        $user = $userModel->getByName($this->name);
+        //判断是邮箱还是用户名
+        $emailPattern = "/^([0-9A-Za-z\\-_\\.]+)@([0-9a-z]+\\.[a-z]{2,3}(\\.[a-z]{2})?)$/i";
+        preg_match($emailPattern, $this->name, $emailValid);
+        $user = "";
+        if(count($emailValid) == 0) { //是用户名
+            $user = $userModel->getByName($this->name);
+        } else { //是邮箱
+            $user = $userModel->getByMail($this->name);
+        }
         if(count($user) == 0)
             return array(
                 "res" => false,
@@ -240,8 +254,7 @@ class User extends Api {
             );
         $user = $user->fetchOne();
         //判断用户名密码是否匹配
-        if ($this->name != $user["name"] 
-            || $this->pass != $user["pass"])
+        if ($this->pass != $user["pass"])
             return array(
                 "res" => false,
                 "msg" => "用户名密码不匹配"
@@ -250,7 +263,6 @@ class User extends Api {
         //新增一条token
         $tokenModel = new TokenDomain();
         $tokenRes = $tokenModel->add($user["id"]);
-
         return $tokenRes;
     }
 

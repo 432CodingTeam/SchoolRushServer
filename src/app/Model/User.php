@@ -31,7 +31,7 @@ class User extends NotORM {
         $id=$model->insert($insert_data);
         return $id;
     }
-    public function GetByName($name)
+    public function getByName($name)
     {
         $model=$this->getORM();
         $data=$model->where("name",$name);
@@ -50,6 +50,12 @@ class User extends NotORM {
         $res = $model->where($key, $value);
         
         return count($res) == 0 ? false : true;
+    }
+
+    public function getByMail($mail) {
+        $model=$this->getORM();
+        $data = $model->where("email",$mail);
+        return $data;
     }
     
     //将base64转为图片 返回布尔
