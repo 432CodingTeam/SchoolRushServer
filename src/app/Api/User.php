@@ -3,6 +3,7 @@ namespace App\Api;
 
 use PhalApi\Api;
 use App\Model\User as UserModel;
+use App\Domain\Token as TokenDomain;
 use App\Common\Upload;
 /**
  * 用户接口类
@@ -46,10 +47,16 @@ class User extends Api {
                 'vice'=>array('name'=>"vice"),
                 'avatar'=>array('name'=>"avatar"),
             ),
-            'getIdByName'=>array(
+            'getByName'=>array(
                 'name'=>array('name'=>'name'),
             ),
-                
+            "login" => array(
+                "name" => array("name" => "name"),
+                "pass" => array("name" => "pass"),
+            ),
+            "logout" => array(
+                "name" => array("name" => "name"),
+            ),
         );
 	}
 	
@@ -160,10 +167,10 @@ class User extends Api {
      * @return int id 该名字对应的id
      */
 
-    public function getIdByName()
+    public function getByName()
     {
-       $model = new UserModel();
-       $data = $model->GetIdByName($this->name);
+        $model = new UserModel();
+        $data = $model->getByName($this->name);
 
        return $data;
     }
@@ -214,4 +221,61 @@ class User extends Api {
         return array("res"=>$id);
     }
 
+    /**
+     * 用户登陆
+     * 
+     * @param string name 用户名
+     * @param string pass 用户密码
+     * 
+     * @return bool 成功信息 成功之后会返回token信息
+     */
+    public function login() {
+        $userModel = new UserModel();
+
+        $user = $userModel->getByName($this->name);
+        if(count($user) == 0)
+            return array(
+                "res" => false,
+                "msg" => "没有此用户"
+            );
+        $user = $user->fetchOne();
+        //判断用户名密码是否匹配
+        if ($this->name != $user["name"] 
+            || $this->pass != $user["pass"])
+            return array(
+                "res" => false,
+                "msg" => "用户名密码不匹配"
+            );
+        
+        //新增一条token
+        $tokenModel = new TokenDomain();
+        $tokenRes = $tokenModel->add($user["id"]);
+
+        return $tokenRes;
+    }
+
+    /**
+     * 用户登出
+     * 
+     * @param string name 用户名
+     * 
+     * @return bool 删除成功 1
+     */
+    public function logout() {
+        $userModel = new UserModel();
+
+        $user = $userModel->getByName($this->name);
+        if(count($user) == 0)
+            return array(
+                "res" => false,
+                "msg" => "没有此用户"
+            );
+        $user = $user->fetchOne();
+        
+        //删除token
+        $tokenModel = new TokenDomain();
+        $tokenRes = $tokenModel->deleteByUid($user["id"]);
+
+        return $tokenRes;
+    }
 }
