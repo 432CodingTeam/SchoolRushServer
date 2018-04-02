@@ -9,11 +9,7 @@ use App\Model\Usertoq as UsertoqModel;
  * @author: dogstar <chanzonghuang@gmail.com> 2014-10-04
  */
 
-<<<<<<< HEAD:src/app/Api/Usertoq.php
-class UsertoqModel extends Api {
-=======
 class Usertoq extends Api {
->>>>>>> 384e669305b070625ea3bf11c86cfe34b2f78b66:src/app/Api/Usertoq.php
 
 	public function getRules() {
         return array(

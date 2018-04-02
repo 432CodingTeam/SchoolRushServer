@@ -3,9 +3,17 @@ namespace App\Api;
 
 use PhalApi\Api;
 use App\Model\User as UserModel;
+<<<<<<< HEAD
 use App\Model\Question as QuestionModel;
 use App\Model\Usertoq as UsertoqModel;
 use App\Model\Major as MajorModel;
+=======
+use App\Model\Campus as CampusModel;
+use App\Model\Major as MajorModel;
+use App\Domain\Token as TokenDomain;
+use App\Common\Upload;
+use App\Common\GD;
+>>>>>>> 5855a21cc3d4ea05cf9f2ba18c3015185832cf3a
 /**
  * 用户接口类
  *
@@ -28,6 +36,7 @@ class User extends Api {
                 'campusID'=>array('name'=>"campusID"),
                 'major'=>array('name'=>"major"),
                 'vice'=>array('name'=>"vice"),
+                'avatar'=>array('name'=>"avatar"),
             ),
             'getById' => array(
                 'id' => array("name" => "id")
@@ -45,10 +54,12 @@ class User extends Api {
                 'campusID'=>array('name'=>"campusID"),
                 'major'=>array('name'=>"major"),
                 'vice'=>array('name'=>"vice"),
+                'avatar'=>array('name'=>"avatar"),
             ),
-            'getIdByName'=>array(
+            'getByName'=>array(
                 'name'=>array('name'=>'name'),
             ),
+<<<<<<< HEAD
              'getGoodAtRank'=>array(
                  'uid'=>array('name'=>'uid'),
              ),  
@@ -56,6 +67,15 @@ class User extends Api {
                  'num'=>array('name'=>'num'),
                  'uid'=>array('name'=>'uid'),
              ),
+=======
+            "login" => array(
+                "name" => array("name" => "name"),
+                "pass" => array("name" => "pass"),
+            ),
+            "logout" => array(
+                "name" => array("name" => "name"),
+            ),
+>>>>>>> 5855a21cc3d4ea05cf9f2ba18c3015185832cf3a
         );
 	}
 	
@@ -96,8 +116,21 @@ class User extends Api {
      */
 
     public function getById() {
-        $model = new UserModel();
-        $data = $model->getById($this->id);
+        $userModel = new UserModel();
+        $campusModel = new CampusModel();
+        $majorModel = new MajorModel();
+
+        $data = $userModel->getById($this->id);
+        $campusId = $data["campusID"];
+        $majorId = $data["majorID"];
+        
+        $majorName = $majorModel->getById($majorId);
+        $majorName = $majorName["name"];
+        $data["majorName"] = $majorName;
+
+        $campusName = $campusModel->getById($campusId);
+        $campusName = $campusName["name"];
+        $data["campusName"] = $campusName;
 
         return $data;
     }
@@ -117,20 +150,41 @@ class User extends Api {
     }
 
     /**
-     * 增加用户
+     * 增加用户 => 用户注册
      * @desc 增加用户信息 
-     * @param string name 增加的用户名称
-     * @param string pass 密码
+     * @param string name 必须 增加的用户名称
+     * @param string pass 必须 密码
      * @param int identify 身份
-     * @param string email email
+     * @param string email 必须 email
      * @param string tel 电话
      * @param int campusID 所在学校ID
      * @param int major 所在专业ID
      * @param int vice 副专业ID
-     * @return array id 增加的用户Id
+     * @return array id 增加的用户Id false 表示用户名重复
      */
 
     public function add() {
+        $model = new UserModel();
+        
+        //对用户名查重
+        $isNameRepeat = $model->isRepeat("name", $this->name);
+        $isMailRepeat = $model->isRepeat("email", $this->email);
+
+        if($isNameRepeat)
+            return array(
+                "res" => false,
+                "error" => "用户名重复"
+            );
+        if($isMailRepeat)
+        return array(
+            "res" => false,
+            "error" => "邮箱重复"
+        );
+
+        if($this->identify == NULL)
+            $this->identify = 2;
+        
+            
         $insert = array(
             'name'=>$this->name,
             'pass'=>$this->pass,
@@ -138,32 +192,81 @@ class User extends Api {
             'email'=>$this->email,
             'tel'=>$this->tel,
             'campusID'=>$this->campusID,
-            'major'=>$this->major,
+            'majorID'=>$this->major,
             'vice'=>$this->vice,
+            'avatar'=> "",  //头像地址先留空 后面上传之后更新
         );
+        
+        $res = $model->add($insert);
+        
+        //生成随机头像并获取头像外链 更新用户头像外链
+        $GD = new GD();
+        $avatarBase64 = $GD->getUserDefaultAvatarRandom();
+        $this->avatar = $GD->base64Upload($avatarBase64, $res["id"]);
+        $data = array("id" => $res["id"], "avatar" => $this->avatar);
+        $model->updateById($res["id"], $data);
 
-        $model = new UserModel();
-
-        $id = $model->add($insert);
-
-        return $id;
+        //在返回的数据中添加一条token
+        $tokenModel = new TokenDomain();
+        $tokenRes = $tokenModel->add($res["id"]);
+        $res["token"] = $tokenRes["token"];
+        $res["avatar"] = $this->avatar; //更新头像地址
+        return $res;
     }
 
-        /**
+    /**
      * 根据名字获取id
      * @desc 根据名字获取id
      * @param string name 要获取的id的名字
      * @return int id 该名字对应的id
      */
 
-    public function getIdByName()
+    public function getByName()
     {
+<<<<<<< HEAD
        $model = new UserModel();
        $data = $model->getIdByName($this->name);
+=======
+        $model = new UserModel();
+        $data = $model->getByName($this->name);
+>>>>>>> 5855a21cc3d4ea05cf9f2ba18c3015185832cf3a
 
-       return $data;
+        return $data;
     }
+
+    /**
+     * 根据ID更新用户信息
+     * @param id 用户id
+     * @param name 用户名
+     * @param pass 用户密码
+     * @param identify 用户身份
+     * @param email 用户邮箱
+     * @param tel 用户电话
+     * @param campusID 用户学校ID
+     * @param major 用户专业ID
+     * @param vice 用户兴趣专业ID
+     * @param avatar base64编码的图片 将会存储为图片并保存到七牛云，最后将图片外链存到数据库中
+     * 
+     * @return res 1: 有更改 0:无更改 false: 更新失败
+     */
     public function updateById() {
+        $model = new UserModel();
+
+        $base64 = $this->avatar;
+        if(substr($base64, 0, 4) == "data") {
+            //有新传入的base64的图片
+
+            $saveRes = $model->base64toImg($base64, $this->id);
+            if(!$saveRes)
+                return array("res"=>false, "error"=>"保存本地图片失败");
+            //上传到七牛云 将avatar设置为外链地址
+            $upload = new Upload();
+            $upRes = $upload->uploadToQNY($saveRes["filePath"],$saveRes["fileName"]);
+            if(is_array($upRes))
+                return array("res"=>false, "msg"=>"图片上传失败", "error"=>$upRes["error"]);
+            $this->avatar = $upRes;
+        }
+
         $data = array(
             'id'=>$this->id,
             'name'=>$this->name,
@@ -172,13 +275,64 @@ class User extends Api {
             'email'=>$this->email,
             'tel'=>$this->tel,
             'campusID'=>$this->campusID,
-            'major'=>$this->major,
+            'majorID'=>$this->major,
             'vice'=>$this->vice,
+            'avatar'=>$this->avatar,
         );
 
-        $model = new UserModel();
+        foreach($data as $key => $val) {
+            if($val == NULL){
+                //如果该参数没有传的话 就从data中删除此属性
+                echo $key."is NULL";
+                $keys = array_keys($data);
+                $index = array_search($key, $keys);
 
-        return $model->updateById($this->id,$data);
+                array_splice($data, $index, 1);
+            }
+        }
+        //TODO: 可能会因为邮箱重复而失败 待解决
+
+        $id = $model->updateById($this->id,$data);
+        return array("res"=>$id);
+    }
+
+    /**
+     * 用户登陆
+     * 
+     * @param string name 用户名
+     * @param string pass 用户密码
+     * 
+     * @return bool 成功信息 成功之后会返回token信息
+     */
+    public function login() {
+        $userModel = new UserModel();
+
+        //判断是邮箱还是用户名
+        $emailPattern = "/^([0-9A-Za-z\\-_\\.]+)@([0-9a-z]+\\.[a-z]{2,3}(\\.[a-z]{2})?)$/i";
+        preg_match($emailPattern, $this->name, $emailValid);
+        $user = "";
+        if(count($emailValid) == 0) { //是用户名
+            $user = $userModel->getByName($this->name);
+        } else { //是邮箱
+            $user = $userModel->getByMail($this->name);
+        }
+        if(count($user) == 0)
+            return array(
+                "res" => false,
+                "msg" => "没有此用户"
+            );
+        $user = $user->fetchOne();
+        //判断用户名密码是否匹配
+        if ($this->pass != $user["pass"])
+            return array(
+                "res" => false,
+                "msg" => "用户名密码不匹配"
+            );
+        
+        //新增一条token
+        $tokenModel = new TokenDomain();
+        $tokenRes = $tokenModel->add($user["id"]);
+        return $tokenRes;
     }
     /**
      * 获取用户擅长排行
@@ -226,6 +380,7 @@ class User extends Api {
         return $major;
     }
 
+<<<<<<< HEAD
 
      /**
      * 统计题目专业最多的前几个
@@ -273,5 +428,30 @@ class User extends Api {
         }
         if($this->num<=5) return array_slice($major,0,$this->num);
         else return "num最大为5";
+=======
+    /**
+     * 用户登出
+     * 
+     * @param string name 用户名
+     * 
+     * @return bool 删除成功 1
+     */
+    public function logout() {
+        $userModel = new UserModel();
+
+        $user = $userModel->getByName($this->name);
+        if(count($user) == 0)
+            return array(
+                "res" => false,
+                "msg" => "没有此用户"
+            );
+        $user = $user->fetchOne();
+        
+        //删除token
+        $tokenModel = new TokenDomain();
+        $tokenRes = $tokenModel->deleteByUid($user["id"]);
+
+        return $tokenRes;
+>>>>>>> 5855a21cc3d4ea05cf9f2ba18c3015185832cf3a
     }
 }

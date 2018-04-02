@@ -2,6 +2,7 @@
 namespace App\Api;
 
 use PhalApi\Api;
+use App\Common\GD;
 
 /**
  * 默认接口服务类
@@ -34,5 +35,13 @@ class Site extends Api {
             'version' => PHALAPI_VERSION,
             'time' => $_SERVER['REQUEST_TIME'],
         );
+    }
+
+    public function testGD() {
+        $GD = new GD();
+        $base64 = $GD->getUserDefaultAvatarRandom();
+        $link = $GD->base64Upload($base64);
+
+        return $link;
     }
 }

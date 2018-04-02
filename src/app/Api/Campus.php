@@ -70,8 +70,14 @@ class Campus extends Api {
     public function getAll() {
         $model = new CampusModel();
         $data = $model->getAll();
-
-        return $data;
+        //循环每一行 添加label与value
+        $res = array();
+        while ($row = $data->fetch()) {
+            $row["value"] = $row["id"];
+            $row["label"] = $row["name"];
+            array_push($res, $row);
+        }
+        return $res;
     }
 
     /**
@@ -168,7 +174,7 @@ class Campus extends Api {
         $model = new CampusModel();
         return $model->updateById($this->id, $data);
     }
-    public function GetmembersById()
+    public function getMembersById()
     {
         $model=new CampusModel();
         return $model->getmembersById($this->id);
