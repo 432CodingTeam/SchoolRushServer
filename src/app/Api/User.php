@@ -5,6 +5,7 @@ use PhalApi\Api;
 use App\Model\User as UserModel;
 use App\Model\Question as QuestionModel;
 use App\Model\Usertoq as UsertoqModel;
+use App\Model\Major as MajorModel;
 /**
  * 用户接口类
  *
@@ -51,6 +52,10 @@ class User extends Api {
              'getGoodAtRank'=>array(
                  'uid'=>array('name'=>'uid'),
              ),  
+             'getGoodAtRankTop'=>array(
+                 'num'=>array('name'=>'num'),
+                 'uid'=>array('name'=>'uid'),
+             ),
         );
 	}
 	
@@ -178,13 +183,14 @@ class User extends Api {
     /**
      * 获取用户擅长排行
      * @desc 获取用户擅长的题型排行
-     * @param int id 用户id
+     * @param int uid 用户id
      * @return array arr 用户擅长的题型排行
      */
     public function  getGoodAtRank()
     {
         $model1=new QuestionModel();
         $model2=new UsertoqModel();
+        $model3=new MajorModel();
         $pq=$model2->getPQIdByuid($this->uid);
         $tp=array();
         foreach($pq as $pqs)
@@ -192,22 +198,80 @@ class User extends Api {
             $tp[]=$pqs['id'];
         }
         $model=$model1->getById($tp)->fetchAll();//获取到所有通过的问题信息
-        $arr=array(
-            $arr[0]=array(1,0),
-            $arr[1]=array(2,0),
-            $arr[2]=array(3,0),
-        );
-        $num=array($num[0]=0,$num[1]=0,$num[2]=0,);
-        for($i=0;$i<sizeof($model);$i++)
+        $major=array();
+        $d=0;
+        for($i=0;$i<sizeof($model);$i++)//将题目专业id保存在major数组里，将对应的题目数量保存在num数组里
         {
-            if($model[$i]["type"]==1){ $num[0]++;}
-            else if($model[$i]["type"]==2){$num[1]++;}
-            else {$num[2]++;}
+            for($j=0;$j<sizeof($major);$j++)
+            {
+                if($major[$j]["id"]==$model[$i]["majorID"])
+                {
+                    $num[$j]++;
+                    break;
+                }
+            }
+            if($j==sizeof($major)) 
+            {
+                $major[]["id"]=$model[$i]["majorID"];
+                $num[]=1;
+            }
         }
-        $arr[0][1]=$num[0]/sizeof($model);
-        $arr[1][1]=$num[1]/sizeof($model);
-        $arr[2][1]=$num[2]/sizeof($model);
-        array_multisort($num,SORT_DESC,$arr);
-        return $arr;
+        array_multisort($num,SORT_DESC,$major);//排序
+        for($i=0;$i<sizeof($major);$i++)
+        {
+            $information=$model3->getNameByID($major[$i]["id"])->fetchone();
+            $major[$i]["majorname"]=$information["name"];
+            $major[$i]["percent"]=100*sprintf("%.2f", $num[$i]/sizeof($model));
+        }
+        return $major;
+    }
+
+
+     /**
+     * 统计题目专业最多的前几个
+     * @desc 输入想要获取的数量和用户id，获取通过题目的排行前几个
+     * @param int uid 用户id
+     * @param int num 想要获取的数量
+     * @return array arr 用户擅长的题型排行前几个
+     */
+    public function  getGoodAtRankTop()
+    {
+        $model1=new QuestionModel();
+        $model2=new UsertoqModel();
+        $model3=new MajorModel();
+        $pq=$model2->getPQIdByuid($this->uid);
+        $tp=array();
+        foreach($pq as $pqs)
+        {
+            $tp[]=$pqs['id'];
+        }
+        $model=$model1->getById($tp)->fetchAll();//获取到所有通过的问题信息
+        $major=array();
+        $d=0;
+        for($i=0;$i<sizeof($model);$i++)//将题目专业id保存在major数组里，将对应的题目数量保存在num数组里
+        {
+            for($j=0;$j<sizeof($major);$j++)
+            {
+                if($major[$j]["id"]==$model[$i]["majorID"])
+                {
+                    $num[$j]++;
+                    break;
+                }
+            }
+            if($j==sizeof($major)) 
+            {
+                $major[]["id"]=$model[$i]["majorID"];
+                $num[]=1;
+            }
+        }
+        array_multisort($num,SORT_DESC,$major);//排序
+        for($i=0;$i<sizeof($major);$i++)
+        {
+            $information=$model3->getNameByID($major[$i]["id"])->fetchone();
+            $major[$i]["majorname"]=$information["name"];
+            $major[$i]["percent"]=100*sprintf("%.2f", $num[$i]/sizeof($model));
+        }
+        if($this->num<=5) return array_slice($major,0,$this->num);
+        else return "num最大为5";
     }
 }

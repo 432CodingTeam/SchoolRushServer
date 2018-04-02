@@ -43,4 +43,11 @@ class Major extends NotORM {
 
         return $model->where("id", $id)->update($data);
     }
+    public function getNameByID($id)
+    {
+        $model=$this->getORM();
+        $data=$model->where("id",$id);
+        //var_dump($data);
+        return $data;
+    }  
 }
