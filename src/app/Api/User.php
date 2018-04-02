@@ -118,12 +118,12 @@ class User extends Api {
     }
 
     /**
-     * 增加用户
+     * 增加用户 => 用户注册
      * @desc 增加用户信息 
-     * @param string name 增加的用户名称
-     * @param string pass 密码
+     * @param string name 必须 增加的用户名称
+     * @param string pass 必须 密码
      * @param int identify 身份
-     * @param string email email
+     * @param string email 必须 email
      * @param string tel 电话
      * @param int campusID 所在学校ID
      * @param int major 所在专业ID
@@ -161,9 +161,13 @@ class User extends Api {
             'avatar'=> "",  //头像地址先留空 后面上传之后更新
         );
         
-        $id = $model->add($insert);
+        $res = $model->add($insert);
 
-        return $id;
+        //在返回的数据中添加一条token
+        $tokenModel = new TokenDomain();
+        $tokenRes = $tokenModel->add($res["id"]);
+        $res["token"] = $tokenRes["token"];
+        return $res;
     }
 
     /**
