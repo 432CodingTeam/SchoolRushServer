@@ -20,6 +20,7 @@ class Campus extends NotORM {
         $model = $this->getORM();
 
         $data = $model->where("id",$id);
+        $data = $data->fetchOne();
         return $data;
     }
 

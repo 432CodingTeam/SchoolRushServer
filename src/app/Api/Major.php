@@ -63,8 +63,14 @@ class Major extends Api {
     public function getAll() {
         $model = new MajorModel();
         $data = $model->getAll();
-
-        return $data;
+        //循环每一行 添加label与value
+        $res = array();
+        while ($row = $data->fetch()) {
+            $row["value"] = $row["id"];
+            $row["label"] = $row["name"];
+            array_push($res, $row);
+        }
+        return $res;
     }
 
     /**

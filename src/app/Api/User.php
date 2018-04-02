@@ -3,6 +3,8 @@ namespace App\Api;
 
 use PhalApi\Api;
 use App\Model\User as UserModel;
+use App\Model\Campus as CampusModel;
+use App\Model\Major as MajorModel;
 use App\Domain\Token as TokenDomain;
 use App\Common\Upload;
 /**
@@ -97,8 +99,21 @@ class User extends Api {
      */
 
     public function getById() {
-        $model = new UserModel();
-        $data = $model->getById($this->id);
+        $userModel = new UserModel();
+        $campusModel = new CampusModel();
+        $majorModel = new MajorModel();
+
+        $data = $userModel->getById($this->id);
+        $campusId = $data["campusID"];
+        $majorId = $data["majorID"];
+        
+        $majorName = $majorModel->getById($majorId);
+        $majorName = $majorName["name"];
+        $data["majorName"] = $majorName;
+
+        $campusName = $campusModel->getById($campusId);
+        $campusName = $campusName["name"];
+        $data["campusName"] = $campusName;
 
         return $data;
     }
@@ -148,6 +163,9 @@ class User extends Api {
             "res" => false,
             "error" => "邮箱重复"
         );
+
+        if($this->identify == NULL)
+            $this->identify = 2;
         
         $insert = array(
             'name'=>$this->name,

@@ -23,7 +23,7 @@ class Token {
         $data = array(
             "token" => $token,
             "uid" => $uid,
-            "expiretime" => date("Y-m-d H:i:s", strtotime("+20 minutes")), //token有效期为20分钟
+            "expiretime" => date("Y-m-d H:i:s", strtotime("+2 hour")), //token有效期为20分钟
         );
 
         return $tokenModel->add($data);
@@ -47,7 +47,7 @@ class Token {
         $token = $token->fetchOne();
 
         $data = array(
-            "expiretime" => date("Y-m-d H:i:s", strtotime("+20 minutes")),
+            "expiretime" => date("Y-m-d H:i:s", strtotime("+2 hour")),
         );
 
         return $tokenModel->updateById($token["id"], $data);
