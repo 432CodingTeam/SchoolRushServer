@@ -3,17 +3,13 @@ namespace App\Api;
 
 use PhalApi\Api;
 use App\Model\User as UserModel;
-<<<<<<< HEAD
 use App\Model\Question as QuestionModel;
 use App\Model\Usertoq as UsertoqModel;
-use App\Model\Major as MajorModel;
-=======
 use App\Model\Campus as CampusModel;
 use App\Model\Major as MajorModel;
 use App\Domain\Token as TokenDomain;
 use App\Common\Upload;
 use App\Common\GD;
->>>>>>> 5855a21cc3d4ea05cf9f2ba18c3015185832cf3a
 /**
  * 用户接口类
  *
@@ -59,7 +55,6 @@ class User extends Api {
             'getByName'=>array(
                 'name'=>array('name'=>'name'),
             ),
-<<<<<<< HEAD
              'getGoodAtRank'=>array(
                  'uid'=>array('name'=>'uid'),
              ),  
@@ -67,7 +62,6 @@ class User extends Api {
                  'num'=>array('name'=>'num'),
                  'uid'=>array('name'=>'uid'),
              ),
-=======
             "login" => array(
                 "name" => array("name" => "name"),
                 "pass" => array("name" => "pass"),
@@ -75,7 +69,6 @@ class User extends Api {
             "logout" => array(
                 "name" => array("name" => "name"),
             ),
->>>>>>> 5855a21cc3d4ea05cf9f2ba18c3015185832cf3a
         );
 	}
 	
@@ -223,13 +216,8 @@ class User extends Api {
 
     public function getByName()
     {
-<<<<<<< HEAD
-       $model = new UserModel();
-       $data = $model->getIdByName($this->name);
-=======
         $model = new UserModel();
         $data = $model->getByName($this->name);
->>>>>>> 5855a21cc3d4ea05cf9f2ba18c3015185832cf3a
 
         return $data;
     }
@@ -380,7 +368,6 @@ class User extends Api {
         return $major;
     }
 
-<<<<<<< HEAD
 
      /**
      * 统计题目专业最多的前几个
@@ -426,9 +413,8 @@ class User extends Api {
             $major[$i]["majorname"]=$information["name"];
             $major[$i]["percent"]=100*sprintf("%.2f", $num[$i]/sizeof($model));
         }
-        if($this->num<=5) return array_slice($major,0,$this->num);
-        else return "num最大为5";
-=======
+        return array_slice($major,0,$this->num);
+    }
     /**
      * 用户登出
      * 
@@ -452,6 +438,5 @@ class User extends Api {
         $tokenRes = $tokenModel->deleteByUid($user["id"]);
 
         return $tokenRes;
->>>>>>> 5855a21cc3d4ea05cf9f2ba18c3015185832cf3a
     }
 }

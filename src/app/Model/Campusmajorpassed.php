@@ -35,5 +35,58 @@ class Campusmajorpassed extends NotORM {
         $model = $this->getORM();
         return $model->where("id",$id)->update($data);
     }
+    public function getBymajorID($majorID)
+    {
+        $model=$this->getORM();
+        return $model->where("majorID",$majorID);
+    }
+    public function getadayBymajorID($majorID)
+
+    {
+        $model=$this->getORM();
+        $model1=$model->where("majorID",$majorID)->fetchAll();
+        $arr=array();
+        $num=array();
+        for($i=0;$i<sizeof($model1);$i++)
+        {
+            $arr[$i]["campusID"]=$model1[$i]['campusID'];
+            $arr[$i]["aday"]=$model1[$i]['aday'];
+            $num[$i]=$model1[$i]['aday'];
+        }
+        array_multisort($num,SORT_DESC,$arr);
+        return $arr;
+    }
+    public function getaweekBymajorID($majorID)
+
+    {
+        $model=$this->getORM();
+        $model1=$model->where("majorID",$majorID)->fetchAll();
+        $arr=array();
+        $num=array();
+        for($i=0;$i<sizeof($model1);$i++)
+        {
+            $arr[$i]["campusID"]=$model1[$i]['campusID'];
+            $arr[$i]["aweek"]=$model1[$i]['aweek'];
+            $num[$i]=$model1[$i]['aweek'];
+        }
+        array_multisort($num,SORT_DESC,$arr);
+        return $arr;
+    }
+    public function getamonthBymajorID($majorID)
+
+    {
+        $model=$this->getORM();
+        $model1=$model->where("majorID",$majorID)->fetchAll();
+        $arr=array();
+        $num=array();
+        for($i=0;$i<sizeof($model1);$i++)
+        {
+            $arr[$i]["campusID"]=$model1[$i]['campusID'];
+            $arr[$i]["amonth"]=$model1[$i]['amonth'];
+            $num[$i]=$model1[$i]['amonth'];
+        }
+        array_multisort($num,SORT_DESC,$arr);
+        return $arr;
+    }
     //添加
 }

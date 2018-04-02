@@ -24,10 +24,17 @@ class Campus extends NotORM {
         return $data;
     }
 
-    public function GetIdByName($name)
+    public function getIdByName($name)
     {
         $model=$this->getORM();
         $data=$model->where("name",$name);
+        //var_dump($data);
+        return $data;
+    }
+    public function getInforByID($id)
+    {
+        $model=$this->getORM();
+        $data=$model->where("id",$id)->fetchOne();
         //var_dump($data);
         return $data;
     }

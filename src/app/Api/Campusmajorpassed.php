@@ -3,6 +3,7 @@ namespace App\Api;
 
 use PhalApi\Api;
 use App\Model\Campusmajorpassed as CampusmajorpassedModel;
+use App\Model\Campus as CampusModel;
 /**
  * 学校-分类-通过数关系接口类
  *
@@ -42,6 +43,15 @@ class Campusmajorpassed extends Api {
                 'lastday'=>array('name'=>'lastday'),
                 'lastweek'=>array('name'=>'lastweek'),
                 'lastmonth'=>array('name'=>'lastmonth'),
+            ),
+            'dayRankList'=>array(
+                'majorID'=>array('name'=>'majorID'),
+            ),
+            'weekRankList'=>array(
+                'majorID'=>array('name'=>'majorID'),
+            ),
+            'monthRankList'=>array(
+                'majorID'=>array('name'=>'majorID'),
             ),
         );
 	}
@@ -155,5 +165,66 @@ class Campusmajorpassed extends Api {
 
         $model = new CampusmajorpassedModel();
         return $model->updateById($this->id, $data);
+    }
+    /**
+     * 日排行榜
+     * @desc 获取不同题目分类中，不同学校做题数排行榜
+     * @param int majorID 题目专业分类
+     * @return array model 排行榜
+     */
+    public function dayRankList()
+    {
+        $model1=new CampusmajorpassedModel();
+        $model2=new CampusModel();
+        $model=$model1->getadayBymajorID($this->majorID);//获取该题目分类中每个学校id对应的做题数量
+        
+        for($i=0;$i<sizeof($model);$i++)//在信息中加上学校名称
+        {
+            $id=$model[$i]["campusID"];
+            $m=$model2->getInforByID($id);
+            $model[$i]["name"]=$m["name"];
+        }
+        
+        return $model;
+    }
+      /**
+     * 周排行榜
+     * @desc 获取不同题目分类中，不同学校做题数排行榜
+     * @param int majorID 题目专业分类
+     * @return array model 排行榜
+     */
+    public function weekRankList()
+    {
+        $model1=new CampusmajorpassedModel();
+        $model2=new CampusModel();
+        $model=$model1->getaweekBymajorID($this->majorID);
+        
+        for($i=0;$i<sizeof($model);$i++)
+        {
+            $id=$model[$i]["campusID"];
+            $m=$model2->getInforByID($id);
+            $model[$i]["name"]=$m["name"];
+        }
+        return $model;
+    }
+      /**
+     * 月排行榜
+     * @desc 获取不同题目分类中，不同学校做题数排行榜
+     * @param int majorID 题目专业分类
+     * @return array model 排行榜
+     */
+    public function monthRankList()
+    {
+        $model1=new CampusmajorpassedModel();
+        $model2=new CampusModel();
+        $model=$model1->getamonthBymajorID($this->majorID);
+        
+        for($i=0;$i<sizeof($model);$i++)
+        {
+            $id=$model[$i]["campusID"];
+            $m=$model2->getInforByID($id);
+            $model[$i]["name"]=$m["name"];
+        }
+        return $model;
     }
 }
