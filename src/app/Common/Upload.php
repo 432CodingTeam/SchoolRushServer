@@ -7,12 +7,12 @@ use Qiniu\Storage\UploadManager;
 use Qiniu\Cdn\CdnManager;
 
 class Upload {
-    //上传到七牛云 返回外链地址
     private $access_key = "CovGkjm--Qq7QrozUQ04Ds874KnmETGRzx6OfDOL";
     private $secret_key = "FEC2IJQ1WsWJpQTFHLtp7ODwk4WKn9ppkqrEL0f1";
     private $bucket_name = "schoolrush";
     private $cloudDomain = "http://p6a87gauo.bkt.clouddn.com/";
-
+    
+    //上传到七牛云 返回外链地址
     public function uploadToQNY($filePath, $imgName) {
         $Auth = new Auth($this->access_key, $this->secret_key);
 
@@ -32,7 +32,7 @@ class Upload {
         $url = $this->cloudDomain.$ret["key"];
         $this->refreshURL($Auth,$url); //刷新外链
 
-        return $url;  //获取上传之后的外链
+        return $url;  //返回上传之后的外链
     }
 
     //刷新七牛云外链

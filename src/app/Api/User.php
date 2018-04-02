@@ -7,6 +7,7 @@ use App\Model\Campus as CampusModel;
 use App\Model\Major as MajorModel;
 use App\Domain\Token as TokenDomain;
 use App\Common\Upload;
+use App\Common\GD;
 /**
  * 用户接口类
  *
@@ -167,6 +168,7 @@ class User extends Api {
         if($this->identify == NULL)
             $this->identify = 2;
         
+            
         $insert = array(
             'name'=>$this->name,
             'pass'=>$this->pass,
@@ -174,17 +176,25 @@ class User extends Api {
             'email'=>$this->email,
             'tel'=>$this->tel,
             'campusID'=>$this->campusID,
-            'major'=>$this->major,
+            'majorID'=>$this->major,
             'vice'=>$this->vice,
             'avatar'=> "",  //头像地址先留空 后面上传之后更新
         );
         
         $res = $model->add($insert);
+        
+        //生成随机头像并获取头像外链 更新用户头像外链
+        $GD = new GD();
+        $avatarBase64 = $GD->getUserDefaultAvatarRandom();
+        $this->avatar = $GD->base64Upload($avatarBase64, $res["id"]);
+        $data = array("id" => $res["id"], "avatar" => $this->avatar);
+        $model->updateById($res["id"], $data);
 
         //在返回的数据中添加一条token
         $tokenModel = new TokenDomain();
         $tokenRes = $tokenModel->add($res["id"]);
         $res["token"] = $tokenRes["token"];
+        $res["avatar"] = $this->avatar; //更新头像地址
         return $res;
     }
 
@@ -222,15 +232,20 @@ class User extends Api {
         $model = new UserModel();
 
         $base64 = $this->avatar;
-        $saveRes = $model->base64toImg($base64, $this->id);
-        if(!$saveRes) 
-            return array("res"=>false, "error"=>"保存本地图片失败");
-        //上传到七牛云 将avatar设置为外链地址
-        $upload = new Upload();
-        $upRes = $upload->uploadToQNY($saveRes["filePath"],$saveRes["fileName"]);
-        if(array_key_exists("res", $upRes))
-            return array("res"=>false, "msg"=>"图片上传失败", "error"=>$upRes["error"]);
-        $this->avatar = $upRes;
+        if(substr($base64, 0, 4) == "data") {
+            //有新传入的base64的图片
+
+            $saveRes = $model->base64toImg($base64, $this->id);
+            if(!$saveRes)
+                return array("res"=>false, "error"=>"保存本地图片失败");
+            //上传到七牛云 将avatar设置为外链地址
+            $upload = new Upload();
+            $upRes = $upload->uploadToQNY($saveRes["filePath"],$saveRes["fileName"]);
+            if(is_array($upRes))
+                return array("res"=>false, "msg"=>"图片上传失败", "error"=>$upRes["error"]);
+            $this->avatar = $upRes;
+        }
+
         $data = array(
             'id'=>$this->id,
             'name'=>$this->name,
@@ -239,11 +254,22 @@ class User extends Api {
             'email'=>$this->email,
             'tel'=>$this->tel,
             'campusID'=>$this->campusID,
-            'major'=>$this->major,
+            'majorID'=>$this->major,
             'vice'=>$this->vice,
             'avatar'=>$this->avatar,
         );
 
+        foreach($data as $key => $val) {
+            if($val == NULL){
+                //如果该参数没有传的话 就从data中删除此属性
+                echo $key."is NULL";
+                $keys = array_keys($data);
+                $index = array_search($key, $keys);
+
+                array_splice($data, $index, 1);
+            }
+        }
+        //TODO: 可能会因为邮箱重复而失败 待解决
 
         $id = $model->updateById($this->id,$data);
         return array("res"=>$id);
