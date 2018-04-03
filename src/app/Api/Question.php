@@ -108,6 +108,10 @@ class Question extends Api {
      * 根据id获取
      * @desc 根据id获取问题
      * @param int id 要获取的问题的id
+     * @param int type 问题的类型 1,2,3对应选择，判断，填空题
+     * @param string q 问题的内容
+     * @param string correct 正确答案
+     * @param string toAnswer 给答题者的话
      * @return data data 该id指定的问题
      */
 
@@ -126,8 +130,7 @@ class Question extends Api {
                 $arr[$rand] = $temp;    
             }
             for($i=0;$i<count($arr);$i++){
-                if($correct==$arr[$i]){
-                    
+                if($correct==$arr[$i]){               
                     break;
                 }
             }
