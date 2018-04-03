@@ -44,7 +44,6 @@ class Campusmajorpassed extends Api {
                 'lastweek'=>array('name'=>'lastweek'),
                 'lastmonth'=>array('name'=>'lastmonth'),
             ),
-<<<<<<< Updated upstream
             'dayRankList'=>array(
                 'majorID'=>array('name'=>'majorID'),
             ),
@@ -54,9 +53,6 @@ class Campusmajorpassed extends Api {
             'monthRankList'=>array(
                 'majorID'=>array('name'=>'majorID'),
             ),
-=======
-
->>>>>>> Stashed changes
         );
 	}
 	
