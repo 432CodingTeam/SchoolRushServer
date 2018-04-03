@@ -20,6 +20,7 @@ class Question extends NotORM {
         $model = $this->getORM();
 
         $data = $model->where("id",$id);
+        $data = $data->fetchOne();
         return $data;
     }
     public function deleteById($id) {

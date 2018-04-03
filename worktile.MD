@@ -10,7 +10,7 @@ TODO: 获取学校成员数 //李
 TODO: 获取排行榜 日榜 周榜 月榜
 
 TODO: 重写question.getById() 根据不同的问题类型返回不同的结果
-选择题：
+选择题：(type==1)
 {
     content: "问题内容"
     options: [  //将ABCD打乱放在这个数组中
@@ -30,13 +30,13 @@ TODO: 重写question.getById() 根据不同的问题类型返回不同的结果
     correct: "A", //假设正确结果是options[0] 那么这个属性的值就是"A" 
     toAnswer: "还是原来里面toAnswer的值"
 }
-判断题：
+判断题：(type==2)
 {
     content: "问题内容",
     correct: "T", //正确答案  假设正确答案为T
     toAnswer: "还是原来里面toAnswer的值"
 }
-填空题：
+填空题：(type==3)
 //将问题从"____"隔开
 {
     pre: "空格之前的内容",

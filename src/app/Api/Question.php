@@ -114,8 +114,59 @@ class Question extends Api {
     public function getById() {
         $model = new QuestionModel();
         $data = $model->getById($this->id);
+        if($data["type"]==1){
+            $arr = array($data["A"],$data["B"],$data["C"],$data["D"]);
+            $options = $arr;
+            $correct = $data[$data["correct"]];
+            //随机打乱数组
+            for($i=0;$i<count($arr);$i++){
+                $temp = $arr[$i];
+                $rand = rand(0,3);
+                $arr[$i] = $arr[$rand];
+                $arr[$rand] = $temp;    
+            }
+            for($i=0;$i<count($arr);$i++){
+                if($correct==$arr[$i]){
+                    
+                    break;
+                }
+            }
+            $opt = array("A","B","C","D");
 
-        return $data;
+            $res = array(
+                "id"=>$data["id"],
+                "q"=>$data["q"],
+                "arr"=>array(
+                    "A"=>$arr[0],
+                    "B"=>$arr[1],
+                    "C"=>$arr[2],
+                    "D"=>$arr[3],
+                ),
+                "correct"=>$opt[$i],
+                "toAnswer"=>$data["toAnswer"],
+            );
+        }
+        else if($data["type"]==2){
+            $res = array(
+                "id"=>$data["id"],
+                "q"=>$data["q"],
+                "correct"=>$data["correct"],
+                "toAnswer"=>$data["toAnswer"],
+            );
+        }
+        else if($data["type"]==3){
+            $arr =  explode("____",$data["q"]);
+            $res = array(
+                "id"=>$data["id"],
+                "q"=>array(
+                    "pre"=>$arr[0],
+                    "suf"=>$arr[1],
+                ),
+                "correct"=>$data["correct"],
+                "toAnswer"=>$data["toAnswer"],
+            );
+        }
+        return $res;
     }
 
     /**
