@@ -44,6 +44,7 @@ class Campusmajorpassed extends Api {
                 'lastweek'=>array('name'=>'lastweek'),
                 'lastmonth'=>array('name'=>'lastmonth'),
             ),
+<<<<<<< Updated upstream
             'dayRankList'=>array(
                 'majorID'=>array('name'=>'majorID'),
             ),
@@ -53,6 +54,9 @@ class Campusmajorpassed extends Api {
             'monthRankList'=>array(
                 'majorID'=>array('name'=>'majorID'),
             ),
+=======
+
+>>>>>>> Stashed changes
         );
 	}
 	
@@ -140,8 +144,6 @@ class Campusmajorpassed extends Api {
         return $id;
     }
 
-
-
     /**
      * 更新学校通过数
      * @desc 更新学校通过数
@@ -166,6 +168,7 @@ class Campusmajorpassed extends Api {
         $model = new CampusmajorpassedModel();
         return $model->updateById($this->id, $data);
     }
+<<<<<<< Updated upstream
     /**
      * 日排行榜
      * @desc 获取不同题目分类中，不同学校做题数排行榜
@@ -227,4 +230,7 @@ class Campusmajorpassed extends Api {
         }
         return $model;
     }
+=======
+
+>>>>>>> Stashed changes
 }

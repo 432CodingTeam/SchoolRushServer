@@ -32,11 +32,7 @@ class User extends NotORM {
         $id=$model->insert($insert_data);
         return $id;
     }
-<<<<<<< HEAD
-    public function getIdByName($name)
-=======
     public function getByName($name)
->>>>>>> 5855a21cc3d4ea05cf9f2ba18c3015185832cf3a
     {
         $model=$this->getORM();
         $data=$model->where("name",$name);

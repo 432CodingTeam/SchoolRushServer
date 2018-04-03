@@ -5,6 +5,10 @@ use PhalApi\Api;
 use App\Model\User as UserModel;
 use App\Model\Question as QuestionModel;
 use App\Model\Usertoq as UsertoqModel;
+<<<<<<< Updated upstream
+=======
+use App\Model\Major as MajorModel;
+>>>>>>> Stashed changes
 use App\Model\Campus as CampusModel;
 use App\Model\Major as MajorModel;
 use App\Domain\Token as TokenDomain;
@@ -412,8 +416,13 @@ class User extends Api {
             $major[$i]["majorname"]=$information["name"];
             $major[$i]["percent"]=100*sprintf("%.2f", $num[$i]/sizeof($model));
         }
+<<<<<<< Updated upstream
         return array_slice($major,0,$this->num);
     }
+=======
+        if($this->num<=5) return array_slice($major,0,$this->num);
+        else return "num最大为5";
+>>>>>>> Stashed changes
     /**
      * 用户登出
      * 
