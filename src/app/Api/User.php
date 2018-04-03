@@ -5,10 +5,7 @@ use PhalApi\Api;
 use App\Model\User as UserModel;
 use App\Model\Question as QuestionModel;
 use App\Model\Usertoq as UsertoqModel;
-<<<<<<< Updated upstream
-=======
 use App\Model\Major as MajorModel;
->>>>>>> Stashed changes
 use App\Model\Campus as CampusModel;
 use App\Model\Major as MajorModel;
 use App\Domain\Token as TokenDomain;
