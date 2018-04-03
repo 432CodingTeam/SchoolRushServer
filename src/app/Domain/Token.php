@@ -17,7 +17,7 @@ class Token {
         $this->deleteByUid($uid);
 
         $user = $userModel->getById($uid);
-        $user = $user[0];
+        $user = $user;
         $token = md5($user["name"] . date("Y-m-d H:m:s"));
 
         $data = array(

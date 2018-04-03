@@ -271,7 +271,6 @@ class User extends Api {
         foreach($data as $key => $val) {
             if($val == NULL){
                 //如果该参数没有传的话 就从data中删除此属性
-                echo $key."is NULL";
                 $keys = array_keys($data);
                 $index = array_search($key, $keys);
 

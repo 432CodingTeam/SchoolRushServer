@@ -8,3 +8,39 @@ TODO: 获取用户待解决问题     //宋
 TODO: 获取用户已经解决的问题 //宋
 TODO: 获取学校成员数 //李
 TODO: 获取排行榜 日榜 周榜 月榜
+
+TODO: 重写question.getById() 根据不同的问题类型返回不同的结果
+选择题：
+{
+    content: "问题内容"
+    options: [  //将ABCD打乱放在这个数组中
+        {
+            content: "选项的内容",
+          },
+          {
+            content: "选项的内容",
+          },
+          {
+            content: "选项的内容",
+          },
+          {
+            content: "选项的内容",
+          },
+    ],
+    correct: "A", //假设正确结果是options[0] 那么这个属性的值就是"A" 
+    toAnswer: "还是原来里面toAnswer的值"
+}
+判断题：
+{
+    content: "问题内容",
+    correct: "T", //正确答案  假设正确答案为T
+    toAnswer: "还是原来里面toAnswer的值"
+}
+填空题：
+//将问题从"____"隔开
+{
+    pre: "空格之前的内容",
+    suf: "空格之后的内容",
+    "correct": "正确答案",
+    toAnswer: "还是原来里面toAnswer的值"
+}
