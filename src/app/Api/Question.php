@@ -4,6 +4,7 @@ namespace App\Api;
 use PhalApi\Api;
 use App\Model\Question as QuestionModel;
 use App\Model\Usertoq as UsertoqModel;
+use App\Model\User as UserModel;
 /**
  * 问题接口类
  *
@@ -30,7 +31,7 @@ class Question extends Api {
                 'challenges' => array('name'=>'challength'),
                 'passed' => array('name'=>'passed'),
                 'levels' => array('name'=>'levels'),
-                'balels' => array('name'=>'balels'),
+                'labels' => array('name'=>'labels'),
             ),
             'getById' => array(
                 'id' => array("name" => "id")
@@ -52,7 +53,7 @@ class Question extends Api {
                 'challenges' => array('name'=>'challenges'),
                 'passed' => array('name'=>'passed'),
                 'levels' => array('name'=>'levels'),
-                'balels' => array('name'=>'balels'),
+                'labels' => array('name'=>'labels'),
                 'toAnswer' => array('name'=>'toAnswer')
             ),
             'getQByuid'=>array(
@@ -205,7 +206,7 @@ class Question extends Api {
      * @param string challenges 挑战人数
      * @param string passed 通过人数
      * @param int levels 问题难度星级
-     * @param int balels 标签，用逗号隔开
+     * @param int labels 标签，用逗号隔开
      * @return int id 增加题目内容
      */
 
@@ -223,7 +224,7 @@ class Question extends Api {
         'challenges'=>$this->challenges,
         'passed'=>$this->passed,
         'levels'=>$this->levels,
-        'balels'=>$this->balels,
+        'labels'=>$this->labels,
         );
 
         $model = new QuestionModel();
@@ -253,7 +254,7 @@ class Question extends Api {
      * @param string challenges 挑战人数
      * @param string passed 通过人数
      * @param int levels 问题难度星级
-     * @param int balels 标签，用逗号隔开
+     * @param int labels 标签，用逗号隔开
      * @return int id 更新题目内容
      */
     public function updateById() {
@@ -270,7 +271,7 @@ class Question extends Api {
             'challenges' => $this->challenges,
             'passed' => $this->passed,
             'levels' => $this->levels,
-            'balels' => $this->balels,
+            'labels' => $this->labels,
             'toAnswer' => $this->toAnswer,
         );
 
@@ -415,6 +416,28 @@ class Question extends Api {
         $start = ($this->page - 1) * $this->num;
         $data =  $model->getByLimit($start, $this->num);
 
-        return $data;
+        $res = array();
+
+        while($row = $data->fetch()) {
+            $uid = $row["id"];
+            //获取用户名 将用户名也添加到获取的数据中
+            $userModel = new UserModel();
+            $user = $userModel->getById($uid);
+            $row["uName"] = $user["name"];
+
+            array_push($res, $row);
+        }
+
+        return $res;
     }
+
+    /**
+     * 获取问题总数
+     */
+    public function getTotalNum() {
+        $model = new QuestionModel();
+        
+        return $model->getTotalNum();
+    }
+
 }

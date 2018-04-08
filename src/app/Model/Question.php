@@ -59,4 +59,10 @@ class Question extends NotORM {
         
         return $data;
     }
+
+    public function getTotalNum() {
+        $model = $this->getORM();
+        
+        return $model->count("id");
+    }
 }
