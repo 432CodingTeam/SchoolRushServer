@@ -225,4 +225,14 @@ class Campusmajorpassed extends Api {
         }
         return $model;
     }
+    /**
+     * 获取表的数据数量
+     * @desc 获取表有多少数据
+     * @return int 该表有多少条数据
+     */
+    public function getCnt(){
+        $model = new CampusmajorpassedModel();
+        $data = $model->getCnt();
+        return count($data);
+    }
 }

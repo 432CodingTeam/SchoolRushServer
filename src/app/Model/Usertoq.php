@@ -83,4 +83,9 @@ class Usertoq extends NotORM {
         $data = $model->where('qid',$qid)->and('status',1);
         return $data;
     }
+    public function getCnt(){
+        $model = $this->getORM();
+        
+        return $model->where("id");
+    }
 }

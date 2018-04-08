@@ -65,4 +65,9 @@ class Question extends NotORM {
         
         return $model->count("id");
     }
+    public function getCnt(){
+        $model = $this->getORM();
+        
+        return $model->where("id");
+    }
 }

@@ -174,10 +174,25 @@ class Campus extends Api {
         $model = new CampusModel();
         return $model->updateById($this->id, $data);
     }
+    /**
+     * 根据id获取成员数
+     * @desc 根据id获取成员数
+     * @return string 该学校成员数
+     */
     public function getMembersById()
     {
         $model=new CampusModel();
         return $model->getmembersById($this->id);
+    }
+    /**
+     * 获取表的数据数量
+     * @desc 获取表有多少数据
+     * @return int 该表有多少条数据
+     */
+    public function getCnt(){
+        $model = new CampusModel();
+        $data = $model->getCnt();
+        return count($data);
     }
 }
 

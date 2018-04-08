@@ -74,4 +74,9 @@ class User extends NotORM {
             return array("filePath"=>$path.$imgName, "fileName"=>$imgName);
         return false;
     }
+    public function getCnt(){
+        $model = $this->getORM();
+        
+        return $model->where("id");
+    }
 }

@@ -48,4 +48,9 @@ class Token extends NotORM {
         $res = $model->where("id",$id)->update($data);
         return $res;
     }
+    public function getCnt(){
+        $model = $this->getORM();
+        
+        return $model->where("id");
+    }
 }

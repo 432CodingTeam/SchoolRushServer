@@ -88,5 +88,9 @@ class Campusmajorpassed extends NotORM {
         array_multisort($num,SORT_DESC,$arr);
         return $arr;
     }
-    //添加
+    public function getCnt(){
+        $model = $this->getORM();
+        
+        return $model->where("id");
+    }
 }

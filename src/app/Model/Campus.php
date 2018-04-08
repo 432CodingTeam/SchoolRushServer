@@ -62,4 +62,9 @@ class Campus extends NotORM {
         $members = $model->where("id",$id)->fetchOne();
         return $members['members'];
     }
+    public function getCnt(){
+        $model = $this->getORM();
+        
+        return $model->where("id");
+    }
 }
