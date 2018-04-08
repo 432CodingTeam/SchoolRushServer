@@ -52,4 +52,10 @@ class Question extends NotORM {
         $data=$model->where("q",$uid);
         return $data;
     }
+    public function getByLimit($start, $num) {
+        $model = $this->getORM();
+        $data = $model->limit($start, $num);
+        
+        return $data;
+    }
 }

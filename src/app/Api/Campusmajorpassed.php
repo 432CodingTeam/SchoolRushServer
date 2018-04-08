@@ -164,7 +164,6 @@ class Campusmajorpassed extends Api {
         $model = new CampusmajorpassedModel();
         return $model->updateById($this->id, $data);
     }
-<<<<<<< Updated upstream
     /**
      * 日排行榜
      * @desc 获取不同题目分类中，不同学校做题数排行榜
@@ -226,7 +225,4 @@ class Campusmajorpassed extends Api {
         }
         return $model;
     }
-=======
-
->>>>>>> Stashed changes
 }

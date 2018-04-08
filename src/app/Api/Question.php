@@ -55,7 +55,6 @@ class Question extends Api {
                 'balels' => array('name'=>'balels'),
                 'toAnswer' => array('name'=>'toAnswer')
             ),
-            
             'getQByuid'=>array(
                 'uid'=>array('name'=>'uid'),
                 'num'=>array('name'=>'num'),
@@ -73,6 +72,10 @@ class Question extends Api {
             'getQByKey'=>array(
                 'key'=>array('name'=>'key'),
             ),
+            'getPage' => array(
+                'page' => array('name' => 'page'),
+                'num' => array('name' => 'num', 'default' => 20),
+            )  
         );
 	}
 	
@@ -343,5 +346,21 @@ class Question extends Api {
        }
        
        return $q;
+    }
+
+    /**
+     * 获取一页数据 默认为20条/页
+     * 
+     * @param page 页数
+     * @param num 可选 多少条每页
+     * 
+     * @return array 返回的一页
+     */
+    public function getPage() {
+        $model = new QuestionModel();
+        $start = ($this->page - 1) * $this->num;
+        $data =  $model->getByLimit($start, $this->num);
+
+        return $data;
     }
 }
