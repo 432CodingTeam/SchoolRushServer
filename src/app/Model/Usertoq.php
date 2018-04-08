@@ -72,9 +72,15 @@ class Usertoq extends NotORM {
         return $model->where('uid',$uid)->and('status',0);
     }
 
-    public function getPassed($id){
+    public function getPassed($uid){
         $model = $this->getORM();
 
-        return $model->where('uid',$id)->and('status',1);
+        return $model->where('uid',$uid)->and('status',1);
+    }
+
+    public function getTopTen($qid){
+        $model = $this->getORM();
+        $data = $model->where('qid',$qid)->and('status',1);
+        return $data;
     }
 }

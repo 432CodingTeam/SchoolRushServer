@@ -41,6 +41,9 @@ class Usertoq extends Api {
             'getPassed' => array(
                 'uid' => array('name' => 'uid'),
             ),
+            'getTopTen' => array(
+                'qid' => array('name' => 'qid'),
+            ),
         );
 	}
 	
@@ -174,5 +177,24 @@ class Usertoq extends Api {
 
           return $model->getPassed($this->uid);
       }
-      //测试merge
+      
+      /**
+      * 获取最新通过问题的前十个用户
+      * @param int qid 题目id
+      * @return array data 最新通过问题的前十个用户id
+      */
+      public function getTopTen(){
+          $model = new UsertoqModel();
+        
+          $data = $model->getTopTen($this->qid);
+          $arr=array();
+          foreach($data as $data){
+            $arr[]=$data['uid'];
+        }
+        $top=array_reverse($arr);
+        for($i=0;$i<10;$i++){
+            $topten[$i] = $top[$i];
+        }
+          return $topten;
+      }
 }

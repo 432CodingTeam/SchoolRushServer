@@ -35,7 +35,6 @@ class Campusmajorpassed extends NotORM {
         $model = $this->getORM();
         return $model->where("id",$id)->update($data);
     }
-<<<<<<< Updated upstream
     public function getBymajorID($majorID)
     {
         $model=$this->getORM();
@@ -90,7 +89,4 @@ class Campusmajorpassed extends NotORM {
         return $arr;
     }
     //添加
-=======
-
->>>>>>> Stashed changes
 }
