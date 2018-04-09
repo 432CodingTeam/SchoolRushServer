@@ -46,4 +46,9 @@ class Group extends NotORM {
         $model = $this->getORM();
         return $model->where("id",$id)->update($data);
     }
+    public function getTotalNum(){
+        $model = $this->getORM();
+
+        return $model->count("id");
+    }
 }

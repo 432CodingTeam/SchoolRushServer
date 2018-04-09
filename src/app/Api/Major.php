@@ -161,4 +161,11 @@ class Major extends Api {
 
         return $model->updateById($this->id,$data);
     }
+    /**
+     * 获取专业总数
+     */
+    public function getTotalNum(){
+        $model = new MajorModel();
+        return $model->getTotalNum();
+    }
 }
