@@ -6,7 +6,6 @@ use App\Model\Usertoq as UsertoqModel;
 /**
  * 用户通过题目关系表接口类
  *
- * @author: dogstar <chanzonghuang@gmail.com> 2014-10-04
  */
 
 class Usertoq extends Api {

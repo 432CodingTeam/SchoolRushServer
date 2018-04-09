@@ -6,7 +6,6 @@ use App\Model\Userliveness as UserlivenessModel;
 /**
  * 用户活跃信息接口类
  *
- * @author: dogstar <chanzonghuang@gmail.com> 2014-10-04
  */
 
 class Userliveness extends Api {
