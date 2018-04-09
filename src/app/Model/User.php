@@ -58,6 +58,12 @@ class User extends NotORM {
         $data = $model->where("email",$mail);
         return $data;
     }
+
+    public function getByLimit($start, $num){
+        $model = $this->getORM();
+
+        return $model->limit($start, $num);
+    }
     
     //将base64转为图片 失败返回false 成功返回文件路径和文件名
     public function base64toImg($base64, $imgName) {

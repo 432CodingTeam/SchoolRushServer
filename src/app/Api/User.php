@@ -68,6 +68,10 @@ class User extends Api {
             "logout" => array(
                 "name" => array("name" => "name"),
             ),
+            "getPage" => array(
+                "page" => array("name" => "page"),
+                "num" => array("name" => "num"), 
+            )
         );
 	}
 	
@@ -88,7 +92,7 @@ class User extends Api {
     }
 
     /**
-     * 获取所有用户
+     * [弃用，请使用getPage逐页获取]获取所有用户
      * @desc 获取所有用户信息
      * @return array data 获取的所有用户信息
      * 
@@ -98,6 +102,21 @@ class User extends Api {
         $data = $model->getAll();
 
         return $data;
+    }
+
+    /**
+     * 获取一页用户
+     * @desc 获取一页用户
+     * @param page 页数
+     * @param num 一页多少
+     * 
+     * @return array 该页用户数据
+     */
+    public function getPage() {
+        $model = new UserModel();
+        $start = ($this->page - 1) * $this->num;
+
+        return $model->getByLimit($start, $this->num);
     }
 
     /**
@@ -418,7 +437,7 @@ class User extends Api {
      * 
      * @param string name 用户名
      * 
-     * @return bool 删除成功 1
+     * @return bool 删除token成功 1
      */
     public function logout() {
         $userModel = new UserModel();
@@ -433,8 +452,6 @@ class User extends Api {
         
         //删除token
         $tokenModel = new TokenDomain();
-        $tokenRes = $tokenModel->deleteByUid($user["id"]);
-
-        return $tokenRes;
+        return $tokenModel->deleteByUid($user["id"]);
     }
 }

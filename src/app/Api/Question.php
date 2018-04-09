@@ -32,6 +32,7 @@ class Question extends Api {
                 'passed' => array('name'=>'passed'),
                 'levels' => array('name'=>'levels'),
                 'labels' => array('name'=>'labels'),
+                'status' => array('name' => 'status'),
             ),
             'getById' => array(
                 'id' => array("name" => "id")
@@ -54,7 +55,8 @@ class Question extends Api {
                 'passed' => array('name'=>'passed'),
                 'levels' => array('name'=>'levels'),
                 'labels' => array('name'=>'labels'),
-                'toAnswer' => array('name'=>'toAnswer')
+                'toAnswer' => array('name'=>'toAnswer'),
+                'status' => array('name' => 'status'),
             ),
             'getQByuid'=>array(
                 'uid'=>array('name'=>'uid'),
@@ -122,7 +124,7 @@ class Question extends Api {
     public function getById() {
         $model = new QuestionModel();
         $data = $model->getById($this->id);
-        if($data["type"]==1){
+        if($data["type"]==1){ //选择题
             $arr = array($data["A"],$data["B"],$data["C"],$data["D"]);
             $options = $arr;
             $correct = $data[$data["correct"]];
@@ -153,7 +155,7 @@ class Question extends Api {
                 "toAnswer"=>$data["toAnswer"],
             );
         }
-        else if($data["type"]==2){
+        else if($data["type"]==2){  //判断题
             $res = array(
                 "id"=>$data["id"],
                 "q"=>$data["q"],
@@ -161,7 +163,7 @@ class Question extends Api {
                 "toAnswer"=>$data["toAnswer"],
             );
         }
-        else if($data["type"]==3){
+        else if($data["type"]==3){ //填空题
             $arr =  explode("____",$data["q"]);
             $res = array(
                 "id"=>$data["id"],
@@ -180,7 +182,7 @@ class Question extends Api {
      * 根据id删除
      * @desc根据id删除问题
      * @param int id 要删除的问题的id
-     * @return int data 要删除的问题id
+     * @return int data 是否删除成功
      * 
      */
 
@@ -212,19 +214,20 @@ class Question extends Api {
 
     public function add() {
         $insert = array(
-        'type'=>$this->type,
-        'q'=>$this->q,
-        'A'=>$this->A, 
-        'B'=>$this->B,
-        'C'=>$this->C,
-        'D'=>$this->D,
-        'F'=>$this->F,
-        'correct'=>$this->correct,
-        'majorID'=>$this->majorID,
-        'challenges'=>$this->challenges,
-        'passed'=>$this->passed,
-        'levels'=>$this->levels,
-        'labels'=>$this->labels,
+            'type'=>$this->type,
+            'q'=>$this->q,
+            'A'=>$this->A, 
+            'B'=>$this->B,
+            'C'=>$this->C,
+            'D'=>$this->D,
+            'F'=>$this->F,
+            'correct'=>$this->correct,
+            'majorID'=>$this->majorID,
+            'challenges'=>$this->challenges,
+            'passed'=>$this->passed,
+            'levels'=>$this->levels,
+            'labels'=>$this->labels,
+            'status' => $this->status,
         );
 
         $model = new QuestionModel();
@@ -273,6 +276,7 @@ class Question extends Api {
             'levels' => $this->levels,
             'labels' => $this->labels,
             'toAnswer' => $this->toAnswer,
+            'status' => $this->status,
         );
 
         $model = new QuestionModel();
