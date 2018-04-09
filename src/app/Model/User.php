@@ -80,4 +80,9 @@ class User extends NotORM {
             return array("filePath"=>$path.$imgName, "fileName"=>$imgName);
         return false;
     }
+    public function getTotalNum(){
+        $model = $this->getORM();
+
+        return $model->count("id");
+    }
 }

@@ -78,7 +78,11 @@ class Question extends Api {
             'getPage' => array(
                 'page' => array('name' => 'page'),
                 'num' => array('name' => 'num', 'default' => 20),
-            )  
+            ),
+            'getTotalNum' => array(
+                'type' => array('name' => 'type'),
+                'status' => array('name' => 'status'),
+            ),
         );
 	}
 	
@@ -437,11 +441,14 @@ class Question extends Api {
 
     /**
      * 获取问题总数
+     * @param int type 问题类型
+     * @param int status 审核状态
+     * @return int 某类型问题某审核状态下的问题总数
      */
     public function getTotalNum() {
         $model = new QuestionModel();
         
-        return $model->getTotalNum();
+        return $model->getTotalNum($this->type,$this->status);
     }
 
 }
