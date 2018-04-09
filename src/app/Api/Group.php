@@ -158,4 +158,11 @@ class Group extends Api {
 
         return $model->updateById($this->id, $data);
     }
+    /**
+     * 获取群组总数
+     */
+    public function getTotalNum(){
+        $model = new GroupModel();
+        return $model->getTotalNum();
+    }
 }

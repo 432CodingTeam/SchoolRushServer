@@ -179,5 +179,12 @@ class Campus extends Api {
         $model=new CampusModel();
         return $model->getmembersById($this->id);
     }
+    /**
+     * 获取学校总数
+     */
+    public function getTotalNum(){
+        $model = new CampusModel();
+        return $model->getTotalNum();
+    }
 }
 

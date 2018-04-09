@@ -50,5 +50,10 @@ class Major extends NotORM {
         $data=$model->where("id",$id);
         //var_dump($data);
         return $data;
-    }  
+    }
+    public function getTotalNum(){
+        $model = $this->getORM();
+
+        return $model->count("id");
+    }
 }
