@@ -28,11 +28,11 @@ class Userliveness extends Api {
                 'id'=> array("name" => "id")
             ),
             'updateById' => array(
-                'id' => array('name' => 'id'),
-                'time' => array('name' => "time"),
-                'uid'=>array('name'=>"uid"),
-                'answer'=>array('name'=>"answer"),
-                'quiz'=>array('name'=>"quiz"),
+                'id' => array('name' => 'id','require'=>true),
+                'time' => array('name' => "time",'require'=>true),
+                'uid'=>array('name'=>"uid",'require'=>true),
+                'answer'=>array('name'=>"answer",'require'=>false,'default'=>null),
+                'quiz'=>array('name'=>"quiz",'require'=>false,'default'=>null),
             ),
             'getByTime'=>array(
                 'starttime'=>array('name'=>'starttime'),
@@ -133,7 +133,17 @@ class Userliveness extends Api {
 
         $model = new UserlivenessModel();
 
-        return $model->updateById($this->id,$data);
+        foreach($data as $key => $val) {
+            if($val == NULL){
+                $keys = array_keys($data);
+                $index = array_search($key, $keys);
+
+                array_splice($data, $index, 1);
+            }
+        }
+
+        $id = $model->updateById($this->id,$data);
+        return array("res"=>$id);
     }
     public function getByTime()
     {

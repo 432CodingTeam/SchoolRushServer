@@ -29,10 +29,9 @@ class Major extends Api {
                 'id'=> array("name" => "id")
             ),
             'updateById' => array(
-                'id' => array('name' => 'id'),
-                'name' => array('name' => "name"),
-                'parent'=>array('name'=>"parent"),
-                'ranklist'=>array('name'=>'ranklist'),
+                'id' => array('name' => 'id','require'=>true),
+                'name' => array('name' => "name",'require'=>true,'default'=>null),
+                'parent'=>array('name'=>"parent",'require'=>true,'default'=>null),
             ),
             'getIdByName'=>array(
                 'name'=>array('name'=>'name'),
@@ -154,12 +153,21 @@ class Major extends Api {
             'id' => $this->id,
             'name' => $this->name,
             'parent' => $this->parent,
-            'ranklist' => $this->ranklist
         );
 
         $model = new MajorModel();
 
-        return $model->updateById($this->id,$data);
+        foreach($data as $key => $val) {
+            if($val == NULL){
+                $keys = array_keys($data);
+                $index = array_search($key, $keys);
+
+                array_splice($data, $index, 1);
+            }
+        }
+
+        $id = $model->updateById($this->id,$data);
+        return array("res"=>$id);
     }
     /**
      * 获取专业总数

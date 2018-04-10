@@ -29,11 +29,11 @@ class Campus extends Api {
                 'id' => array("name" => "id")
             ),
             'updateById' => array(
-                'id' => array('name'=> 'id'),
-                'name' => array('name' => "name"),
-                'members'=>array('name'=>"members"),
-                'badge' => array('name' => "badge"),
-                'locate' => array('name' => "locate")
+                'id' => array('name'=> 'id','require'=>true),
+                'name' => array('name' => "name",'require'=>true),
+                'members'=>array('name'=>"members",'default'=>null,'require'=>false),
+                'badge' => array('name' => "badge",'default'=>null,'require'=>false),
+                'locate' => array('name' => "locate",'default'=>null,'require'=>false)
             ),
             'getIdByName'=>array(
                 'id'=>array('name'=>"id"),
@@ -163,6 +163,8 @@ class Campus extends Api {
      */
      
     public function updateById() {
+        $model = new CampusModel();
+
         $data = array(
             "id" => $this->id,
             "name" => $this->name,
@@ -171,8 +173,18 @@ class Campus extends Api {
             "locate" => $this->locate,
         );
 
-        $model = new CampusModel();
-        return $model->updateById($this->id, $data);
+        foreach($data as $key => $val) {
+            if($val == NULL){
+                $keys = array_keys($data);
+                $index = array_search($key, $keys);
+
+                array_splice($data, $index, 1);
+            }
+        }
+
+        $id = $model->updateById($this->id,$data);
+        return array("res"=>$id);
+
     }
     public function getMembersById()
     {
