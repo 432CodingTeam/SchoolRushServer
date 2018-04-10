@@ -26,8 +26,8 @@ class Label extends Api {
                 'id'=> array("name" => "id")
             ),
             'updateById' => array(
-                'id' => array("name" => "id"),
-                'name' => array("name" => "name"),
+                'id' => array("name" => "id",'require'=>true),
+                'name' => array("name" => "name",'require'=>true),
             ),
             'getIdByName'=>array(
                 'name'=>array('name'=>'name'),
@@ -137,7 +137,18 @@ class Label extends Api {
         );
 
         $model = new LabelModel();
-        return $model->updateById($this->id, $data);
+
+        foreach($data as $key => $val) {
+            if($val == NULL){
+                $keys = array_keys($data);
+                $index = array_search($key, $keys);
+
+                array_splice($data, $index, 1);
+            }
+        }
+
+        $id = $model->updateById($this->id,$data);
+        return array("res"=>$id);    
     }
 
 }
