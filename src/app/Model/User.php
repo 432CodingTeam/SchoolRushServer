@@ -85,4 +85,14 @@ class User extends NotORM {
 
         return $model->count("id");
     }
+    public function getBylikename($name)
+    {
+        $model=$this->getORM()->fetchall();
+        $data=array();
+        for($i=0;$i<sizeof($model);$i++)
+        {
+            if(strstr($model[$i]["name"],$name)) array_push($data,$model[$i]);
+        }
+        return $data;
+    }
 }

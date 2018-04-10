@@ -68,6 +68,9 @@ class User extends Api {
             "logout" => array(
                 "name" => array("name" => "name"),
             ),
+            "getBylikename"=>array(
+                "name"=>array("name"=>"name"),
+            ),
         );
 	}
 	
@@ -443,5 +446,11 @@ class User extends Api {
     public function getTotalNum(){
         $model = new UserModel();
         return $model->getTotalNum();
+    }
+    public function getBylikename()
+    {
+        $model =new UserModel();
+        $data=$model->getBylikename($this->name);
+        return $data;
     }
 }
