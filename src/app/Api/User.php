@@ -32,6 +32,8 @@ class User extends Api {
                 'majorID'=>array('name'=>"majorID"),
                 'vice'=>array('name'=>"vice"),
                 'avatar'=>array('name'=>"avatar"),
+                'gender'=>array('name'=>"gender"),
+                'describe'=>array('name'=>"describe"),
             ),
             'getById' => array(
                 'id' => array("name" => "id")
@@ -51,6 +53,8 @@ class User extends Api {
                 'majorID'=>array('name'=>"majorID"),
                 'vice'=>array('name'=>"vice"),
                 'avatar'=>array('name'=>"avatar"),
+                'gender'=>array('name'=>"gender"),
+                'describe'=>array('name'=>"describe"),
             ),
             'getByName'=>array(
                 'name'=>array('name'=>'name'),
@@ -181,25 +185,25 @@ class User extends Api {
                 "error" => "用户名重复"
             );
         if($isMailRepeat)
-        return array(
-            "res" => false,
-            "error" => "邮箱重复"
-        );
+            return array(
+                "res" => false,
+                "error" => "邮箱重复"
+            );
 
         if($this->identify == NULL)
             $this->identify = 2;
         
             
         $insert = array(
-            'name'=>$this->name,
-            'pass'=>$this->pass,
-            'identify'=>$this->identify,
-            'email'=>$this->email,
-            'tel'=>$this->tel,
-            'campusID'=>$this->campusID,
-            'majorID'=>$this->majorID,
-            'vice'=>$this->vice,
-            'avatar'=> "",  //头像地址先留空 后面上传之后更新
+            'name'      => $this->name,
+            'pass'      => $this->pass,
+            'identify'  => $this->identify,
+            'email'     => $this->email,
+            'tel'       => $this->tel,
+            'campusID'  => $this->campusID,
+            'majorID'   => $this->majorID,
+            'vice'      => $this->vice,
+            'avatar'    =>  "",  //头像地址先留空 后面上传之后更新
         );
         
         $res = $model->add($insert);
@@ -258,6 +262,7 @@ class User extends Api {
      * @param campusID 用户学校ID
      * @param majorID 用户专业ID
      * @param vice 用户兴趣专业ID
+     * @param describe 用户一句话介绍
      * @param avatar base64编码的图片 将会存储为图片并保存到七牛云，最后将图片外链存到数据库中
      * 
      * @return res 1: 有更改 0:无更改 false: 更新失败
@@ -292,6 +297,7 @@ class User extends Api {
             'majorID'=>$this->majorID,
             'vice'=>$this->vice,
             'avatar'=>$this->avatar,
+            'describe'=>$this->describe,
         );
 
         foreach($data as $key => $val) {
