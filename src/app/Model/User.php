@@ -59,6 +59,7 @@ class User extends NotORM {
         return $data;
     }
 
+    // by iimT
     public function getByLimit($start, $num){
         $model = $this->getORM();
 

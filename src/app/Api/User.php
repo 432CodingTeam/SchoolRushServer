@@ -68,6 +68,10 @@ class User extends Api {
             "logout" => array(
                 "name" => array("name" => "name"),
             ),
+            "getPage" => array(
+                "page" => array("name" => "page"),
+                "num"  => array("name" => "num"),
+            ),
         );
 	}
 	
@@ -443,5 +447,20 @@ class User extends Api {
     public function getTotalNum(){
         $model = new UserModel();
         return $model->getTotalNum();
+    }
+
+    /**
+     * 获取一页用户
+     * @author iimT
+     * @param page 第几页
+     * @param num 每页几条
+     * 
+     * @return array 返回的数据
+     */
+    public function getPage() {
+        $model = new UserModel();
+        $start = ($this->page - 1) * $this->num;
+
+        return $model->getByLimit($start, $this->num);
     }
 }
