@@ -59,7 +59,9 @@ class User extends NotORM {
         return $data;
     }
 
-    // by iimT
+    /** 
+     * @author iimT
+     */
     public function getByLimit($start, $num){
         $model = $this->getORM();
 
@@ -85,5 +87,13 @@ class User extends NotORM {
         $model = $this->getORM();
 
         return $model->count("id");
+    }
+    /**
+     * @author iimT
+     */
+    public function getFilterByLimit($filter, $start, $num) {
+        $model = $this->getORM();
+        
+        return $model->where($filter)->limit($start, $num);
     }
 }
