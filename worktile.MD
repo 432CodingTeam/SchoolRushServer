@@ -27,7 +27,7 @@ TODO: 重写question.getById() 根据不同的问题类型返回不同的结果 
             content: "选项的内容",
           },
     ],
-    correct: "A", //假设正确结果是options[0] 那么这个属性的值就是"A" 
+    correct: "A", //假设正确结果是options[0] 那么这个属性的值就是"A"
     toAnswer: "还是原来里面toAnswer的值"
 }
 判断题：(type==2)
@@ -52,5 +52,5 @@ TODO: 模糊匹配搜索用户名    //李
 TODO: 搜索用户的接口
 TODO: 获取当前在线用户数
 TODO: 获取问题数量(有分类：审核通过与待审核)
-TODO: 日答题量  (今天共passed了多少问题)
+TODO: 日答题量  (今天共passed了多少问题 )
 TODO: 查看学校排名： 在majorrank中看此学校是否有排名  在前10位的返回
