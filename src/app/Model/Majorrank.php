@@ -8,6 +8,11 @@ class Majorrank extends NotORM {
     protected function getTableName($id) {
         return 'majorrank';
     }
-
+    public function getMajorTopten($majorID)
+    {
+        $model=$this->getORM()->where("id",$majorID);
+        $arr=explode(",",$model["list"]);
+        return $arr;
+    }
 
 }

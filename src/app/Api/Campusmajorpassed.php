@@ -53,6 +53,7 @@ class Campusmajorpassed extends Api {
             'monthRankList'=>array(
                 'majorID'=>array('name'=>'majorID'),
             ),
+         
         );
 	}
 	
@@ -224,5 +225,15 @@ class Campusmajorpassed extends Api {
             $model[$i]["name"]=$m["name"];
         }
         return $model;
+    }
+    /**
+     * 日答题量
+     * @desc 获取一天中所有通过的题目数量
+     * @return int data 一天中通过的题目数量
+     */
+    public function getDayPassed()
+    {
+        $model=new CampusmajorpassedModel();
+        return $model->getDayPassed();
     }
 }
