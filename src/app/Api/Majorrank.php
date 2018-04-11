@@ -16,6 +16,10 @@ class Majorrank extends Api {
             'index' => array(
                 'username' 	=> array('name' => 'username'),
             ),
+            'getMajorRank'=>array(
+                'majorID'=>array('name'=>'majorID'),
+                'campusID'=>array('name'=>'campusID'),
+            ),
         );
 	}
 	
@@ -36,4 +40,17 @@ class Majorrank extends Api {
     }
 
 
+    public function getMajorRank()
+    {
+        $model=new MajorrankModel();
+        $model1=$model->getMajorTopten($this->majorID);
+        return $model1;
+        $d=0;
+        foreach($model1 as $m)
+        {
+            $d++;
+            if($this->campusID==$m)
+            return $d;
+        }
+    }
 }

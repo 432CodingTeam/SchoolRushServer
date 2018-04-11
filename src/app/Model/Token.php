@@ -48,4 +48,9 @@ class Token extends NotORM {
         $res = $model->where("id",$id)->update($data);
         return $res;
     }
+    public function getAll()
+    {
+        $model=$this->getORM();
+        return $model->fetchall();
+    }
 }
