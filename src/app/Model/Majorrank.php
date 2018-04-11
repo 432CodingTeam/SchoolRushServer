@@ -10,7 +10,7 @@ class Majorrank extends NotORM {
     }
     public function getMajorTopten($majorID)
     {
-        $model=$this->getORM()->where("id",$majorID);
+        $model=$this->getORM()->where("id",$majorID)->fetchOne();
         $arr=explode(",",$model["list"]);
         return $arr;
     }
