@@ -27,9 +27,10 @@ class Usertoq extends Api {
                 'id'=> array("name" => "id")
             ),
             'updateById' => array(
-                'id' => array("name" => 'id'),
-                'uid' => array('name' => "uid"),
-                'qid'=>array('name'=>"qid"),
+                'id' => array("name" => 'id','require'=>true),
+                'uid' => array('name' => "uid",'require'=>true),
+                'qid'=>array('name'=>"qid",'require'=>false,'default'=>null),
+                'status'=>array('name'=>'status','require'=>true),
             ),
             'getPassingRate' => array(
                 'uid' => array('name' => 'uid'),
@@ -136,11 +137,22 @@ class Usertoq extends Api {
         $data = array(
             'uid'=>$this->uid,
             'qid'=>$this->qid,
+            'status'=>$this->status,
         );
 
         $model = new UsertoqModel();
 
-        return $model->updateById($this->id,$data);
+        foreach($data as $key => $val) {
+            if($val == NULL){
+                $keys = array_keys($data);
+                $index = array_search($key, $keys);
+
+                array_splice($data, $index, 1);
+            }
+        }
+
+        $id = $model->updateById($this->id,$data);
+        return array("res"=>$id);
     }
     /**
      * 获取用户的通过率

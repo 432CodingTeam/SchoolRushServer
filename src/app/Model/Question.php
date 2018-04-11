@@ -60,9 +60,9 @@ class Question extends NotORM {
         return $data;
     }
 
-    public function getTotalNum() {
+    public function getTotalNum($type,$status) {
         $model = $this->getORM();
-        
-        return $model->count("id");
+        $data = $model->where("type",$type)->and("status",$status);
+        return count($data);
     }
 }

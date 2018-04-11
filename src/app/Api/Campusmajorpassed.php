@@ -34,15 +34,15 @@ class Campusmajorpassed extends Api {
                 'id'=> array("name" => "id")
             ),
             'updateById' => array(
-                'id' => array("name" => "id"),
-                'majorID' => array('name' => "majorID"),
-                'campusID'=>array('name'=>"campusID"),
-                'aday'=>array('name'=>'aday'),
-                'aweek'=>array('name'=>'aweek'),
-                'amonth'=>array('name'=>'amonth'),
-                'lastday'=>array('name'=>'lastday'),
-                'lastweek'=>array('name'=>'lastweek'),
-                'lastmonth'=>array('name'=>'lastmonth'),
+                'id' => array("name" => "id",'require'=>true),
+                'majorID' => array('name' => "majorID",'require'=>true),
+                'campusID'=>array('name'=>"campusID",'require'=>true),
+                'aday'=>array('name'=>'aday','require'=>false,'default'=>null),
+                'aweek'=>array('name'=>'aweek','require'=>false,'default'=>null),
+                'amonth'=>array('name'=>'amonth','require'=>false,'default'=>null),
+                'lastday'=>array('name'=>'lastday','require'=>false,'default'=>null),
+                'lastweek'=>array('name'=>'lastweek','require'=>false,'default'=>null),
+                'lastmonth'=>array('name'=>'lastmonth','require'=>false,'default'=>null),
             ),
             'dayRankList'=>array(
                 'majorID'=>array('name'=>'majorID'),
@@ -150,6 +150,8 @@ class Campusmajorpassed extends Api {
      * @return data id 更新后该学校的通过数信息
      */
     public function updateById() {
+        $model = new CampusmajorpassedModel();
+
         $data = array(
             "id" => $this->id,
             "majorID" => $this->majorID,
@@ -162,8 +164,18 @@ class Campusmajorpassed extends Api {
             'lastweek'=> $this->lastweek,
         );
 
-        $model = new CampusmajorpassedModel();
-        return $model->updateById($this->id, $data);
+        foreach($data as $key => $val) {
+            if($val == NULL){
+                $keys = array_keys($data);
+                $index = array_search($key, $keys);
+
+                array_splice($data, $index, 1);
+            }
+        }
+
+        $id = $model->updateById($this->id,$data);
+        return array("res"=>$id);
+
     }
     /**
      * 日排行榜
