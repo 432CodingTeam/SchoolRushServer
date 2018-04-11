@@ -97,6 +97,7 @@ class User extends NotORM {
             if(strstr($model[$i]["name"],$name)) array_push($data,$model[$i]);
         }
         return $data;
+    }
     /**
      * @author iimT
      */
