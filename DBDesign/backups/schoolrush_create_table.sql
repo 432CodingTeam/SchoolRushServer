@@ -22,8 +22,6 @@ DROP TABLE token;
 
 
 
-
-
 create table campus
 (
   id      bigint auto_increment
@@ -113,6 +111,27 @@ create table majorrank
 )
   engine = InnoDB;
 
+create table operation
+(
+  id          bigint auto_increment
+    primary key,
+  uid         bigint       not null
+  comment '操作人',
+  operatetime datetime     not null
+  comment '操作时间',
+  type        int          not null
+  comment '操作类型
+3 审核题目
+
+其他的后面再加',
+  `desc`      varchar(200) not null
+  comment '操作说明',
+  constraint operation_id_uindex
+  unique (id)
+)
+  comment '操作表，当有管理员做了某个操作就记录下来'
+  engine = InnoDB;
+
 create table question
 (
   id         bigint auto_increment
@@ -150,7 +169,9 @@ create table question
   status     int(1)          null
   comment '0 未审核
 1 审核完成
-2 问题有误 待重新编辑'
+2 问题有误 待重新编辑',
+  createtime datetime        null
+  comment '题目创建时间'
 )
   comment '问题表'
   engine = InnoDB;
@@ -225,15 +246,17 @@ create table userliveness
 
 create table usertoq
 (
-  id     bigint auto_increment
+  id       bigint auto_increment
     primary key,
-  uid    bigint not null
+  uid      bigint   not null
   comment '用户ID',
-  qid    bigint not null
+  qid      bigint   not null
   comment '通过的题目ID',
-  status int    not null
+  status   int      not null
   comment '0 未通过
-1 已通过'
+1 已通过',
+  passtime datetime not null
+  comment '通过时间'
 )
   comment '用户-通过的题目 关系表
 用于统计用户通过了哪些题目

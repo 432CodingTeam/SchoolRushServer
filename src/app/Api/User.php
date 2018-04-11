@@ -7,6 +7,7 @@ use App\Model\Question as QuestionModel;
 use App\Model\Usertoq as UsertoqModel;
 use App\Model\Major as MajorModel;
 use App\Model\Campus as CampusModel;
+use App\Model\Token as TokenModel;
 use App\Domain\Token as TokenDomain;
 use App\Common\Upload;
 use App\Common\GD;
@@ -458,19 +459,39 @@ class User extends Api {
         return $tokenRes;
     }
     /**
+     * 获取表的数据数量
+     * @desc 获取表有多少数据
+     * @return int 该表有多少条数据
+     */
+    public function getCnt(){
+        $model = new UserModel();
+        $data = $model->getCnt();
+        return count($data);
+    }
+    /**
+     * 用户名模糊查询
+     * @desc 输入字符串，获取包含该字符串的所有用户名
+     * @param string name 查询的用户名
+     * @return array data 返回的用户名
+     */
+    public function getBylikename(){
+        $model=new UserModel();
+        $data=$model->getBylikename($this->name);
+        return $data;
+    }
+    public function getonlineNum(){
+        $model=new TokenModel();
+        $arr=$model->getAll();
+        return sizeof($arr);
+    }
+    /*
      * 获取用户总数
+     @author iimT
      */
     public function getTotalNum(){
         $model = new UserModel();
         return $model->getTotalNum();
     }
-    public function getBylikename()
-    {
-        $model =new UserModel();
-        $data=$model->getBylikename($this->name);
-        return $data;
-    }
-
     /**
      * 获取一页用户
      * @author iimT

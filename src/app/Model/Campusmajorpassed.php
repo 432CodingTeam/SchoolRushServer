@@ -88,5 +88,15 @@ class Campusmajorpassed extends NotORM {
         array_multisort($num,SORT_DESC,$arr);
         return $arr;
     }
+    public function getDayPassed()
+    {
+        $model=$this->getORM();
+        $model1=$model->fetchall();
+        foreach($model1 as $m)
+        {
+            $sum+=$m["aday"];
+        }
+        return $sum;
+    }
     //添加
 }
