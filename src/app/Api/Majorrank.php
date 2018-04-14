@@ -39,12 +39,18 @@ class Majorrank extends Api {
         );
     }
 
-
+    /**
+     * 获取学校排名
+     * @desc 获取学校在某个专业的排名
+     * @author lxx
+     * @param int campusID 学校id
+     * @param int majorID 专业id
+     * @return int data 学校排名（前十）
+     */
     public function getMajorRank()
     {
         $model=new MajorrankModel();
         $model1=$model->getMajorTopten($this->majorID);
-        return $model1;
         $d=0;
         foreach($model1 as $m)
         {

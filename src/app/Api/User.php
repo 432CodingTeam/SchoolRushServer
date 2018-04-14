@@ -471,6 +471,7 @@ class User extends Api {
     /**
      * 用户名模糊查询
      * @desc 输入字符串，获取包含该字符串的所有用户名
+     * @author lxx
      * @param string name 查询的用户名
      * @return array data 返回的用户名
      */
@@ -479,6 +480,13 @@ class User extends Api {
         $data=$model->getBylikename($this->name);
         return $data;
     }
+
+    /**
+     * 获取用户在线数
+     * @desc 获取用户在线数
+     * @author lxx
+     * @return 返回用户在线数量
+     */
     public function getonlineNum(){
         $model=new TokenModel();
         $arr=$model->getAll();

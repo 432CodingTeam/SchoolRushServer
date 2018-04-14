@@ -241,6 +241,7 @@ class Campusmajorpassed extends Api {
     /**
      * 日答题量
      * @desc 获取一天中所有通过的题目数量
+     * @author lxx
      * @return int data 一天中通过的题目数量
      */
     public function getDayPassed()

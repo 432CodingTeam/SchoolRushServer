@@ -83,18 +83,6 @@ class User extends NotORM {
             return array("filePath"=>$path.$imgName, "fileName"=>$imgName);
         return false;
     }
-    public function getBylikename($name)
-    {
-        $model=$this->getORM()->fetchall();    
-       // $where['name']=array('like',"%{$name}%");
-        $data=array();
-        for($i=0;i<sizeof($model);$i++)
-        {
-            if(strstr($model[$i]["name"],$name))
-            array_push($data,$model[$i]);
-        }
-        return $data;
-    }
     public function getTotalNum(){
         $model = $this->getORM();
 
@@ -103,6 +91,8 @@ class User extends NotORM {
     public function getBylikename($name)
     {
         $model=$this->getORM()->fetchall();
+        
+       // $where['name']=array('like',"%{$name}%");
         $data=array();
         for($i=0;$i<sizeof($model);$i++)
         {
