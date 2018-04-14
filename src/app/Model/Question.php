@@ -65,4 +65,9 @@ class Question extends NotORM {
         $data = $model->where("type",$type)->and("status",$status);
         return count($data);
     }
+    public function getFilterByLimit($filter, $start, $num) {
+        $model = $this->getORM();
+        
+        return $model->where($filter)->limit($start, $num);
+    }
 }
