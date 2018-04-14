@@ -28,10 +28,10 @@ class Group extends Api {
                 'id' => array("name" => "id")
             ),
             'updateById' => array(
-                'id' => array('name' => "id"),
-                'name' => array('name' => "name"),
-                'creator'=>array(   'name'=>"creator"),
-                'members'=>array('name'=>"members"),
+                'id' => array('name' => "id",'require'=>true),
+                'name' => array('name' => "name",'require'=>true),
+                'creator'=>array(   'name'=>"creator",'require'=>true,'default'=>null),
+                'members'=>array('name'=>"members",'require'=>false,'default'=>null),
             ),
             'getIdByName'=>array(
                 'name'=>array('name'=>"name"),
@@ -147,15 +147,32 @@ class Group extends Api {
      * @return data id 更新后群组信息
      */
     public function updateById(){
+        $model = new GroupModel();
+
         $data = array(
             "id"=>$this->id,
             "name"=>$this->name,
             "creator"=>$this->creator,
             "members"=>$this->members
         );
+    
+        foreach($data as $key => $val) {
+            if($val == NULL){
+                $keys = array_keys($data);
+                $index = array_search($key, $keys);
 
+                array_splice($data, $index, 1);
+            }
+        }
+
+        $id = $model->updateById($this->id,$data);
+        return array("res"=>$id);
+    }
+    /**
+     * 获取群组总数
+     */
+    public function getTotalNum(){
         $model = new GroupModel();
-
-        return $model->updateById($this->id, $data);
+        return $model->getTotalNum();
     }
 }

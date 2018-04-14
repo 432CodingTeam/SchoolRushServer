@@ -41,22 +41,22 @@ class Question extends Api {
                 'id'=> array("name" => "id")
             ),
             'updateById' => array(
-                'id' => array('name' => 'id'),
-                'type' => array('name'=>"type"),
-                'q' => array('name'=>'q'),
-                'A' => array('name'=>'A'),
-                'B' => array('name'=>'B'),
-                'C' => array('name'=>'C'),
-                'D' => array('name'=>'D'),
-                'F' => array('name'=>'F'),
-                'correct' => array('name'=>'correct'),
-                'majorID' => array('name'=>'majorID'),
-                'challenges' => array('name'=>'challenges'),
-                'passed' => array('name'=>'passed'),
-                'levels' => array('name'=>'levels'),
-                'labels' => array('name'=>'labels'),
-                'toAnswer' => array('name'=>'toAnswer'),
-                'status' => array('name' => 'status'),
+                'id' => array('name' => 'id','require'=>true),
+                'type' => array('name'=>"type",'require'=>true),
+                'q' => array('name'=>'q','require'=>true,),
+                'A' => array('name'=>'A','require'=>false,'default'=>null),
+                'B' => array('name'=>'B','require'=>false,'default'=>null),
+                'C' => array('name'=>'C','require'=>false,'default'=>null),
+                'D' => array('name'=>'D','require'=>false,'default'=>null),
+                'F' => array('name'=>'F','require'=>false,'default'=>null),
+                'correct' => array('name'=>'correct','require'=>false,'default'=>null),
+                'majorID' => array('name'=>'majorID','require'=>true),
+                'challenges' => array('name'=>'challenges','require'=>false,'default'=>null),
+                'passed' => array('name'=>'passed','require'=>false,'default'=>null),
+                'levels' => array('name'=>'levels','require'=>false,'default'=>null),
+                'labels' => array('name'=>'labels','require'=>false,'default'=>null),
+                'toAnswer' => array('name'=>'toAnswer','require'=>false,'default'=>null),
+                'status' => array('name' => 'status','require'=>false,'default'=>null),
             ),
             'getQByuid'=>array(
                 'uid'=>array('name'=>'uid'),
@@ -78,7 +78,11 @@ class Question extends Api {
             'getPage' => array(
                 'page' => array('name' => 'page'),
                 'num' => array('name' => 'num', 'default' => 20),
-            )  
+            ),
+            'getTotalNum' => array(
+                'type' => array('name' => 'type'),
+                'status' => array('name' => 'status'),
+            ),
         );
 	}
 	
@@ -258,6 +262,7 @@ class Question extends Api {
      * @param string passed 通过人数
      * @param int levels 问题难度星级
      * @param int labels 标签，用逗号隔开
+     * @param int status 状态，1 审核通过，0 待审核
      * @return int id 更新题目内容
      */
     public function updateById() {
@@ -281,7 +286,17 @@ class Question extends Api {
 
         $model = new QuestionModel();
 
-        return $model->updateById($this->id,$data);
+        foreach($data as $key => $val) {
+            if($val == NULL){
+                $keys = array_keys($data);
+                $index = array_search($key, $keys);
+
+                array_splice($data, $index, 1);
+            }
+        }
+
+        $id = $model->updateById($this->id,$data);
+        return array("res"=>$id);
     }
     /**
      * 获取用户最近提出的问题
@@ -437,11 +452,14 @@ class Question extends Api {
 
     /**
      * 获取问题总数
+     * @param int type 问题类型
+     * @param int status 审核状态
+     * @return int 某类型问题某审核状态下的问题总数
      */
     public function getTotalNum() {
         $model = new QuestionModel();
         
-        return $model->getTotalNum();
+        return $model->getTotalNum($this->type,$this->status);
     }
 
 }

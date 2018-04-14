@@ -59,6 +59,9 @@ class User extends NotORM {
         return $data;
     }
 
+    /** 
+     * @author iimT
+     */
     public function getByLimit($start, $num){
         $model = $this->getORM();
 
@@ -91,5 +94,28 @@ class User extends NotORM {
             array_push($data,$model[$i]);
         }
         return $data;
+    }
+    public function getTotalNum(){
+        $model = $this->getORM();
+
+        return $model->count("id");
+    }
+    public function getBylikename($name)
+    {
+        $model=$this->getORM()->fetchall();
+        $data=array();
+        for($i=0;$i<sizeof($model);$i++)
+        {
+            if(strstr($model[$i]["name"],$name)) array_push($data,$model[$i]);
+        }
+        return $data;
+    }
+    /**
+     * @author iimT
+     */
+    public function getFilterByLimit($filter, $start, $num) {
+        $model = $this->getORM();
+        
+        return $model->where($filter)->limit($start, $num);
     }
 }

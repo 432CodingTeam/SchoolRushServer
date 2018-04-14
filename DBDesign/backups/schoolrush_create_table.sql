@@ -22,214 +22,243 @@ DROP TABLE token;
 
 
 
-
-
-CREATE TABLE campus
+create table campus
 (
-  id      BIGINT AUTO_INCREMENT
-    PRIMARY KEY,
-  name    VARCHAR(30)     NOT NULL
-  COMMENT '学校名字',
-  members INT DEFAULT '0' NULL
-  COMMENT '成员数',
-  badge   VARCHAR(200)    NOT NULL
-  COMMENT '校徽的图片地址',
-  locate  VARCHAR(20)     NOT NULL
+  id      bigint auto_increment
+    primary key,
+  name    varchar(30)     not null
+  comment '学校名字',
+  members int default '0' null
+  comment '成员数',
+  badge   varchar(200)    not null
+  comment '校徽的图片地址',
+  locate  varchar(20)     not null
 )
-  COMMENT '高校表'
-  ENGINE = InnoDB;
+  comment '高校表'
+  engine = InnoDB;
 
-CREATE TABLE campusmajorpassed
+create table campusmajorpassed
 (
-  id        BIGINT AUTO_INCREMENT
-    PRIMARY KEY,
-  majorID   BIGINT          NULL
-  COMMENT '专业ID',
-  campusID  BIGINT          NULL
-  COMMENT '学校ID',
-  aday      INT DEFAULT '0' NOT NULL
-  COMMENT '今天通过题数',
-  aweek     INT DEFAULT '0' NOT NULL
-  COMMENT '本周通过题数',
-  amonth    INT DEFAULT '0' NOT NULL
-  COMMENT '本月通过题数',
-  lastday   INT DEFAULT '0' NOT NULL
-  COMMENT '上一天以及之前共通过数',
-  lastweek  INT DEFAULT '0' NOT NULL
-  COMMENT '上一周以及之前共通过数',
-  lastmonth INT DEFAULT '0' NOT NULL
-  COMMENT '上一天以及之前共通过数'
+  id        bigint auto_increment
+    primary key,
+  majorID   bigint          null
+  comment '专业ID',
+  campusID  bigint          null
+  comment '学校ID',
+  aday      int default '0' not null
+  comment '今天通过题数',
+  aweek     int default '0' not null
+  comment '本周通过题数',
+  amonth    int default '0' not null
+  comment '本月通过题数',
+  lastday   int default '0' not null
+  comment '上一天以及之前共通过数',
+  lastweek  int default '0' not null
+  comment '上一周以及之前共通过数',
+  lastmonth int default '0' not null
+  comment '上一天以及之前共通过数'
 )
-  COMMENT '学校-分类-通过数
+  comment '学校-分类-通过数
 关系表 用于排行'
-  ENGINE = InnoDB;
+  engine = InnoDB;
 
-CREATE TABLE `group`
+create table `group`
 (
-  id      BIGINT AUTO_INCREMENT
-    PRIMARY KEY,
-  name    VARCHAR(15)  NULL
-  COMMENT '群组名字',
-  creator BIGINT       NULL
-  COMMENT '创建者ID',
-  members VARCHAR(500) NOT NULL
-  COMMENT '群组成员ID 以“，”分隔'
+  id      bigint auto_increment
+    primary key,
+  name    varchar(15)  null
+  comment '群组名字',
+  creator bigint       null
+  comment '创建者ID',
+  members varchar(500) not null
+  comment '群组成员ID 以“，”分隔'
 )
-  COMMENT '群组表 群组人数限制100'
-  ENGINE = InnoDB;
+  comment '群组表 群组人数限制100'
+  engine = InnoDB;
 
-CREATE TABLE label
+create table label
 (
-  id   BIGINT AUTO_INCREMENT
-    PRIMARY KEY,
-  name VARCHAR(10) NULL
-  COMMENT '标签名 不可重复'
+  id   bigint auto_increment
+    primary key,
+  name varchar(10) null
+  comment '标签名 不可重复'
 )
-  COMMENT '标签表'
-  ENGINE = InnoDB;
+  comment '标签表'
+  engine = InnoDB;
 
-CREATE TABLE major
+create table major
 (
-  id     BIGINT AUTO_INCREMENT
-    PRIMARY KEY,
-  name   CHAR(20) NULL
-  COMMENT '专业名字',
-  parent BIGINT   NULL
-  COMMENT '专业类的id'
+  id     bigint auto_increment
+    primary key,
+  name   char(20) null
+  comment '专业名字',
+  parent bigint   null
+  comment '专业类的id'
 )
-  COMMENT '专业表'
-  ENGINE = InnoDB;
+  comment '专业表'
+  engine = InnoDB;
 
-CREATE TABLE majorrank
+create table majorrank
 (
-  id   BIGINT AUTO_INCREMENT
-    PRIMARY KEY,
-  list VARCHAR(300) NOT NULL
-  COMMENT '此专业下排行榜列表  将学校的id用，分隔开',
-  type INT          NOT NULL
-  COMMENT '1 日榜（统计前一天）
-	2 周榜 (上一周)
-	3 月榜  (上个月)'
+  id   bigint auto_increment
+    primary key,
+  list varchar(300) not null
+  comment '此专业下排行榜列表  将学校的id用，分隔开',
+  type int          not null
+  comment '1 日榜（统计前一天）
+2 周榜 (上一周)
+3 月榜  (上个月)'
 )
-  ENGINE = InnoDB;
+  engine = InnoDB;
 
-CREATE TABLE question
+create table operation
 (
-  id         BIGINT AUTO_INCREMENT
-    PRIMARY KEY,
-  type       INT             NULL
-  COMMENT '题型 选择1 判断2 填空3',
-  q          VARCHAR(100)    NULL
-  COMMENT '问题内容',
-  A          CHAR            NULL
-  COMMENT '选项A',
-  B          CHAR            NULL
-  COMMENT '选项B',
-  C          CHAR            NULL
-  COMMENT '选项C',
-  D          CHAR            NULL
-  COMMENT '选项D',
-  TF         CHAR            NULL
-  COMMENT '正确/错误选项 只可能有T/F两种值',
-  correct    VARCHAR(10)     NOT NULL
-  COMMENT '正确答案',
-  majorID    BIGINT          NULL
-  COMMENT '所在分类ID',
-  challenges INT DEFAULT '0' NULL
-  COMMENT '挑战人数',
-  passed     INT DEFAULT '0' NULL
-  COMMENT '通过人数',
-  levels     INT             NULL
-  COMMENT '问题难度星级',
-  uid        BIGINT          NOT NULL
-  COMMENT '出题人的id',
-  balels     VARCHAR(255)    NULL
-  COMMENT '标签 多个用逗号分开',
-  toAnswer   INT             NULL
-  COMMENT '给答题者的话'
-)
-  COMMENT '问题表'
-  ENGINE = InnoDB;
+  id          bigint auto_increment
+    primary key,
+  uid         bigint       not null
+  comment '操作人',
+  operatetime datetime     not null
+  comment '操作时间',
+  type        int          not null
+  comment '操作类型
+3 审核题目
 
-CREATE TABLE token
-(
-  id         BIGINT AUTO_INCREMENT
-    PRIMARY KEY,
-  uid        BIGINT      NOT NULL
-  COMMENT '用户id',
-  token      VARCHAR(32) NOT NULL
-  COMMENT '签名',
-  expiretime DATETIME    NOT NULL
-  COMMENT '签名过期时间',
-  CONSTRAINT token_id_uindex
-  UNIQUE (id),
-  CONSTRAINT token_uid_uindex
-  UNIQUE (uid)
+其他的后面再加',
+  `desc`      varchar(200) not null
+  comment '操作说明',
+  constraint operation_id_uindex
+  unique (id)
 )
-  COMMENT '用户签名验证'
-  ENGINE = InnoDB;
+  comment '操作表，当有管理员做了某个操作就记录下来'
+  engine = InnoDB;
 
-CREATE TABLE user
+create table question
 (
-  id         BIGINT AUTO_INCREMENT
-    PRIMARY KEY,
-  name       VARCHAR(15)     NOT NULL
-  COMMENT '用户名',
-  pass       VARCHAR(20)     NOT NULL
-  COMMENT '密码',
-  identify   INT DEFAULT '2' NULL
-  COMMENT '管理员1 普通用户2',
-  email      VARCHAR(40)     NOT NULL
-  COMMENT '用户邮箱',
-  tel        VARCHAR(20)     NULL
-  COMMENT '用户电话',
-  campusID   BIGINT          NULL
-  COMMENT '所在学校ID',
-  major      BIGINT          NULL
-  COMMENT '所在专业ID',
-  vice       INT             NULL
-  COMMENT '副专业 多个用“，”分隔',
-  avatar     VARCHAR(200)    NULL
-  COMMENT '用户头像地址',
-  `describe` VARCHAR(30)     NULL
-  COMMENT '一句话描述自己',
-  gender     INT             NULL
-  COMMENT '0 女 1 男',
-  CONSTRAINT user_name_uindex
-  UNIQUE (name)
+  id         bigint auto_increment
+    primary key,
+  type       int(1)          null
+  comment '题型 选择1 判断2 填空3',
+  q          varchar(100)    null
+  comment '问题内容',
+  A          char            null
+  comment '选项A',
+  B          char            null
+  comment '选项B',
+  C          char            null
+  comment '选项C',
+  D          char            null
+  comment '选项D',
+  F          char            null
+  comment '正确/错误选项 只可能有T/F两种值',
+  correct    varchar(10)     not null
+  comment '正确答案',
+  majorID    bigint          null
+  comment '所在分类ID',
+  challenges int default '0' null
+  comment '挑战人数',
+  passed     int default '0' null
+  comment '通过人数',
+  levels     int             null
+  comment '问题难度星级',
+  uid        bigint          not null
+  comment '出题人的id',
+  labels     varchar(255)    null
+  comment '标签 多个用逗号分开',
+  toAnswer   varchar(30)     null
+  comment '给答题者的话',
+  status     int(1)          null
+  comment '0 未审核
+1 审核完成
+2 问题有误 待重新编辑',
+  createtime datetime        null
+  comment '题目创建时间'
 )
-  COMMENT '用户表'
-  ENGINE = InnoDB;
+  comment '问题表'
+  engine = InnoDB;
 
-CREATE TABLE userliveness
+create table token
 (
-  id     BIGINT AUTO_INCREMENT
-    PRIMARY KEY,
-  time   DATE            NOT NULL
-  COMMENT '记录的日期',
-  uid    BIGINT          NOT NULL
-  COMMENT '用户id',
-  answer INT DEFAULT '0' NOT NULL
-  COMMENT '回答数',
-  quiz   INT DEFAULT '0' NOT NULL
-  COMMENT '提问数'
+  id         bigint auto_increment
+    primary key,
+  uid        bigint      not null
+  comment '用户id',
+  token      varchar(32) not null
+  comment '签名',
+  expiretime datetime    not null
+  comment '签名过期时间',
+  constraint token_id_uindex
+  unique (id),
+  constraint token_uid_uindex
+  unique (uid)
 )
-  COMMENT '用户活跃度 记录用户在每一天 回答问题 提问数量'
-  ENGINE = InnoDB;
+  comment '用户签名验证'
+  engine = InnoDB;
 
-CREATE TABLE usertoq
+create table user
 (
-  id     BIGINT AUTO_INCREMENT
-    PRIMARY KEY,
-  uid    BIGINT NOT NULL
-  COMMENT '用户ID',
-  qid    BIGINT NOT NULL
-  COMMENT '通过的题目ID',
-  status INT    NOT NULL
-  COMMENT '0 未通过
-	1 已通过'
+  id         bigint auto_increment
+    primary key,
+  name       varchar(15)     not null
+  comment '用户名',
+  pass       varchar(20)     not null
+  comment '密码',
+  identify   int default '2' null
+  comment '管理员1 普通用户2',
+  email      varchar(40)     not null
+  comment '用户邮箱',
+  tel        varchar(20)     null
+  comment '用户电话',
+  campusID   bigint          null
+  comment '所在学校ID',
+  majorID    bigint          null
+  comment '所在专业ID',
+  vice       varchar(20)     null
+  comment '副专业 多个用“，”分隔',
+  avatar     varchar(200)    null
+  comment '用户头像地址',
+  `describe` varchar(30)     null
+  comment '一句话描述自己',
+  gender     int(1)          null
+  comment '0 女 1 男',
+  constraint user_name_uindex
+  unique (name),
+  constraint user_email_uindex
+  unique (email)
 )
-  COMMENT '用户-通过的题目 关系表
+  comment '用户表'
+  engine = InnoDB;
+
+create table userliveness
+(
+  id     bigint auto_increment
+    primary key,
+  time   date            not null
+  comment '记录的日期',
+  uid    bigint          not null
+  comment '用户id',
+  answer int default '0' not null
+  comment '回答数',
+  quiz   int default '0' not null
+  comment '提问数'
+)
+  comment '用户活跃度 记录用户在每一天 回答问题 提问数量'
+  engine = InnoDB;
+
+create table usertoq
+(
+  id       bigint auto_increment
+    primary key,
+  uid      bigint   not null
+  comment '用户ID',
+  qid      bigint   not null
+  comment '通过的题目ID',
+  status   int      not null
+  comment '0 未通过
+1 已通过',
+  passtime datetime not null
+  comment '通过时间'
+)
+  comment '用户-通过的题目 关系表
 用于统计用户通过了哪些题目
 统计用户通过的题目分类占比'
-  ENGINE = InnoDB;
+  engine = InnoDB;

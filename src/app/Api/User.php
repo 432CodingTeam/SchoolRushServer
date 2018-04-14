@@ -30,9 +30,11 @@ class User extends Api {
                 'email'=>array('name'=>"email"),
                 'tel'=>array('name'=>"tel"),
                 'campusID'=>array('name'=>"campusID"),
-                'major'=>array('name'=>"major"),
+                'majorID'=>array('name'=>"majorID"),
                 'vice'=>array('name'=>"vice"),
                 'avatar'=>array('name'=>"avatar"),
+                'gender'=>array('name'=>"gender"),
+                'describe'=>array('name'=>"describe"),
             ),
             'getById' => array(
                 'id' => array("name" => "id")
@@ -47,10 +49,13 @@ class User extends Api {
                 'identify'=>array('name'=>"identify"),
                 'email'=>array('name'=>"email"),
                 'tel'=>array('name'=>"tel"),
+                'gender'=>array('name'=>"gender"),
                 'campusID'=>array('name'=>"campusID"),
-                'major'=>array('name'=>"major"),
+                'majorID'=>array('name'=>"majorID"),
                 'vice'=>array('name'=>"vice"),
                 'avatar'=>array('name'=>"avatar"),
+                'gender'=>array('name'=>"gender"),
+                'describe'=>array('name'=>"describe"),
             ),
             'getByName'=>array(
                 'name'=>array('name'=>'name'),
@@ -69,27 +74,23 @@ class User extends Api {
             "logout" => array(
                 "name" => array("name" => "name"),
             ),
-            'getBylikename'=>array(
+            "getBylikename"=>array(
                 "name"=>array("name"=>"name"),
             ),
+            "getPage" => array(
+                "page" => array("name" => "page"),
+                "num"  => array("name" => "num"),
+            ),
+            "getFilterPage" => array(
+                "page" => array("name" => "page", "require" => true),
+                "num"  => array("name" => "num", "require" => true),
+                "gender" => array("name" => "gender", "default" => -1, "require" => false),
+                "identify"  => array("name" => "identify", "default" => -1, "require" => false),
+                "campusID" => array("name" => "campusID", "default" => -1, "require" => false),
+                "majorID"  => array("name" => "majorID", "default" => -1, "require" => false),
+            )
         );
 	}
-	
-	/**
-	 * 默认接口服务
-     * @desc 默认接口服务，当未指定接口服务时执行此接口服务
-	 * @return string title 标题
-	 * @return string content 内容
-	 * @return string version 版本，格式：X.X.X
-	 * @return int time 当前时间戳
-	 */
-	public function index() {
-        return array(
-            'title' => 'Hello ' . $this->username,
-            'version' => PHALAPI_VERSION,
-            'time' => $_SERVER['REQUEST_TIME'],
-        );
-    }
 
     /**
      * 获取所有用户
@@ -172,25 +173,25 @@ class User extends Api {
                 "error" => "用户名重复"
             );
         if($isMailRepeat)
-        return array(
-            "res" => false,
-            "error" => "邮箱重复"
-        );
+            return array(
+                "res" => false,
+                "error" => "邮箱重复"
+            );
 
         if($this->identify == NULL)
             $this->identify = 2;
         
             
         $insert = array(
-            'name'=>$this->name,
-            'pass'=>$this->pass,
-            'identify'=>$this->identify,
-            'email'=>$this->email,
-            'tel'=>$this->tel,
-            'campusID'=>$this->campusID,
-            'majorID'=>$this->major,
-            'vice'=>$this->vice,
-            'avatar'=> "",  //头像地址先留空 后面上传之后更新
+            'name'      => $this->name,
+            'pass'      => $this->pass,
+            'identify'  => $this->identify,
+            'email'     => $this->email,
+            'tel'       => $this->tel,
+            'campusID'  => $this->campusID,
+            'majorID'   => $this->majorID,
+            'vice'      => $this->vice,
+            'avatar'    =>  "",  //头像地址先留空 后面上传之后更新
         );
         
         $res = $model->add($insert);
@@ -220,7 +221,20 @@ class User extends Api {
     public function getByName()
     {
         $model = new UserModel();
+        $campusModel = new CampusModel();
+        $majorModel = new MajorModel();
+
         $data = $model->getByName($this->name);
+        $campusId = $data["campusID"];
+        $majorId = $data["majorID"];
+        
+        $majorName = $majorModel->getById($majorId);
+        $majorName = $majorName["name"];
+        $data["majorName"] = $majorName;
+
+        $campusName = $campusModel->getById($campusId);
+        $campusName = $campusName["name"];
+        $data["campusName"] = $campusName;
 
         return $data;
     }
@@ -234,8 +248,9 @@ class User extends Api {
      * @param email 用户邮箱
      * @param tel 用户电话
      * @param campusID 用户学校ID
-     * @param major 用户专业ID
+     * @param majorID 用户专业ID
      * @param vice 用户兴趣专业ID
+     * @param describe 用户一句话介绍
      * @param avatar base64编码的图片 将会存储为图片并保存到七牛云，最后将图片外链存到数据库中
      * 
      * @return res 1: 有更改 0:无更改 false: 更新失败
@@ -265,10 +280,12 @@ class User extends Api {
             'identify'=>$this->identify,
             'email'=>$this->email,
             'tel'=>$this->tel,
+            'gender'=>$this->gender,
             'campusID'=>$this->campusID,
-            'majorID'=>$this->major,
+            'majorID'=>$this->majorID,
             'vice'=>$this->vice,
             'avatar'=>$this->avatar,
+            'describe'=>$this->describe,
         );
 
         foreach($data as $key => $val) {
@@ -474,5 +491,99 @@ class User extends Api {
         $model=new TokenModel();
         $arr=$model->getAll();
         return sizeof($arr);
+    }
+    /*
+     * 获取用户总数
+     @author iimT
+     */
+    public function getTotalNum(){
+        $model = new UserModel();
+        return $model->getTotalNum();
+    }
+    /**
+     * 获取一页用户
+     * @author iimT
+     * @param page 第几页
+     * @param num 每页几条
+     * 
+     * @return array 返回的数据
+     */
+    public function getPage() {
+        $model = new UserModel();
+        $campusModel = new CampusModel();
+        $majorModel = new MajorModel();
+
+        $start = ($this->page - 1) * $this->num;
+
+        $data = $model->getByLimit($start, $this->num);
+        $res = array();
+        while($row = $data->fetch()) {
+            $campusId = $row["campusID"];
+            $majorId = $row["majorID"];
+            
+            $majorName = $majorModel->getById($majorId);
+            $majorName = $majorName["name"];
+            $row["majorName"] = $majorName;
+
+            $campusName = $campusModel->getById($campusId);
+            $campusName = $campusName["name"];
+            $row["campusName"] = $campusName;
+
+            array_push($res, $row);
+        }
+        return $res;
+    }
+
+    /**
+     * 根据筛选条件获取一页用户
+     * @desc 只能筛选男女 身份 学校 专业
+     * @author iimT
+     * @param page 第几页
+     * @param num 一页几条
+     * @param gender int 筛选男女
+     * @param identify int 筛选身份
+     * @param campusID int 筛选学校
+     * @param majorID int 筛选专业
+     * 
+     * @return array 返回的数据
+     * TODO: 可以将Model中的getByLimit与getFilterByLimit合并为一个方法
+     */
+    public function getFilterPage() {
+        $model = new UserModel();
+        $campusModel = new CampusModel();
+        $majorModel = new MajorModel();
+        
+        $filterData = array();
+
+        if($this->gender != -1)
+            $filterData["gender"] = $this->gender;
+        if($this->identify != -1)
+            $filterData["identify"] = $this->identify;
+        if($this->campusID != -1)
+            $filterData["campusID"] = $this->campusID;
+        if($this->majorID != -1)
+            $filterData["majorID"] = $this->majorID;
+
+        $start = ($this->page - 1) * $this->num;
+        $data = $model->getFilterByLimit($filterData, $start, $this->num);
+
+        //添加majorName 与 campusName字段
+        $res = array();
+        while($row = $data->fetch()) {
+            $campusId = $row["campusID"];
+            $majorId = $row["majorID"];
+            
+            $majorName = $majorModel->getById($majorId);
+            $majorName = $majorName["name"];
+            $row["majorName"] = $majorName;
+
+            $campusName = $campusModel->getById($campusId);
+            $campusName = $campusName["name"];
+            $row["campusName"] = $campusName;
+
+            array_push($res, $row);
+        }
+
+        return $res;
     }
 }
