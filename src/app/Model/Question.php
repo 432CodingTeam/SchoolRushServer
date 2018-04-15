@@ -70,4 +70,24 @@ class Question extends NotORM {
         
         return $model->where($filter)->limit($start, $num);
     }
+    public function getQuestionByTime($start,$end)
+    {
+        $model=$this->getORM();
+     
+        //return $model->where('createtime','between time',[$start,$end])->select();
+        //return $model->where('createtime','>time',$start);
+       // return $start;
+
+        //return $model->where('createtime',"2017-04-15 06:31:22");
+        $model1=$model->fetchAll();
+        
+        $d=0;
+        foreach($model1 as $m)
+        {
+            //return $m["createtime"];
+            if($m["createtime"]>=$start&&$m["createtime"]<=$end)
+            $arr[$d++]=$m;
+        }
+        return $arr;
+    }
 }
