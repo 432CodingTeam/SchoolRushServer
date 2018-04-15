@@ -526,21 +526,5 @@ class Question extends Api {
 
         return $res;
     }
-    public function getDayQuestion(){
-        $model=new QuestionModel();
-        $arr=array();
-        $d=0;
-        $start=mktime(date('H'),0,0,date('m'),date('d'),date('Y'));  //当前的时间戳
-        $end=mktime(date('H'),59,59,date('m'),date('d'),date('Y'));  
-       $arr[date("Y-m-d H",$start)]= $model->getQuestionByTime(date("Y-m-d H:i:s",$start),date('Y-m-d H:i:s',$end));//最新一小时的数据
-
-       while($d<7){//之后七小时的数据
-        $d++;
-        $start=strtotime("-1 hour",$start);  //当前的时间戳
-        $end=strtotime("-1 hour",$end);  
-        $arr[date("Y-m-d H",$start)]=$model->getQuestionByTime(date('Y-m-d H:i:s',$start),date('Y-m-d H:i:s',$end));
-
-       }
-       return $arr;
-    }
+   
 }
