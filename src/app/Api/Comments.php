@@ -3,6 +3,8 @@ namespace App\Api;
 
 use PhalApi\Api;
 use App\Model\Comments as CommentsModel;
+use App\Model\Question as QuestionModel;
+use App\Model\User as UserModel;
 /**
  * 学校接口类
  *
@@ -53,6 +55,11 @@ class Comments extends Api {
             ),
             'deleteDisagreeById'=>array(
                 'id'=>array('name'=>'id'),
+            ),
+            'getCommentsPage'=>array(
+                'qid'=>array('name'=>'id'),
+                'page' => array('name' => 'page'),
+                'num' => array('name' => 'num', 'default' => 20),
             ),
         );
 	}
@@ -257,6 +264,39 @@ class Comments extends Api {
         if($data["disagree"]>=0) $data["disagree"]--;
         $model->updateById($this->id,$data);
         return $model->getById($this->id);
+    }
+    /**
+     * 获取一页的评论 默认为20条/页
+     * 
+     * @param page 页数
+     * @param num 可选 多少条每页
+     * @param qid 问题id
+     * @return array 返回的一页
+     */
+    public function getCommentsPage() {
+        $model = new CommentsModel();
+        $model1=$model->getAll()->order('time DESC');
+        
+        $start = ($this->page - 1) * $this->num;
+        $data =  $model1->limit($start, $this->num);
+
+        $res = array();
+
+        while($row = $model1->fetch()) {
+            $uid = $row["uid"];
+            //获取用户名 将用户名也添加到获取的数据中
+            $userModel = new UserModel();
+            $user = $userModel->getById($uid);
+            $row["uName"] = $user["name"];
+            //将题目描述添加到获取的数据中
+            $questionModel =new QuestionModel();
+            $qid=$row["qid"];
+            $question=$questionModel->getById($qid);
+            $row["question"] = $question["q"];
+            array_push($res, $row);
+        }
+
+        return $res;
     }
 }
 

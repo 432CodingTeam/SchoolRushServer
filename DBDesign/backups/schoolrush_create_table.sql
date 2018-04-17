@@ -210,6 +210,32 @@ create table question
 )
   comment '问题表';
 
+create table tipoff
+(
+  id         bigint auto_increment
+    primary key,
+  type       int         not null
+  comment '1 举报用户
+2 举报问题
+3 举报评论',
+  reason     varchar(20) null,
+  target     bigint      null
+  comment '用户/问题/评论 ID',
+  review     int         null
+  comment '是否已经审核
+已审核 1
+未审核 2',
+  reviewuser bigint      null
+  comment '审核的用户',
+  reviewtime datetime    null
+  comment '审核时间',
+  time       datetime    null
+  comment '举报时间',
+  constraint tipoff_id_uindex
+  unique (id)
+)
+  comment '举报表';
+
 create table token
 (
   id         bigint auto_increment
@@ -292,4 +318,3 @@ create table usertoq
   comment '用户-通过的题目 关系表
 用于统计用户通过了哪些题目
 统计用户通过的题目分类占比';
-

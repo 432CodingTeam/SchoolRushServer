@@ -214,7 +214,7 @@ class Usertoq extends Api {
      * @author lxx
      * @return array 返回的答题情况
      */
-    public function getDayQuestion(){
+    public function getDayAnswers(){
         $model=new UsertoqModel();
         $arr=array();
         $d=0;

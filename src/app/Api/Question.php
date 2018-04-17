@@ -478,7 +478,7 @@ class Question extends Api {
     }
 
     /**
-     * 根据筛选条件获取一页用户
+     * 根据筛选条件获取一页问题
      * @desc 只能筛选专业 类型 出题人 难度
      * @author lxx
      * @param page 第几页
@@ -572,4 +572,5 @@ class Question extends Api {
 
         return $res;
     }
+    
 }
