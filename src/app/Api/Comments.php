@@ -9,7 +9,7 @@ use App\Model\Comments as CommentsModel;
  * @author: dogstar <chanzonghuang@gmail.com> 2014-10-04
  */
 
-class Campus extends Api {
+class Comments extends Api {
 
 	public function getRules() {
         return array(
@@ -17,10 +17,12 @@ class Campus extends Api {
                 'username' 	=> array('name' => 'username'),
             ),
             'add' => array(
-                'name' => array('name' => "name"),
-                'members'=>array('name'=>"members"),
-                'badge' => array('name' => "badge"),
-                'locate' => array('name' => "locate"),
+                'uid' => array("name" => "uid"),
+                'qid' => array("name" => "qid"),
+                'replay' => array("name" => "replay"),
+                'agree' => array("name" => "agree"),
+                'disagree' => array("name" => "disagree"),
+                'content'=>array("name"=>"content"),
             ),
             'getById' => array(
                 'id' => array("name" => "id")
@@ -30,15 +32,26 @@ class Campus extends Api {
             ),
             'updateById' => array(
                 'id' => array('name'=> 'id','require'=>true),
-                'name' => array('name' => "name",'require'=>true),
-                'members'=>array('name'=>"members",'default'=>null,'require'=>false),
-                'badge' => array('name' => "badge",'default'=>null,'require'=>false),
-                'locate' => array('name' => "locate",'default'=>null,'require'=>false)
+                'qid' => array('name'=> 'qid','require'=>true),
+                'uid' => array('name'=> 'uid','require'=>true),
+                'replay' => array('name' => "replay",'require'=>true),
+                'agree'=>array('name'=>"agree",'default'=>null,'require'=>false),
+                'disagree' => array('name' => "disagree",'default'=>null,'require'=>false),
+                'content' => array('name' => "content",'default'=>true),
             ),
             'getIdByName'=>array(
                 'id'=>array('name'=>"id"),
             ),
-            'getmembersById'=>array(
+            'addAgreeById'=>array(
+                'id'=>array('name'=>'id'),
+            ),
+            'deleteAgreeById'=>array(
+                'id'=>array('name'=>'id'),
+            ),
+            'addDisagreeById'=>array(
+                'id'=>array('name'=>'id'),
+            ),
+            'deleteDisagreeById'=>array(
                 'id'=>array('name'=>'id'),
             ),
         );
@@ -64,7 +77,7 @@ class Campus extends Api {
      * 获取所有内容
      * @desc 获取所有评论信息
      * 
-     * @return array data 所有评论信息
+     * @return array data 所有信息
      * 
      */
     public function getAll() {
@@ -74,7 +87,6 @@ class Campus extends Api {
         $res = array();
         while ($row = $data->fetch()) {
             $row["value"] = $row["id"];
-            $row["uid"] = $row["uid"];
             array_push($res, $row);
         }
         return $res;
@@ -82,13 +94,13 @@ class Campus extends Api {
 
     /**
      * 根据ID获取
-     * @desc 根据ID获取学校信息
+     * @desc 根据ID获取评论信息
      * @param int id 要获取的内容的id
      * 
      * @return data id 该id指定的内容
      */
     public function getById() {
-        $model = new CampusModel();
+        $model = new CommentsModel();
         $data = $model->getById($this->id);
 
         return $data;
@@ -96,81 +108,74 @@ class Campus extends Api {
 
     /**
      * 根据ID删除
-     * @desc 根据ID删除学校信息
+     * @desc 根据ID删除评论信息
      * 
      * @param int id 要删除的的id
      * 
      * @return int data 删除的id
      */
     public function deleteById(){
-        $model =new CampusModel();
+        $model =new CommentsModel();
         $data  =$model->deleteById($this->id);
 
         return $data;
     }
 
     /**
-     * 增加学校信息
-     * @desc 增加学校的信息
-     * 
-     * @param string name 学校名称
-     * @param int members 学校成员数（一般为0）
-     * @param string badge 校徽图片地址
-     * @param string locate 学校省份地址
-     * 
-     * @return array id 增加的学校的标签
+     * 增加评论信息
+     * @desc 增加评论的信息
+     * @author lxx
+     * @param int uid 用户id
+     * @param int qid 问题id
+     * @param int replay 回复的用户id
+     * @param int agree 赞同的人数（一般为0）
+     * @param int disagree 反对的人数(一般为0)
+     * @return array id 增加的评论的信息
      */
     public function add() {
         $insert = array(
-            'name'=>$this->name,
-            'members'=>$this->members,
-            'badge' => $this->badge,
-            'locate' => $this->locate,
+            'uid'=>$this->uid,
+            'qid'=>$this->qid,
+            'time'=>date('Y-m-d H:i:s'),
+            'replay' => $this->replay,
+            'agree' => $this->agree,
+            'disagree'=>$this->disagree,
+            'content'=>$this->content,
         );
 
-        $model = new CampusModel();
+        $model = new CommentsModel();
 
         $id = $model->add($insert);
 
         return $id;
     }
 
-        /**
-     * 根据名字获取id
-     * @desc 根据名字获取id
-     * @param string name 要获取的id的名字
-     * @return int id 该名字对应的id
-     */
-
-    public function getIdByName()
-    {
-       $model = new CampusModel();
-       $data = $model->getIdByName($this->name);
-
-       return $data;
-    }
 
     /**
-     * 更新学校信息
-     * @desc 根据id更新学校的信息
+     * 更新评论信息
+     * @desc 根据id更新评论的信息
      * 
-     * @param string name 学校名称
-     * @param int members 学校成员数（一般为0）
-     * @param string badge 校徽图片地址
-     * @param string locate 学校省份地址
-     * 
-     * @return data id 更新后的学校的信息
+     * @author lxx
+     * @param int uid 用户id
+     * @param int qid 问题id
+     * @param int replay 回复的用户id
+     * @param int agree 赞同的人数（一般为0）
+     * @param int disagree 反对的人数(一般为0)
+     * @return array id 更新的评论的信息
      */
      
     public function updateById() {
-        $model = new CampusModel();
+        $model = new CommentsModel();
 
         $data = array(
-            "id" => $this->id,
-            "name" => $this->name,
-            "members" => $this->members,
-            "badge" => $this->badge,
-            "locate" => $this->locate,
+            'id'=>$this->id,
+            'uid'=>$this->uid,
+            'qid'=>$this->qid,
+            'time'=>date('Y-m-d H:i:s'),
+            'replay' => $this->replay,
+            'agree' => $this->agree,
+            'disagree'=>$this->disagree,
+            'content'=>$this->content,
         );
 
         foreach($data as $key => $val) {
@@ -184,19 +189,74 @@ class Campus extends Api {
 
         $id = $model->updateById($this->id,$data);
         return array("res"=>$id);
-
-    }
-    public function getMembersById()
-    {
-        $model=new CampusModel();
-        return $model->getmembersById($this->id);
+        
     }
     /**
-     * 获取学校总数
+     * 获取评论总数
      */
     public function getTotalNum(){
-        $model = new CampusModel();
+        $model = new CommentsModel();
         return $model->getTotalNum();
+    }
+    /**
+     * @author lxx
+     * 增加一个点赞数
+     * @desc 根据评论id增加一个对该评论的点赞数
+     * @param int id 评论id
+     * @return data model 返回该条评论的所有信息
+     */
+    public function addAgreeById()
+    {
+        $model=new CommentsModel();
+        $data=$model->getById($this->id);
+        $data["agree"]++;
+        $model->updateById($this->id,$data);
+        return $model->getById($this->id);
+    }
+     /**
+     * @author lxx
+     * 减少一个点赞数
+     * @desc 根据评论id减少一个对该评论的点赞数
+     * @param int id 评论id
+     * @return data model 返回该条评论的所有信息
+     */
+    public function deleteAgreeById()
+    {
+        $model=new CommentsModel();
+        $data=$model->getById($this->id);
+        if($data["agree"]>=0) $data["agree"]--;
+        $model->updateById($this->id,$data);
+        return $model->getById($this->id);
+    }
+      /**
+     * @author lxx
+     * 增加一个差评数
+     * @desc 根据评论id增加一个对该评论的差评数
+     * @param int id 评论id
+     * @return data model 返回该条评论的所有信息
+     */
+    public function addDisagreeById()
+    {
+        $model=new CommentsModel();
+        $data=$model->getById($this->id);
+        $data["disagree"]++;
+        $model->updateById($this->id,$data);
+        return $model->getById($this->id);
+    }
+     /**
+     * @author lxx
+     * 减少一个差评数
+     * @desc 根据评论id减少一个对该评论的差评数
+     * @param int id 评论id
+     * @return data model 返回该条评论的所有信息
+     */
+    public function deleteDisagreeById()
+    {
+        $model=new CommentsModel();
+        $data=$model->getById($this->id);
+        if($data["disagree"]>=0) $data["disagree"]--;
+        $model->updateById($this->id,$data);
+        return $model->getById($this->id);
     }
 }
 
