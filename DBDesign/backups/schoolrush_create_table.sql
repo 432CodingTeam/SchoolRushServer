@@ -230,18 +230,20 @@ create table user
 
 create table userliveness
 (
-  id     bigint auto_increment
+  id         bigint auto_increment
     primary key,
-  time   date            not null
-  comment '记录的日期',
-  uid    bigint          not null
+  time       datetime    not null
+  comment '记录的时间',
+  uid        bigint      not null
   comment '用户id',
-  answer int default '0' not null
-  comment '回答数',
-  quiz   int default '0' not null
-  comment '提问数'
+  action     int         not null
+  comment '用户动作',
+  targetID   bigint      null
+  comment '目标ID
+当用户关注某人/用户/题目时才会有此值',
+  `describe` varchar(20) null
 )
-  comment '用户活跃度 记录用户在每一天 回答问题 提问数量'
+  comment '用户活跃度 记录用户的动作'
   engine = InnoDB;
 
 create table usertoq

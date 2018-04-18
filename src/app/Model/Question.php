@@ -60,9 +60,20 @@ class Question extends NotORM {
         return $data;
     }
 
-    public function getTotalNum($type,$status) {
+    public function getTotalNumByFilter($filter) {
         $model = $this->getORM();
-        $data = $model->where("type",$type)->and("status",$status);
+        $data = $model->where($filter);
         return count($data);
+    }
+
+    /**
+     * 重载的getByLimit
+     * @param 
+     */
+    public function getByFilterLimit($filter, $start, $num) {
+        $model = $this->getORM();
+        $data = $model->where($filter)->limit($start, $num);
+
+        return $data;
     }
 }

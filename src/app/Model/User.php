@@ -83,32 +83,16 @@ class User extends NotORM {
             return array("filePath"=>$path.$imgName, "fileName"=>$imgName);
         return false;
     }
-    public function getBylikename($name)
+    public function getBylikename($name, $start, $num)
     {
-        $model=$this->getORM()->fetchall();    
-       // $where['name']=array('like',"%{$name}%");
-        $data=array();
-        for($i=0;i<sizeof($model);$i++)
-        {
-            if(strstr($model[$i]["name"],$name))
-            array_push($data,$model[$i]);
-        }
+        $model=$this->getORM();
+        $data = $model->where('name LIKE ?',"%". $name ."%")->limit($start, $num);
         return $data;
     }
     public function getTotalNum(){
         $model = $this->getORM();
 
         return $model->count("id");
-    }
-    public function getBylikename($name)
-    {
-        $model=$this->getORM()->fetchall();
-        $data=array();
-        for($i=0;$i<sizeof($model);$i++)
-        {
-            if(strstr($model[$i]["name"],$name)) array_push($data,$model[$i]);
-        }
-        return $data;
     }
     /**
      * @author iimT
