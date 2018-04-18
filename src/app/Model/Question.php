@@ -65,15 +65,11 @@ class Question extends NotORM {
         $data = $model->where($filter);
         return count($data);
     }
-
-    /**
-     * 重载的getByLimit
-     * @param 
-     */
-    public function getByFilterLimit($filter, $start, $num) {
+    
+    public function getFilterByLimit($filter, $start, $num) {
         $model = $this->getORM();
-        $data = $model->where($filter)->limit($start, $num);
-
-        return $data;
+        
+        return $model->where($filter)->limit($start, $num);
     }
+    
 }

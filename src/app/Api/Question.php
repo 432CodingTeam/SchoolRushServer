@@ -6,6 +6,7 @@ use App\Model\Question as QuestionModel;
 use App\Model\Usertoq as UsertoqModel;
 use App\Model\User as UserModel;
 use App\Model\Major as MajorModel;
+use App\Model\Label as LabelModel;
 /**
  * 问题接口类
  *
@@ -89,6 +90,19 @@ class Question extends Api {
             "getTotalNum" => array(
                 "status" => array("name" => "status"),
             ),
+            'getFilterPage'=>array(
+                "page"=>array("name"=>"page","require"=>true),
+                "num"=>array("name"=>"num","require"=>true),
+                "type"=>array("name"=>"type","require"=>false,"default"=>-1),
+                "majorID"=>array("name"=>"majorID","require"=>false,"default"=>-1),
+                "levels"=>array("name"=>"levels","require"=>false,"default"=>-1),
+                "uid"=>array("name"=>"uid","require"=>false,"default"=>-1),
+
+            ),
+            'getPageinformation'=>array(
+                'page' => array('name' => 'page'),
+                'num' => array('name' => 'num', 'default' => 20),
+            )
         );
 	}
 	
@@ -450,6 +464,8 @@ class Question extends Api {
             $uid = $row["uid"];
             $majorID = $row["majorID"];
             //获取用户名专业 将用户名专业也添加到获取的数据中
+            //获取用户名 将用户名也添加到获取的数据中
+            $userModel = new UserModel();
             $user = $userModel->getById($uid);
             $major = $majorModel->getById($majorID);
             $row["uName"] = $user["name"];
@@ -519,4 +535,100 @@ class Question extends Api {
         return $model->getTotalNumByFilter($filter);
     }
 
+    /**
+     * 根据筛选条件获取一页问题
+     * @desc 只能筛选专业 类型 出题人 难度
+     * @author lxx
+     * @param page 第几页
+     * @param num 一页几条
+     * @param majorId int 筛选专业
+     * @param type int 筛选问题类型
+     * @param levels int 筛选问题难度
+     * @param uid int 筛选出题人
+     * 
+     * @return array 返回的数据
+
+     * TODO: 可以将Model中的getByLimit与getFilterByLimit合并为一个方法
+     */
+    public function getFilterPage() {
+        $model = new QuestionModel();
+        $userModel=new UserModel();
+        $majorModel = new MajorModel();
+        
+        $filterData = array();
+
+
+        if($this->majorID != -1)
+            $filterData["majorID"] = $this->majorID;
+        if($this->uid != -1)
+            $filterData["uid"] = $this->uid;
+        if($this->type != -1)
+            $filterData["type"] = $this->type;
+        if($this->levels != -1)
+            $filterData["levels"] = $this->levels;
+
+        $start = ($this->page - 1) * $this->num;
+        $data = $model->getFilterByLimit($filterData, $start, $this->num);
+
+        //添加majorName 与 userName字段
+        $res = array();
+        while($row = $data->fetch()) {
+            $uid = $row["uid"];
+            $majorId = $row["majorID"];
+            
+            $majorName = $majorModel->getById($majorId);
+            $majorName = $majorName["name"];
+            $row["majorName"] = $majorName;
+
+            $userName = $userModel->getById($uid);
+            $userName = $userName["name"];
+            $row["userName"] = $userName;
+
+            array_push($res, $row);
+        }
+
+        return $res;
+    }
+   /**
+     * 根据页数获取一页数据 默认为20条/页
+     * @author lxx
+     * @param page 页数
+     * @param num 可选 多少条每页
+     * 
+     * @return array 返回的一页
+     */
+    public function getPageInformation() {
+        $model = new QuestionModel();
+        $start = ($this->page - 1) * $this->num;
+        $data =  $model->getByLimit($start, $this->num);
+
+        $res = array();
+
+        while($row = $data->fetch()) {
+            $arr=array();
+            $arr["question"] =$row["q"];
+            $arr["challenges"]=$row["challenges"];
+            $arr["passed"]=$row["passed"];
+            $arr["passedrate"]=100*($row["passed"]/$row["challenges"])."%";
+            $arr["levels"]=$row["levels"];
+            $user=new UserModel();
+            $user=$user->getById($row["uid"]);
+            $arr["username"]=$user["name"];
+            $arr["toAnswer"]=$row["toAnswer"];
+            $arr["useravatar"]=$user["avatar"];
+            $major=new majorModel();
+            $major1=$major->getById($row["majorID"]);
+            $arr["majorName"]=$major1["name"];
+            $name=$major->getById($major1["parent"]);
+            
+            $arr["majorParentName"]=$name["name"];
+            $label1=array();
+            $label1=explode(",",$row["labels"]);
+            $arr["labels"]=$label1;
+            array_push($res, $arr);
+        }
+
+        return $res;
+    }
+    
 }

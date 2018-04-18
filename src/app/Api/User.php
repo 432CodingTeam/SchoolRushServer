@@ -476,7 +476,7 @@ class User extends Api {
         $majorModel = new MajorModel();
 
         $start = ($this->page - 1) * $this->num;
-        $data = $model->getBylikename($this->name, $start, $this->num);
+        $data = $model->getBylikenamePage($this->name, $start, $this->num);
 
         $res = array();
         //根据获取到的用户的学校与专业ID将学校名与专业名也加进返回的数据
@@ -497,10 +497,23 @@ class User extends Api {
         return $res;
     }
     /**
-     * 获取当前在线人数
-     * @author someonegirl
-     * 
-     * @return 在线人数
+     * 用户名模糊查询
+     * @desc 输入字符串，获取包含该字符串的所有用户名
+     * @author lxx
+     * @param string name 查询的用户名
+     * @return array data 返回的用户名
+     */
+    public function getBylikename(){
+        $model=new UserModel();
+        $data=$model->getBylikename($this->name);
+        return $data;
+    }
+
+    /**
+     * 获取用户在线数
+     * @desc 获取用户在线数
+     * @author lxx
+     * @return 返回用户在线数量
      */
     public function getonlineNum(){
         $model=new TokenModel();

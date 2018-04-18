@@ -34,8 +34,7 @@ create table campus
   comment '校徽的图片地址',
   locate  varchar(20)     not null
 )
-  comment '高校表'
-  engine = InnoDB;
+  comment '高校表';
 
 create table campusmajorpassed
 (
@@ -59,8 +58,44 @@ create table campusmajorpassed
   comment '上一天以及之前共通过数'
 )
   comment '学校-分类-通过数
-关系表 用于排行'
-  engine = InnoDB;
+关系表 用于排行';
+
+create table comments
+(
+  id       bigint auto_increment
+    primary key,
+  uid      bigint          not null
+  comment '评论用户',
+  qid      bigint          not null
+  comment '在哪个问题下',
+  content  varchar(300)    not null
+  comment '评论内容',
+  time     datetime        null
+  comment '评论时间',
+  replay   bigint          null
+  comment '回复的用户 空即为非回复评论',
+  agree    int default '0' null
+  comment '支持数',
+  disagree int default '0' null
+  comment '反对数',
+  constraint comments_id_uindex
+  unique (id)
+)
+  comment '评论表 也是一些人的解题感谢感想';
+
+create table follow
+(
+  id     bigint auto_increment
+    primary key,
+  uid    bigint          null,
+  type   int default '1' not null
+  comment '1 关注用户
+2 关注标签',
+  target bigint          not null
+  comment '被关注的用户/标签的ID',
+  constraint follow_id_uindex
+  unique (id)
+);
 
 create table `group`
 (
@@ -73,8 +108,7 @@ create table `group`
   members varchar(500) not null
   comment '群组成员ID 以“，”分隔'
 )
-  comment '群组表 群组人数限制100'
-  engine = InnoDB;
+  comment '群组表 群组人数限制100';
 
 create table label
 (
@@ -83,8 +117,7 @@ create table label
   name varchar(10) null
   comment '标签名 不可重复'
 )
-  comment '标签表'
-  engine = InnoDB;
+  comment '标签表';
 
 create table major
 (
@@ -95,8 +128,7 @@ create table major
   parent bigint   null
   comment '专业类的id'
 )
-  comment '专业表'
-  engine = InnoDB;
+  comment '专业表';
 
 create table majorrank
 (
@@ -108,8 +140,7 @@ create table majorrank
   comment '1 日榜（统计前一天）
 2 周榜 (上一周)
 3 月榜  (上个月)'
-)
-  engine = InnoDB;
+);
 
 create table operation
 (
@@ -129,17 +160,17 @@ create table operation
   constraint operation_id_uindex
   unique (id)
 )
-  comment '操作表，当有管理员做了某个操作就记录下来'
-  engine = InnoDB;
+  comment '操作表，当有管理员做了某个操作就记录下来';
 
 create table question
 (
   id         bigint auto_increment
     primary key,
   type       int(1)          null
-  comment '题型 选择1 判断2 填空3',
-  q          varchar(100)    null
-  comment '问题内容',
+  comment '题型 选择1 判断2 填空3
+开放题目4',
+  q          varchar(1000)   not null
+  comment '问题内容 最多1000字',
   A          char            null
   comment '选项A',
   B          char            null
@@ -163,7 +194,7 @@ create table question
   uid        bigint          not null
   comment '出题人的id',
   labels     varchar(255)    null
-  comment '标签 多个用逗号分开',
+  comment '标签 多个用逗号分开 每个问题最多7个标签',
   toAnswer   varchar(30)     null
   comment '给答题者的话',
   status     int(1)          null
@@ -171,10 +202,39 @@ create table question
 1 审核完成
 2 问题有误 待重新编辑',
   createtime datetime        null
-  comment '题目创建时间'
+  comment '题目创建时间',
+  title      varchar(30)     null
+  comment '标题 用于开放式题目 其他题目没有标题',
+  `like`     int default '0' null
+  comment '题目赞数'
 )
-  comment '问题表'
-  engine = InnoDB;
+  comment '问题表';
+
+create table tipoff
+(
+  id         bigint auto_increment
+    primary key,
+  type       int         not null
+  comment '1 举报用户
+2 举报问题
+3 举报评论',
+  reason     varchar(20) null,
+  target     bigint      null
+  comment '用户/问题/评论 ID',
+  review     int         null
+  comment '是否已经审核
+已审核 1
+未审核 2',
+  reviewuser bigint      null
+  comment '审核的用户',
+  reviewtime datetime    null
+  comment '审核时间',
+  time       datetime    null
+  comment '举报时间',
+  constraint tipoff_id_uindex
+  unique (id)
+)
+  comment '举报表';
 
 create table token
 (
@@ -191,8 +251,7 @@ create table token
   constraint token_uid_uindex
   unique (uid)
 )
-  comment '用户签名验证'
-  engine = InnoDB;
+  comment '用户签名验证';
 
 create table user
 (
@@ -203,7 +262,7 @@ create table user
   pass       varchar(20)     not null
   comment '密码',
   identify   int default '2' null
-  comment '管理员1 普通用户2',
+  comment '管理员1普通用户2',
   email      varchar(40)     not null
   comment '用户邮箱',
   tel        varchar(20)     null
@@ -225,8 +284,7 @@ create table user
   constraint user_email_uindex
   unique (email)
 )
-  comment '用户表'
-  engine = InnoDB;
+  comment '用户表';
 
 create table userliveness
 (
@@ -243,8 +301,8 @@ create table userliveness
 当用户关注某人/用户/题目时才会有此值',
   `describe` varchar(20) null
 )
-  comment '用户活跃度 记录用户的动作'
   engine = InnoDB;
+  comment '用户活跃度 记录用户在每一天 回答问题 提问数量';
 
 create table usertoq
 (
@@ -262,5 +320,4 @@ create table usertoq
 )
   comment '用户-通过的题目 关系表
 用于统计用户通过了哪些题目
-统计用户通过的题目分类占比'
-  engine = InnoDB;
+统计用户通过的题目分类占比';

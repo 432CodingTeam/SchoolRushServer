@@ -208,4 +208,27 @@ class Usertoq extends Api {
         }
           return $topten;
       }
+       /**
+      * 获取最近8小时的答题情况
+     * @desc 最新一小时取自当前时间
+     * @author lxx
+     * @return array 返回的答题情况
+     */
+    public function getDayAnswers(){
+        $model=new UsertoqModel();
+        $arr=array();
+        $d=0;
+        $start=mktime(date('H'),0,0,date('m'),date('d'),date('Y'));  //当前的时间戳
+        $end=mktime(date('H'),59,59,date('m'),date('d'),date('Y'));  
+       $arr[date("Y-m-d H",$start)]= $model->getQuestionByTime(date("Y-m-d H:i:s",$start),date('Y-m-d H:i:s',$end));//最新一小时的数据
+
+       while($d<7){//之后七小时的数据
+        $d++;
+        $start=strtotime("-1 hour",$start);  //当前的时间戳
+        $end=strtotime("-1 hour",$end);  
+        $arr[date("Y-m-d H",$start)]=$model->getQuestionByTime(date('Y-m-d H:i:s',$start),date('Y-m-d H:i:s',$end));
+
+       }
+       return $arr;
+    }
 }
