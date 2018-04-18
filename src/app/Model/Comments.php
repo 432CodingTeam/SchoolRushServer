@@ -3,10 +3,10 @@ namespace App\Model;
 
 use PhalApi\Model\NotORMModel as NotORM;
 
-class Question extends NotORM {
+class Comments extends NotORM {
 
     protected function getTableName($id) {
-        return 'question';
+        return 'comments';
     }
 
     public function getAll() {
@@ -23,6 +23,7 @@ class Question extends NotORM {
         $data = $data->fetchOne();
         return $data;
     }
+
     public function deleteById($id) {
         $model = $this->getORM();
 
@@ -41,34 +42,9 @@ class Question extends NotORM {
 
         return $model->where("id", $id)->update($data);
     }
-    public function getQByuid($uid)
-    {
-        $model=$this->getORM();
-        $data=$model->where("uid",$uid);
-        return $data;
-    }
-    public function getQBykey()
-    {
-        $model=$this->getORM();
-        $data=$model->where("q",$uid);
-        return $data;
-    }
-    public function getByLimit($start, $num) {
+    public function getTotalNum(){
         $model = $this->getORM();
-        $data = $model->limit($start, $num);
-        
-        return $data;
-    }
 
-    public function getTotalNum($type,$status) {
-        $model = $this->getORM();
-        $data = $model->where("type",$type)->and("status",$status);
-        return count($data);
+        return $model->count("id");
     }
-    public function getFilterByLimit($filter, $start, $num) {
-        $model = $this->getORM();
-        
-        return $model->where($filter)->limit($start, $num);
-    }
-    
 }
