@@ -103,4 +103,10 @@ class Usertoq extends NotORM {
         }
         return $arr;
     }
+
+    public function getPassedStatus($uid, $qid) {
+        $model = $this->getORM();
+        $data = $model->where('qid',$qid)->and('uid',$uid)->fetchOne();
+        return $data;
+    }
 }

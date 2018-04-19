@@ -71,5 +71,11 @@ class Question extends NotORM {
         
         return $model->where($filter)->limit($start, $num);
     }
+
+    public function getTypeById($id) {
+        $model = $this->getORM();
+
+        return $model->select('id, type')->where("id", $id)->fetchOne();
+    }
     
 }

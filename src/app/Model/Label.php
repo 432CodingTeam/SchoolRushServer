@@ -19,7 +19,7 @@ class Label extends NotORM {
     public function getById($id) {
         $model = $this->getORM();
 
-        $data = $model->where("id",$id);
+        $data = $model->where("id",$id)->fetchOne();
         return $data;
     }
     public function deleteById($id) {

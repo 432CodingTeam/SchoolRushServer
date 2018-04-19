@@ -15,10 +15,13 @@ class Usertoq extends Api {
             'index' => array(
                 'username' 	=> array('name' => 'username'),
             ),
-            'add' => array(
-                'uid' => array('name' => "uid"),
-                'qid'=>array('name'=>"qid"),
-
+            'passedQuestion' => array(
+                'uid'       => array('name' => "uid"),
+                'qid'       => array('name' =>"qid"),
+            ),
+            'solveQuestion' => array(
+                'uid'       => array('name' => "uid"),
+                'qid'       => array('name' =>"qid"),
             ),
             'getById' => array(
                 'id' => array("name" => "id")
@@ -103,22 +106,51 @@ class Usertoq extends Api {
         return $data;
     }
     /**
-     * 增加用户通过题目数
+     * 用户通过了某题目
      * @param int uid 用户id
-     * @return int qid 通过题目id
+     * @param int qid 通过题目id
      */
-    public function add() {
-        $insert = array(
-            'uid' => $this->uid,
-            'qid' => $this->qid,
+    public function passedQuestion() {
+        $data = array(
+            'uid'       => $this->uid,
+            'qid'       => $this->qid,
+            'status'    => 1,
+            'passtime'  => date('Y-m-d H:i:s'),
         );
 
         $model = new UsertoqModel();
-
-        $id = $model->add($insert);
-
-        return $id;
+        $passedStatus = $model -> getPassedStatus($this->uid, $this->qid);
+        if(!$passedStatus) {
+            //没有查询到记录
+            return $model->add($data);
+        } else {
+            $id = $passedStatus["id"];
+            return $model->updateById($id, $data);
+        }
     }
+    /**
+     * 用户正在解决某题目 【用户答案错误时】
+     * @param int uid 用户id
+     * @param int qid 通过题目id
+     */
+    public function solveQuestion() {
+        $data = array(
+            'uid'    => $this->uid,
+            'qid'    => $this->qid,
+            'status' => 0,
+        );
+
+        $model = new UsertoqModel();
+        $passedStatus = $model -> getPassedStatus($this->uid, $this->qid);
+        if(!$passedStatus) {
+            //没有查询到记录
+            return $model->add($data);
+        } else {
+            $id = $passedStatus["id"];
+            return $model->updateById($id, $data);
+        }
+    }
+
 
     /**
      * 根据名字获取id
