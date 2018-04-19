@@ -73,20 +73,22 @@ class User extends Api {
             "logout" => array(
                 "name" => array("name" => "name"),
             ),
-            "getBylikename"=>array(
-                "name"=>array("name"=>"name"),
+            "searchByName" => array(
+                "name" => array("name"=>"name"),
+                "page" => array("name" => "page"),
+                "num"  => array("name" => "num"),
             ),
-            "getPage" => array(
+            "getPage"   => array(
                 "page" => array("name" => "page"),
                 "num"  => array("name" => "num"),
             ),
             "getFilterPage" => array(
-                "page" => array("name" => "page", "require" => true),
-                "num"  => array("name" => "num", "require" => true),
-                "gender" => array("name" => "gender", "default" => -1, "require" => false),
+                "page"      => array("name" => "page", "require" => true),
+                "num"       => array("name" => "num", "require" => true),
+                "gender"    => array("name" => "gender", "default" => -1, "require" => false),
                 "identify"  => array("name" => "identify", "default" => -1, "require" => false),
-                "campusID" => array("name" => "campusID", "default" => -1, "require" => false),
-                "majorID"  => array("name" => "majorID", "default" => -1, "require" => false),
+                "campusID"  => array("name" => "campusID", "default" => -1, "require" => false),
+                "majorID"   => array("name" => "majorID", "default" => -1, "require" => false),
             )
         );
 	}
@@ -458,14 +460,40 @@ class User extends Api {
         return $tokenRes;
     }
     /**
-     * 获取表的数据数量
-     * @desc 获取表有多少数据
-     * @return int 该表有多少条数据
+     * 用户名模糊查询
+     * @author someonegirl
+     * @modify iimT
+     * @desc 输入字符串，获取包含该字符串的所有用户
+     * @param string name 查询的用户名关键字
+     * @param int page 页数
+     * @param int num 每页多少条
+     * @return array data 返回的数据
      */
-    public function getCnt(){
+    public function searchByName(){
         $model = new UserModel();
-        $data = $model->getCnt();
-        return count($data);
+        $campusModel = new CampusModel();
+        $majorModel = new MajorModel();
+
+        $start = ($this->page - 1) * $this->num;
+        $data = $model->getBylikenamePage($this->name, $start, $this->num);
+
+        $res = array();
+        //根据获取到的用户的学校与专业ID将学校名与专业名也加进返回的数据
+        while($row = $data->fetch()) {
+            $campusId = $row["campusID"];
+            $majorId = $row["majorID"];
+            
+            $majorName = $majorModel->getById($majorId);
+            $majorName = $majorName["name"];
+            $row["majorName"] = $majorName;
+
+            $campusName = $campusModel->getById($campusId);
+            $campusName = $campusName["name"];
+            $row["campusName"] = $campusName;
+
+            array_push($res, $row);
+        }
+        return $res;
     }
     /**
      * 用户名模糊查询
@@ -491,9 +519,11 @@ class User extends Api {
         $arr=$model->getAll();
         return sizeof($arr);
     }
-    /*
-     * 获取用户总数
-     @author iimT
+    /**
+     * 获取表的数据数量
+     * @author ssh
+     * @desc 获取表有多少数据
+     * @return int 该表有多少条数据
      */
     public function getTotalNum(){
         $model = new UserModel();
@@ -545,7 +575,9 @@ class User extends Api {
      * @param majorID int 筛选专业
      * 
      * @return array 返回的数据
+     * 
      * TODO: 可以将Model中的getByLimit与getFilterByLimit合并为一个方法
+     * TODO: 删除获取总量接口，将总量信息放在逐页获取中
      */
     public function getFilterPage() {
         $model = new UserModel();

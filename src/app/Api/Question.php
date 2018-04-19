@@ -6,6 +6,7 @@ use App\Model\Question as QuestionModel;
 use App\Model\Usertoq as UsertoqModel;
 use App\Model\User as UserModel;
 use App\Model\Major as MajorModel;
+use App\Model\Label as LabelModel;
 /**
  * 问题接口类
  *
@@ -43,15 +44,15 @@ class Question extends Api {
             ),
             'updateById' => array(
                 'id' => array('name' => 'id','require'=>true),
-                'type' => array('name'=>"type",'require'=>true),
-                'q' => array('name'=>'q','require'=>true,),
+                'type' => array('name'=>"type",'require'=>false),
+                'q' => array('name'=>'q','require'=>false,),
                 'A' => array('name'=>'A','require'=>false,'default'=>null),
                 'B' => array('name'=>'B','require'=>false,'default'=>null),
                 'C' => array('name'=>'C','require'=>false,'default'=>null),
                 'D' => array('name'=>'D','require'=>false,'default'=>null),
                 'F' => array('name'=>'F','require'=>false,'default'=>null),
                 'correct' => array('name'=>'correct','require'=>false,'default'=>null),
-                'majorID' => array('name'=>'majorID','require'=>true),
+                'majorID' => array('name'=>'majorID','require'=>false),
                 'challenges' => array('name'=>'challenges','require'=>false,'default'=>null),
                 'passed' => array('name'=>'passed','require'=>false,'default'=>null),
                 'levels' => array('name'=>'levels','require'=>false,'default'=>null),
@@ -77,12 +78,17 @@ class Question extends Api {
                 'key'=>array('name'=>'key'),
             ),
             'getPage' => array(
-                'page' => array('name' => 'page'),
+                'page' => array('name' => 'page', "default" => 1),
                 'num' => array('name' => 'num', 'default' => 20),
             ),
-            'getTotalNum' => array(
-                'type' => array('name' => 'type'),
-                'status' => array('name' => 'status'),
+            'getPageByFilter' => array(
+                'type' => array('name' => 'type', "default" => -1),
+                'status' => array('name' => 'status', "default" => -1),
+                'page' => array('name' => 'page', "default" => 1),
+                'num' => array('name' => 'num', 'default' => 20),
+            ),
+            "getTotalNum" => array(
+                "status" => array("name" => "status"),
             ),
             'getFilterPage'=>array(
                 "page"=>array("name"=>"page","require"=>true),
@@ -93,6 +99,10 @@ class Question extends Api {
                 "uid"=>array("name"=>"uid","require"=>false,"default"=>-1),
 
             ),
+            'getPageinformation'=>array(
+                'page' => array('name' => 'page'),
+                'num' => array('name' => 'num', 'default' => 20),
+            )
         );
 	}
 	
@@ -442,17 +452,24 @@ class Question extends Api {
      */
     public function getPage() {
         $model = new QuestionModel();
+        $majorModel = new MajorModel();
+        $userModel = new UserModel();
+
         $start = ($this->page - 1) * $this->num;
         $data =  $model->getByLimit($start, $this->num);
 
         $res = array();
 
         while($row = $data->fetch()) {
-            $uid = $row["id"];
+            $uid = $row["uid"];
+            $majorID = $row["majorID"];
+            //获取用户名专业 将用户名专业也添加到获取的数据中
             //获取用户名 将用户名也添加到获取的数据中
             $userModel = new UserModel();
             $user = $userModel->getById($uid);
+            $major = $majorModel->getById($majorID);
             $row["uName"] = $user["name"];
+            $row["majorName"] = $major["name"];
 
             array_push($res, $row);
         }
@@ -461,19 +478,65 @@ class Question extends Api {
     }
 
     /**
-     * 获取问题总数
-     * @param int type 问题类型
-     * @param int status 审核状态
+     * 根据筛选条件获取一页问题
+     * @author ssh
+     * @modify iimT
+     * @param int type 问题类型 1 选择题 2 判断题 3 填空题
+     * @param int status 审核状态 0 未审核 1 已审核
      * @return int 某类型问题某审核状态下的问题总数
      */
-    public function getTotalNum() {
+    public function getPageByFilter() {
         $model = new QuestionModel();
-        
-        return $model->getTotalNum($this->type,$this->status);
+        $userModel = new UserModel();
+        $majorModel = new MajorModel();
+
+        $filter = array();
+
+        if($this->type != -1) 
+            $filter["type"] = $this->type;
+        if($this->status != -1) 
+            $filter["status"] = $this->status;
+        $start = ($this->page - 1) * $this->num;
+        $totalNum = $model->getTotalNumByFilter($filter);
+        $data = $model->getByFilterLimit($filter, $start, $this->num);
+
+        $page = array();
+
+        while($row = $data->fetch()) {
+            $uid = $row["uid"];
+            $majorID = $row["majorID"];
+            //获取用户名专业 将用户名专业也添加到获取的数据中
+            $user = $userModel->getById($uid);
+            $major = $majorModel->getById($majorID);
+            $row["uName"] = $user["name"];
+            $row["majorName"] = $major["name"];
+
+            array_push($page, $row);
+        }
+
+        $res = array("page" => $page, "totalNum" => $totalNum);
+        return $res;
     }
 
     /**
-     * 根据筛选条件获取一页用户
+     * 获取问题数量
+     * @author iimT
+     * @param type 0未审核通过 1审核通过
+     * 
+     * @return int 数量
+     */
+    public function getTotalNum() {
+        $model = new QuestionModel();
+
+        $filter = array();
+        if($this->status != null)
+            $filter["status"] = $this->status;
+
+        return $model->getTotalNumByFilter($filter);
+    }
+
+    /**
+     * 根据筛选条件获取一页问题
      * @desc 只能筛选专业 类型 出题人 难度
      * @author lxx
      * @param page 第几页
@@ -526,4 +589,46 @@ class Question extends Api {
 
         return $res;
     }
+   /**
+     * 根据页数获取一页数据 默认为20条/页
+     * @author lxx
+     * @param page 页数
+     * @param num 可选 多少条每页
+     * 
+     * @return array 返回的一页
+     */
+    public function getPageInformation() {
+        $model = new QuestionModel();
+        $start = ($this->page - 1) * $this->num;
+        $data =  $model->getByLimit($start, $this->num);
+
+        $res = array();
+
+        while($row = $data->fetch()) {
+            $arr=array();
+            $arr["question"] =$row["q"];
+            $arr["challenges"]=$row["challenges"];
+            $arr["passed"]=$row["passed"];
+            $arr["passedrate"]=100*($row["passed"]/$row["challenges"])."%";
+            $arr["levels"]=$row["levels"];
+            $user=new UserModel();
+            $user=$user->getById($row["uid"]);
+            $arr["username"]=$user["name"];
+            $arr["toAnswer"]=$row["toAnswer"];
+            $arr["useravatar"]=$user["avatar"];
+            $major=new majorModel();
+            $major1=$major->getById($row["majorID"]);
+            $arr["majorName"]=$major1["name"];
+            $name=$major->getById($major1["parent"]);
+            
+            $arr["majorParentName"]=$name["name"];
+            $label1=array();
+            $label1=explode(",",$row["labels"]);
+            $arr["labels"]=$label1;
+            array_push($res, $arr);
+        }
+
+        return $res;
+    }
+    
 }

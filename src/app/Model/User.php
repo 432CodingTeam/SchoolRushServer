@@ -83,11 +83,18 @@ class User extends NotORM {
             return array("filePath"=>$path.$imgName, "fileName"=>$imgName);
         return false;
     }
+    public function getBylikenamePage($name, $start, $num)
+    {
+        $model=$this->getORM();
+        $data = $model->where('name LIKE ?',"%". $name ."%")->limit($start, $num);
+        return $data;
+    }
     public function getTotalNum(){
         $model = $this->getORM();
 
         return $model->count("id");
     }
+
     public function getBylikename($name)
     {
         $model=$this->getORM()->fetchall();
