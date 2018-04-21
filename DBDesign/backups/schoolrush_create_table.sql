@@ -1,27 +1,3 @@
-DROP TABLE campus;
-
-DROP TABLE campusmajorpassed;
-
-DROP TABLE `group`;
-
-DROP TABLE label;
-
-DROP TABLE major;
-
-DROP TABLE majorrank;
-
-DROP TABLE question;
-
-DROP TABLE user;
-
-DROP TABLE userliveness;
-
-DROP TABLE usertoq;
-
-DROP TABLE token;
-
-
-
 create table campus
 (
   id      bigint auto_increment
@@ -34,7 +10,8 @@ create table campus
   comment '校徽的图片地址',
   locate  varchar(20)     not null
 )
-  comment '高校表';
+  comment '高校表'
+  engine = InnoDB;
 
 create table campusmajorpassed
 (
@@ -44,11 +21,11 @@ create table campusmajorpassed
   comment '专业ID',
   campusID  bigint          null
   comment '学校ID',
-  aday      int default '0' not null
+  aday      int default '1' not null
   comment '今天通过题数',
-  aweek     int default '0' not null
+  aweek     int default '1' not null
   comment '本周通过题数',
-  amonth    int default '0' not null
+  amonth    int default '1' not null
   comment '本月通过题数',
   lastday   int default '0' not null
   comment '上一天以及之前共通过数',
@@ -58,7 +35,8 @@ create table campusmajorpassed
   comment '上一天以及之前共通过数'
 )
   comment '学校-分类-通过数
-关系表 用于排行';
+关系表 用于排行'
+  engine = InnoDB;
 
 create table comments
 (
@@ -72,8 +50,8 @@ create table comments
   comment '评论内容',
   time     datetime        null
   comment '评论时间',
-  replay   bigint          null
-  comment '回复的用户 空即为非回复评论',
+  reply    bigint          null
+  comment '回复的评论id 空即为非回复评论',
   agree    int default '0' null
   comment '支持数',
   disagree int default '0' null
@@ -81,7 +59,8 @@ create table comments
   constraint comments_id_uindex
   unique (id)
 )
-  comment '评论表 也是一些人的解题感谢感想';
+  comment '评论表 也是一些人的解题感谢感想'
+  engine = InnoDB;
 
 create table follow
 (
@@ -89,13 +68,16 @@ create table follow
     primary key,
   uid    bigint          null,
   type   int default '1' not null
-  comment '1 关注用户
-2 关注标签',
+  comment '1 关注用户 
+2 关注标签 
+3 关注专业
+4 关注学校',
   target bigint          not null
-  comment '被关注的用户/标签的ID',
+  comment '被关注的用户/标签/学校/专业的ID',
   constraint follow_id_uindex
   unique (id)
-);
+)
+  engine = InnoDB;
 
 create table `group`
 (
@@ -108,7 +90,8 @@ create table `group`
   members varchar(500) not null
   comment '群组成员ID 以“，”分隔'
 )
-  comment '群组表 群组人数限制100';
+  comment '群组表 群组人数限制100'
+  engine = InnoDB;
 
 create table label
 (
@@ -117,7 +100,8 @@ create table label
   name varchar(10) null
   comment '标签名 不可重复'
 )
-  comment '标签表';
+  comment '标签表'
+  engine = InnoDB;
 
 create table major
 (
@@ -128,19 +112,21 @@ create table major
   parent bigint   null
   comment '专业类的id'
 )
-  comment '专业表';
+  comment '专业表'
+  engine = InnoDB;
 
 create table majorrank
 (
   id   bigint auto_increment
     primary key,
   list varchar(300) not null
-  comment '此专业下排行榜列表  将学校的id用，分隔开',
+  comment '此专业下排行榜列表  将学校的id用","分隔开',
   type int          not null
   comment '1 日榜（统计前一天）
 2 周榜 (上一周)
 3 月榜  (上个月)'
-);
+)
+  engine = InnoDB;
 
 create table operation
 (
@@ -160,81 +146,82 @@ create table operation
   constraint operation_id_uindex
   unique (id)
 )
-  comment '操作表，当有管理员做了某个操作就记录下来';
+  comment '操作表，当有管理员做了某个操作就记录下来'
+  engine = InnoDB;
 
 create table question
 (
   id         bigint auto_increment
     primary key,
-  type       int(1)          null
+  type       int(1)                             null
   comment '题型 选择1 判断2 填空3
 开放题目4',
-  q          varchar(1000)   not null
+  q          varchar(1000)                      not null
   comment '问题内容 最多1000字',
-  A          char            null
+  A          varchar(20)                        null
   comment '选项A',
-  B          char            null
+  B          varchar(20)                        null
   comment '选项B',
-  C          char            null
+  C          varchar(20)                        null
   comment '选项C',
-  D          char            null
+  D          varchar(20)                        null
   comment '选项D',
-  F          char            null
+  F          varchar(20)                        null
   comment '正确/错误选项 只可能有T/F两种值',
-  correct    varchar(10)     not null
+  correct    varchar(20)                        not null
   comment '正确答案',
-  majorID    bigint          null
+  majorID    bigint                             null
   comment '所在分类ID',
-  challenges int default '0' null
+  challenges int default '0'                    null
   comment '挑战人数',
-  passed     int default '0' null
+  passed     int default '0'                    null
   comment '通过人数',
-  levels     int             null
+  levels     double(2, 1) default '3.5'         null
   comment '问题难度星级',
-  uid        bigint          not null
+  uid        bigint                             not null
   comment '出题人的id',
-  labels     varchar(255)    null
+  labels     varchar(255)                       null
   comment '标签 多个用逗号分开 每个问题最多7个标签',
-  toAnswer   varchar(30)     null
+  toAnswer   varchar(30)                        null
   comment '给答题者的话',
-  status     int(1)          null
+  status     int(1)                             null
   comment '0 未审核
 1 审核完成
 2 问题有误 待重新编辑',
-  createtime datetime        null
-  comment '题目创建时间',
-  title      varchar(30)     null
+  title      varchar(30)                        null
   comment '标题 用于开放式题目 其他题目没有标题',
-  `like`     int default '0' null
-  comment '题目赞数'
+  `like`     int default '0'                    null
+  comment '题目赞数',
+  createtime datetime default CURRENT_TIMESTAMP null
 )
-  comment '问题表';
+  comment '问题表'
+  engine = InnoDB;
 
 create table tipoff
 (
   id         bigint auto_increment
     primary key,
-  type       int         not null
+  type       int                                not null
   comment '1 举报用户
 2 举报问题
 3 举报评论',
-  reason     varchar(20) null,
-  target     bigint      null
+  reason     varchar(20)                        null,
+  target     bigint                             null
   comment '用户/问题/评论 ID',
-  review     int         null
+  review     int                                null
   comment '是否已经审核
 已审核 1
 未审核 2',
-  reviewuser bigint      null
+  reviewuser bigint                             null
   comment '审核的用户',
-  reviewtime datetime    null
+  reviewtime datetime                           null
   comment '审核时间',
-  time       datetime    null
-  comment '举报时间',
+  time       datetime default CURRENT_TIMESTAMP null,
   constraint tipoff_id_uindex
   unique (id)
 )
-  comment '举报表';
+  comment '举报表'
+  engine = InnoDB;
 
 create table token
 (
@@ -251,7 +238,8 @@ create table token
   constraint token_uid_uindex
   unique (uid)
 )
-  comment '用户签名验证';
+  comment '用户签名验证'
+  engine = InnoDB;
 
 create table user
 (
@@ -284,40 +272,144 @@ create table user
   constraint user_email_uindex
   unique (email)
 )
-  comment '用户表';
+  comment '用户表'
+  engine = InnoDB;
 
 create table userliveness
 (
   id         bigint auto_increment
     primary key,
-  time       datetime    not null
-  comment '记录的时间',
-  uid        bigint      not null
+  uid        bigint                             not null
   comment '用户id',
-  action     int         not null
-  comment '用户动作',
-  targetID   bigint      null
+  action     int(3)                             not null
+  comment '用户动作
+1 加入
+2 正在解决题目
+3 通过题目
+4 关注用户/标签/学校/专业',
+  targetID   bigint                             null
   comment '目标ID
 当用户关注某人/用户/题目时才会有此值',
-  `describe` varchar(20) null
+  `describe` varchar(20)                        null,
+  time       datetime default CURRENT_TIMESTAMP null
 )
   engine = InnoDB;
-  comment '用户活跃度 记录用户在每一天 回答问题 提问数量';
 
 create table usertoq
 (
-  id       bigint auto_increment
+  id        bigint auto_increment
     primary key,
-  uid      bigint   not null
+  uid       bigint                             not null
   comment '用户ID',
-  qid      bigint   not null
+  qid       bigint                             not null
   comment '通过的题目ID',
-  status   int      not null
+  status    int                                not null
   comment '0 未通过
 1 已通过',
-  passtime datetime not null
-  comment '通过时间'
+  passtime  datetime                           null
+  comment '通过时间',
+  starttime datetime default CURRENT_TIMESTAMP null
 )
   comment '用户-通过的题目 关系表
 用于统计用户通过了哪些题目
-统计用户通过的题目分类占比';
+统计用户通过的题目分类占比'
+  engine = InnoDB;
+
+create trigger after_insert
+  after INSERT
+  on usertoq
+  for each row
+  begin
+    if (NEW.status = 1)
+    then
+      #通过题目
+      #更新用户活跃表
+      insert into `school-rush`.userliveness
+      (uid, action, targetID, `describe`)
+      values
+        (NEW.uid, 3, NEW.qid, "用户通过题目");
+      #更新学校专业通过题目表
+      set @majorID = (select majorID
+                      from `school-rush`.question
+                      where id = NEW.qid);
+      set @campusID = (select campusID
+                       from `school-rush`.user
+                       where id = NEW.uid);
+      set @haveItem = (select count(*)
+                       from `school-rush`.campusmajorpassed
+                       where campusID = @campusID and majorID = @majorID);
+      if (@haveItem = 1)
+      then
+        #如果有 更新
+        update `school-rush`.campusmajorpassed
+        set aday = aday + 1, aweek = aweek + 1, amonth = amonth + 1
+        where campusID = @campusID and majorID = @majorID;
+      else
+        #没有 添加
+        insert into `school-rush`.campusmajorpassed
+        (majorID, campusID)
+        VALUES
+          (@majorID, @campusID);
+      end if;
+      #更新题目的挑战人数和通过人数
+      update `school-rush`.question
+      set challenges = challenges + 1, passed = passed + 1
+      where id = NEW.qid;
+    else
+      #用户没有通过题目
+      #更新用户活跃表
+      insert into `school-rush`.userliveness
+      (uid, action, targetID, `describe`)
+      values
+        (NEW.uid, 2, NEW.qid, "用户正在解决题目");
+      #更新题目的挑战人数和通过人数
+      update `school-rush`.question
+      set challenges = challenges + 1
+      where id = NEW.qid;
+    end if;
+  end;
+
+create trigger after_update
+  after UPDATE
+  on usertoq
+  for each row
+  begin
+    #因为前台的更新只可能将status从0变成1 所以
+    if (NEW.status = 1)
+    then
+      #更新用户活跃表
+      insert into `school-rush`.userliveness
+      (uid, action, targetID, `describe`)
+      values
+        (NEW.uid, 3, NEW.qid, "用户通过题目");
+      #更新学校专业通过题目表
+      set @majorID = (select majorID
+                      from `school-rush`.question
+                      where id = NEW.qid);
+      set @campusID = (select campusID
+                       from `school-rush`.user
+                       where id = NEW.uid);
+      set @haveItem = (select count(*)
+                       from `school-rush`.campusmajorpassed
+                       where campusID = @campusID and majorID = @majorID);
+      if (@haveItem = 1)
+      then
+        #如果有 更新
+        update `school-rush`.campusmajorpassed
+        set aday = aday + 1, aweek = aweek + 1, amonth = amonth + 1
+        where campusID = @campusID and majorID = @majorID;
+      else
+        #没有 添加
+        insert into `school-rush`.campusmajorpassed
+        (majorID, campusID)
+        VALUES
+          (@majorID, @campusID);
+      end if;
+      #更新题目的挑战人数和通过人数
+      update `school-rush`.question
+      set passed = passed + 1
+      where id = NEW.qid;
+    end if;
+  end;
+
+

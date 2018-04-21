@@ -21,88 +21,93 @@ class Question extends Api {
                 'username' 	=> array('name' => 'username'),
             ),
             'add' => array(
-                'type' => array('name'=>"type"),
-                'q' => array('name'=>'q'),
-                'A' => array('name'=>'A'),
-                'B' => array('name'=>'B'),
-                'C' => array('name'=>'C'),
-                'D' => array('name'=>'D'),
-                'F' => array('name'=>'F'),
-                'correct' => array('name'=>'correct'),
-                'majorID' => array('name'=>'majorId'),
-                'challenges' => array('name'=>'challength'),
-                'passed' => array('name'=>'passed'),
-                'levels' => array('name'=>'levels'),
-                'labels' => array('name'=>'labels'),
-                'status' => array('name' => 'status'),
+                'type'          => array('name' => "type", 'require' => true,),
+                'q'             => array('name' => 'q'),
+                'A'             => array('name' => 'A'),
+                'B'             => array('name' => 'B'),
+                'C'             => array('name' => 'C'),
+                'D'             => array('name' => 'D'),
+                'F'             => array('name' => 'F'),
+                'correct'       => array('name' => 'correct', 'require' => true,),
+                'majorID'       => array('name' => 'majorID', 'require' => true,),
+                'challenges'    => array('name' => 'challength'),
+                'passed'        => array('name' => 'passed'),
+                'levels'        => array('name' => 'levels'),
+                'labels'        => array('name' => 'labels'),
+                'status'        => array('name' => 'status'),
+                'uid'           => array("name" => "uid", 'require'=>true,),
+                'title'         => array("name" => "title",),
             ),
             'getById' => array(
                 'id' => array("name" => "id")
             ),
             'deleteById' => array(
-                'id'=> array("name" => "id")
+                'id' => array("name" => "id")
             ),
             'updateById' => array(
-                'id' => array('name' => 'id','require'=>true),
-                'type' => array('name'=>"type",'require'=>false),
-                'q' => array('name'=>'q','require'=>false,),
-                'A' => array('name'=>'A','require'=>false,'default'=>null),
-                'B' => array('name'=>'B','require'=>false,'default'=>null),
-                'C' => array('name'=>'C','require'=>false,'default'=>null),
-                'D' => array('name'=>'D','require'=>false,'default'=>null),
-                'F' => array('name'=>'F','require'=>false,'default'=>null),
-                'correct' => array('name'=>'correct','require'=>false,'default'=>null),
-                'majorID' => array('name'=>'majorID','require'=>false),
-                'challenges' => array('name'=>'challenges','require'=>false,'default'=>null),
-                'passed' => array('name'=>'passed','require'=>false,'default'=>null),
-                'levels' => array('name'=>'levels','require'=>false,'default'=>null),
-                'labels' => array('name'=>'labels','require'=>false,'default'=>null),
-                'toAnswer' => array('name'=>'toAnswer','require'=>false,'default'=>null),
-                'status' => array('name' => 'status','require'=>false,'default'=>null),
+                'id'            => array('name' => 'id','require' => true),
+                'type'          => array('name' => "type") ,
+                'q'             => array('name' => 'q', ),
+                'A'             => array('name' => 'A', 'default' => null),
+                'B'             => array('name' => 'B', 'default' => null),
+                'C'             => array('name' => 'C', 'default' => null),
+                'D'             => array('name' => 'D', 'default' => null),
+                'F'             => array('name' => 'F', 'default' => null),
+                'correct'       => array('name' => 'correct', 'default'=>null),
+                'majorID'       => array('name' => 'majorID') ,
+                'challenges'    => array('name' => 'challenges', 'default'=>null),
+                'passed'        => array('name' => 'passed', 'default'=>null),
+                'levels'        => array('name' => 'levels', 'default'=>null),
+                'labels'        => array('name' => 'labels', 'default'=>null),
+                'toAnswer'      => array('name' => 'toAnswer', 'default'=>null),
+                'status'        => array('name' => 'status', 'default'=>null),
             ),
             'getQByuid'=>array(
-                'uid'=>array('name'=>'uid'),
-                'num'=>array('name'=>'num'),
+                'uid' => array('name' => 'uid'),
+                'num' => array('name' => 'num'),
             ),
             'getPQByuid'=>array(
-                'uid'=>array('name'=>'uid'),
-                'num'=>array('name'=>'num'),
+                'uid' => array('name' => 'uid'),
+                'num' => array('name' => 'num'),
             ),
             'getAllPQByuid'=>array(
-                'uid'=>array('name'=>'uid'),
+                'uid' => array('name' => 'uid'),
             ),
             'getAllUnPQByuid'=>array(
-                'uid'=>array('name'=>'uid'),
+                'uid' => array('name' => 'uid'),
             ),
             'getQByKey'=>array(
                 'key'=>array('name'=>'key'),
             ),
             'getPage' => array(
                 'page' => array('name' => 'page', "default" => 1),
-                'num' => array('name' => 'num', 'default' => 20),
+                'num'  => array('name' => 'num', 'default' => 20),
             ),
             'getPageByFilter' => array(
-                'type' => array('name' => 'type', "default" => -1),
+                'type'   => array('name' => 'type', "default" => -1),
                 'status' => array('name' => 'status', "default" => -1),
-                'page' => array('name' => 'page', "default" => 1),
-                'num' => array('name' => 'num', 'default' => 20),
+                'page'   => array('name' => 'page', "default" => 1),
+                'num'    => array('name' => 'num', 'default' => 20),
             ),
             "getTotalNum" => array(
                 "status" => array("name" => "status"),
             ),
             'getFilterPage'=>array(
-                "page"=>array("name"=>"page","require"=>true),
-                "num"=>array("name"=>"num","require"=>true),
-                "type"=>array("name"=>"type","require"=>false,"default"=>-1),
-                "majorID"=>array("name"=>"majorID","require"=>false,"default"=>-1),
-                "levels"=>array("name"=>"levels","require"=>false,"default"=>-1),
-                "uid"=>array("name"=>"uid","require"=>false,"default"=>-1),
+                "page"      =>array("name" => "page", "require"=>true),
+                "num"       =>array("name" => "num", "require"=>true),
+                "type"      =>array("name" => "type", "default"=>-1),
+                "majorID"   =>array("name" => "majorID", "default"=>-1),
+                "levels"    =>array("name" => "levels", "default"=>-1),
+                "uid"       =>array("name" => "uid", "default"=>-1),
 
             ),
             'getPageinformation'=>array(
                 'page' => array('name' => 'page'),
-                'num' => array('name' => 'num', 'default' => 20),
-            )
+                'num'  => array('name' => 'num', 'default' => 20),
+            ),
+            "getTypeById" => array(
+                'id' => array("name" => "id"),
+            ),
         );
 	}
 	
@@ -147,7 +152,13 @@ class Question extends Api {
 
     public function getById() {
         $model = new QuestionModel();
+        $userModel = new UserModel();
+
         $data = $model->getById($this->id);
+        if(!$data) {
+            //没有找到此ID的记录
+            return array("res" => false, "msg" => "没有找到此题目。");
+        }
         if($data["type"]==1){ //选择题
             $arr = array($data["A"],$data["B"],$data["C"],$data["D"]);
             $options = $arr;
@@ -167,9 +178,8 @@ class Question extends Api {
             $opt = array("A","B","C","D");
 
             $res = array(
-                "id"=>$data["id"],
                 "q"=>$data["q"],
-                "arr"=>array(
+                "options"=>array(
                     "A"=>$arr[0],
                     "B"=>$arr[1],
                     "C"=>$arr[2],
@@ -181,7 +191,6 @@ class Question extends Api {
         }
         else if($data["type"]==2){  //判断题
             $res = array(
-                "id"=>$data["id"],
                 "q"=>$data["q"],
                 "correct"=>$data["correct"],
                 "toAnswer"=>$data["toAnswer"],
@@ -190,7 +199,6 @@ class Question extends Api {
         else if($data["type"]==3){ //填空题
             $arr =  explode("____",$data["q"]);
             $res = array(
-                "id"=>$data["id"],
                 "q"=>array(
                     "pre"=>$arr[0],
                     "suf"=>$arr[1],
@@ -199,6 +207,11 @@ class Question extends Api {
                 "toAnswer"=>$data["toAnswer"],
             );
         }
+        $res["id"]      = $data["id"];
+        $res["type"]    = $data["type"];
+        //题目信息完成 组装出题人信息
+        $uInfo = $userModel -> getById($data["uid"]);
+        $res["user"] = $uInfo;
         return $res;
     }
 
@@ -252,7 +265,18 @@ class Question extends Api {
             'levels'=>$this->levels,
             'labels'=>$this->labels,
             'status' => $this->status,
+            'uid'   => $this->uid,
+            'title' => $this->title,
         );
+
+        foreach($insert as $key => $val) {
+            if($val == NULL){
+                $keys = array_keys($insert);
+                $index = array_search($key, $keys);
+
+                array_splice($insert, $index, 1);
+            }
+        }
 
         $model = new QuestionModel();
 
@@ -605,30 +629,46 @@ class Question extends Api {
         $res = array();
 
         while($row = $data->fetch()) {
-            $arr=array();
-            $arr["question"] =$row["q"];
-            $arr["challenges"]=$row["challenges"];
-            $arr["passed"]=$row["passed"];
-            $arr["passedrate"]=100*($row["passed"]/$row["challenges"])."%";
-            $arr["levels"]=$row["levels"];
-            $user=new UserModel();
-            $user=$user->getById($row["uid"]);
-            $arr["username"]=$user["name"];
-            $arr["toAnswer"]=$row["toAnswer"];
-            $arr["useravatar"]=$user["avatar"];
-            $major=new majorModel();
-            $major1=$major->getById($row["majorID"]);
-            $arr["majorName"]=$major1["name"];
-            $name=$major->getById($major1["parent"]);
+            $user                    = new UserModel();
+            $major                   = new majorModel();
+            $labelModel              = new LabelModel();
+
+            $arr                     = $row;
+            $arr["question"]         = $row["q"];
+            $arr["passedrate"]       = $row["challenges"] == 0 ? "0%" : 100*($row["passed"]/$row["challenges"])."%";
+            $user                    = $user->getById($row["uid"]);
+            $arr["username"]         = $user["name"];
+            $arr["useravatar"]       = $user["avatar"];
+            $major1                  = $major->getById($row["majorID"]);
+            $arr["majorName"]        = $major1["name"];
+            $name                    = $major->getById($major1["parent"]);
             
-            $arr["majorParentName"]=$name["name"];
-            $label1=array();
-            $label1=explode(",",$row["labels"]);
-            $arr["labels"]=$label1;
+            $arr["majorParentName"]  = $name["name"];
+            $arr["labels"]           = $row["labels"] == null ? array() : explode(",",$row["labels"]);
+            $label_arr = array();
+            foreach( $arr["labels"] as $labelID) {
+                $label = $labelModel -> getById($labelID);
+                $_lebel = array();
+                $_lebel["id"] = $label["id"];
+                $_lebel["name"] = $label["name"];
+                array_push($label_arr, $_lebel);
+            }
+            $arr["labelsInfo"]=$label_arr;
             array_push($res, $arr);
         }
 
         return $res;
     }
-    
+
+    /**
+     * 根据问题ID获取问题类型
+     * @param int id 问题id
+     * 
+     * return int 返回问题标记
+     */
+    public function getTypeById() {
+        $model = new QuestionModel();
+
+        return $model -> getTypeById($this -> id);
+    }
 }
