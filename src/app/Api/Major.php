@@ -69,6 +69,7 @@ class Major extends Api {
             $row["label"] = $row["name"];
             array_push($res, $row);
         }
+        array_splice($res, 0, 12);
         return $res;
     }
 
