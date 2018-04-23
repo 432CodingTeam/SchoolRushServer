@@ -77,5 +77,15 @@ class Question extends NotORM {
 
         return $model->select('id, type')->where("id", $id)->fetchOne();
     }
+
+    public function getByExceptId($arr) {
+        $data = array();
+        foreach($arr as $id) {
+            array_push($data, (int)$id["qid"]);
+        }
+        $model = $this->getORM();
+
+        return $model->order('id DESC')->where("NOT id", $data);
+    }
     
 }
