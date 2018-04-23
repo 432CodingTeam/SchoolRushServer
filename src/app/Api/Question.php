@@ -206,6 +206,7 @@ class Question extends Api {
         }
         $res["id"]      = $data["id"];
         $res["type"]    = $data["type"];
+        $res["title"]   = $data["title"];
         //题目信息完成 组装出题人信息
         $uInfo = $userModel -> getById($data["uid"]);
         $res["user"] = $uInfo;
