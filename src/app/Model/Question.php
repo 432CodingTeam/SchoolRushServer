@@ -88,4 +88,13 @@ class Question extends NotORM {
         return $model->order('id DESC')->where("NOT id", $data);
     }
     
+    public function regularReplaceP($str){
+
+        return preg_replace('/!\[.*\]\((.+)\)/',"[图片]",$str);
+    }
+    public function regularReplaceA($str){
+
+        return preg_replace('/\[.*\]\((.+)\)/',"[链接]",$str);
+    }
+
 }

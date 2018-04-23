@@ -9,38 +9,30 @@ class Tipoff extends NotORM {
         return 'tipoff';
     }
 
-    public function getAll() {
-        //获取label表的所有行
-        $model = $this->getORM();
-        $data = $model->select("*");
-        return $data;
+    public function getAll(){
+        $model=$this->getORM();
+        $data=$model->select("*");
+         return $data;
     }
 
-    public function getById($id) {
-        $model = $this->getORM();
-
-        $data = $model->where("id",$id);
-        $data = $data->fetchOne();
-        return $data;
-    }
-
-    public function getInforByID($id)
+    public function getById($id)
     {
         $model=$this->getORM();
-        $data=$model->where("id",$id)->fetchOne();
-        //var_dump($data);
+        $data=$model->where("id",$id);
         return $data;
     }
+
     public function deleteById($id) {
         $model = $this->getORM();
 
         $data = $model->where("id",$id)->delete();
         return $data;
     }
-    public function add($insert_data) {
-        $model = $this->getORM();
-        $id = $model->insert($insert_data);
 
+    public function add($insert_data)
+    {
+        $model=$this->getORM();
+        $id=$model->insert($insert_data);
         return $id;
     }
 
@@ -49,10 +41,5 @@ class Tipoff extends NotORM {
 
         return $model->where("id", $id)->update($data);
     }
-
-    public function getTotalNum(){
-        $model = $this->getORM();
-
-        return $model->count("id");
-    }
+    
 }
