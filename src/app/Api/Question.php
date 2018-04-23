@@ -109,7 +109,13 @@ class Question extends Api {
             ),
             "getUserQuestion" => array(
                 'uid' => array("name" => "uid")
-            )
+            ),
+            'addLikeById'=>array(
+                'id'=>array('name'=>'id'),
+            ),
+            'deleteLikeById'=>array(
+                'id'=>array('name'=>'id'),
+            ),
         );
 	}
 	
@@ -711,5 +717,35 @@ class Question extends Api {
         $model = new QuestionModel();
 
         return $model -> getTypeById($this -> id);
+    }
+     /**
+     * @author lxx
+     * 题目增加一个点赞数
+     * @desc 根据题目id增加一个对该题目的点赞数
+     * @param int id 题目id
+     * @return data model 返回该条题目的所有信息
+     */
+    public function addLikeById()
+    {
+        $model=new QuestionModel();
+        $data=$model->getById($this->id);
+        $data["like"]++;
+        $model->updateById($this->id,$data);
+        return $model->getById($this->id);
+    }
+     /**
+     * @author lxx
+     * 减少一个点赞数
+     * @desc 根据题目id减少一个对该题目的点赞数
+     * @param int id 题目id
+     * @return data model 返回该条题目的所有信息
+     */
+    public function deleteLikeById()
+    {
+        $model=new QuestionModel();
+        $data=$model->getById($this->id);
+        if($data["like"]>=0) $data["like"]--;
+        $model->updateById($this->id,$data);
+        return $model->getById($this->id);
     }
 }

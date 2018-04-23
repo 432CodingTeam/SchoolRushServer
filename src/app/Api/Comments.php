@@ -83,7 +83,7 @@ class Comments extends Api {
     /**
      * 获取所有内容
      * @desc 获取所有评论信息
-     * 
+     * @author lxx
      * @return array data 所有信息
      * 
      */
@@ -103,7 +103,7 @@ class Comments extends Api {
      * 根据ID获取
      * @desc 根据ID获取评论信息
      * @param int id 要获取的内容的id
-     * 
+     * @author lxx
      * @return data id 该id指定的内容
      */
     public function getById() {
@@ -116,7 +116,7 @@ class Comments extends Api {
     /**
      * 根据ID删除
      * @desc 根据ID删除评论信息
-     * 
+     * @author lxx
      * @param int id 要删除的的id
      * 
      * @return int data 删除的id
@@ -267,7 +267,7 @@ class Comments extends Api {
     }
     /**
      * 获取一页的评论 默认为20条/页
-     * 
+     * @author lxx
      * @param page 页数
      * @param num 可选 多少条每页
      * @param qid 问题id
