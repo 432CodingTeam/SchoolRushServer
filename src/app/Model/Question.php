@@ -78,4 +78,23 @@ class Question extends NotORM {
         return $model->select('id, type')->where("id", $id)->fetchOne();
     }
 
+    public function getByExceptId($arr) {
+        $data = array();
+        foreach($arr as $id) {
+            array_push($data, (int)$id["qid"]);
+        }
+        $model = $this->getORM();
+
+        return $model->order('id DESC')->where("NOT id", $data);
+    }
+    
+    public function regularReplaceP($str){
+
+        return preg_replace('/!\[.*\]\((.+)\)/',"[图片]",$str);
+    }
+    public function regularReplaceA($str){
+
+        return preg_replace('/\[.*\]\((.+)\)/',"[链接]",$str);
+    }
+
 }

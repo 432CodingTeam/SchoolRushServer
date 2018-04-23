@@ -54,17 +54,6 @@ class Usertoq extends NotORM {
         $model=$this->getORM();
         return $model->where('uid',$uid)->and('status',0);
     }
-    public function getPassingRate($id){
-        $model = $this->getORM();  
-        $passedq = $model->where('uid',$id)->and('status',1);
-        
-        $new_model = $this->getORM();
-        $unpassq = $new_model->where('uid',$id)->and('status',0);
-
-        $rate = count($passedq) / (count($passedq)+count($unpassq));
-        
-        return $rate;
-    }
 
     public function getTobeSolved($uid){
         $model = $this->getORM();
@@ -72,10 +61,22 @@ class Usertoq extends NotORM {
         return $model->where('uid',$uid)->and('status',0);
     }
 
+    public function getTobeSolvedNum($uid){
+        $model = $this->getORM();
+
+        return count($model->where('uid',$uid)->and('status',0));
+    }
+
     public function getPassed($uid){
         $model = $this->getORM();
 
         return $model->where('uid',$uid)->and('status',1);
+    }
+
+    public function getPassedNum($uid){
+        $model = $this->getORM();
+
+        return count($model->where('uid',$uid)->and('status',1));
     }
 
     public function getTopTen($qid){
@@ -108,5 +109,10 @@ class Usertoq extends NotORM {
         $model = $this->getORM();
         $data = $model->where('qid',$qid)->and('uid',$uid)->fetchOne();
         return $data;
+    }
+
+    public function getUserAllId($uid) {
+        $model = $this->getORM();
+        return $model->select("qid")->where("uid", $uid)->fetchAll();
     }
 }

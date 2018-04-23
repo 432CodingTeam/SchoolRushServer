@@ -18,11 +18,11 @@ class Question extends Api {
 	public function getRules() {
         return array(
             'index' => array(
-                'username' 	=> array('name' => 'username'),
+                'username' 	=> array('name' => 'username')
             ),
             'add' => array(
-                'type'          => array('name' => "type", 'require' => true),
-                'q'             => array('name' => 'q'),
+                'type'          => array('name' => "type", 'require' => true,),
+                'q'             => array('name' => 'q', 'require' => true,),
                 'A'             => array('name' => 'A'),
                 'B'             => array('name' => 'B'),
                 'C'             => array('name' => 'C'),
@@ -35,8 +35,8 @@ class Question extends Api {
                 'levels'        => array('name' => 'levels'),
                 'labels'        => array('name' => 'labels'),
                 'status'        => array('name' => 'status'),
-                'uid'           => array("name" => "uid", 'require'=>true),
-                'title'         => array("name" => "title",'require' => true),
+                'uid'           => array("name" => "uid", 'require'=>true,),
+                'title'         => array("name" => "title", 'require' => true,),
             ),
             'getById' => array(
                 'id' => array("name" => "id")
@@ -108,7 +108,15 @@ class Question extends Api {
             "getTypeById" => array(
                 'id' => array("name" => "id"),
             ),
-            
+            "getUserQuestion" => array(
+                'uid' => array("name" => "uid")
+            ),
+            'addLikeById'=>array(
+                'id'=>array('name'=>'id'),
+            ),
+            'deleteLikeById'=>array(
+                'id'=>array('name'=>'id'),
+            ),
         );
 	}
 	
@@ -148,7 +156,6 @@ class Question extends Api {
      * @param int type 问题的类型 1,2,3对应选择，判断，填空题
      * @param string q 问题的内容
      * @param string correct 正确答案
-     * @param string toAnswer 给答题者的话
      * @return data data 该id指定的问题
      */
 
@@ -188,14 +195,12 @@ class Question extends Api {
                     "D"=>$arr[3],
                 ),
                 "correct"=>$opt[$i],
-                "toAnswer"=>$data["toAnswer"],
             );
         }
         else if($data["type"]==2){  //判断题
             $res = array(
                 "q"=>$data["q"],
                 "correct"=>$data["correct"],
-                "toAnswer"=>$data["toAnswer"],
             );
         }
         else if($data["type"]==3){ //填空题
@@ -203,7 +208,6 @@ class Question extends Api {
             $res = array(
                 "q"=>$data["q"],
                 "correct"=>$data["correct"],
-                "toAnswer"=>$data["toAnswer"],
             );
         }
         $res["id"]      = $data["id"];
@@ -324,7 +328,6 @@ class Question extends Api {
             'passed' => $this->passed,
             'levels' => $this->levels,
             'labels' => $this->labels,
-            'toAnswer' => $this->toAnswer,
             'status' => $this->status,
             'title' => $this->title,
         );
@@ -417,6 +420,50 @@ class Question extends Api {
         
         $model1=$model1->getById($pqid)->order('id DESC');
         return $model1;
+    }
+
+    /**
+     * 获取用户没有点进去过的题目
+     * @param id 用户id
+     * @return 20个一页
+     */
+    public function getUserQuestion() { //TODO:
+        $usertoqModel = new UsertoqModel();
+        $model = new QuestionModel();
+        $exceptQ = $usertoqModel->getUserAllId($this->uid);
+        $data = $model->getByExceptId($exceptQ);
+
+        $res = array();
+        while($row = $data->fetch()) {
+            $user                    = new UserModel();
+            $major                   = new majorModel();
+            $labelModel              = new LabelModel();
+
+            $arr                     = $row;
+            $arr["question"]         = $row["q"];
+            $arr["passedrate"]       = $row["challenges"] == 0 ? "0%" : 100*($row["passed"]/$row["challenges"])."%";
+            $user                    = $user->getById($row["uid"]);
+            $arr["username"]         = $user["name"];
+            $arr["useravatar"]       = $user["avatar"];
+            $major1                  = $major->getById($row["majorID"]);
+            $arr["majorName"]        = $major1["name"];
+            $name                    = $major->getById($major1["parent"]);
+            
+            $arr["majorParentName"]  = $name["name"];
+            $arr["labels"]           = $row["labels"] == null ? array() : explode(",",$row["labels"]);
+            $label_arr = array();
+            foreach( $arr["labels"] as $labelID) {
+                $label = $labelModel -> getById($labelID);
+                $_lebel = array();
+                $_lebel["id"] = $label["id"];
+                $_lebel["name"] = $label["name"];
+                array_push($label_arr, $_lebel);
+            }
+            $arr["labelsInfo"]=$label_arr;
+            array_push($res, $arr);
+        }
+
+        return $res;
     }
     /**
      * 按照关键字索引题目
@@ -634,8 +681,12 @@ class Question extends Api {
             $major                   = new majorModel();
             $labelModel              = new LabelModel();
 
+            $que = $row["q"];//开始的问题内容
+            $q1 = $model->regularReplaceP($que);//图片匹配后的问题内容
+            $q2 = $model->regularReplaceA($q1);//链接匹配后的问题内容
+
             $arr                     = $row;
-            $arr["question"]         = $row["q"];
+            $arr["q"]         = substr($q2,0,20);
             $arr["passedrate"]       = $row["challenges"] == 0 ? "0%" : 100*($row["passed"]/$row["challenges"])."%";
             $user                    = $user->getById($row["uid"]);
             $arr["username"]         = $user["name"];
@@ -672,18 +723,40 @@ class Question extends Api {
 
         return $model -> getTypeById($this -> id);
     }
-
-
+     /**
+     * @author lxx
+     * 题目增加一个点赞数
+     * @desc 根据题目id增加一个对该题目的点赞数
+     * @param int id 题目id
+     * @return data model 返回该条题目的所有信息
+     */
+    public function addLikeById()
+    {
+        $model=new QuestionModel();
+        $data=$model->getById($this->id);
+        $data["like"]++;
+        $model->updateById($this->id,$data);
+        return $model->getById($this->id);
+    }
+     /**
+     * @author lxx
+     * 减少一个点赞数
+     * @desc 根据题目id减少一个对该题目的点赞数
+     * @param int id 题目id
+     * @return data model 返回该条题目的所有信息
+     */
+    public function deleteLikeById()
+    {
+        $model=new QuestionModel();
+        $data=$model->getById($this->id);
+        if($data["like"]>=0) $data["like"]--;
+        $model->updateById($this->id,$data);
+        return $model->getById($this->id);
+    }
     public function test(){
-        $str1 = "![微信图片_20180421114016.jpg](http://p6a87gauo.bkt.clouddn.com/user_bbb8e1a9410817736343da74634a745f.png)";
-        $test1 = "/!\[.*\]\((.+)\)/";
-        $pic = preg_replace($test1,"[图片]",$str1);
-        var_dump($pic);
+        $model = new QuestionModel();
+        $str = "![微信图片_20180421114016.jpg](http://p6a87gauo.bkt.clouddn.com/user_bbb8e1a9410817736343da74634a745f.png)";
+        return $model->regularReplaceP($str);
 
-        $str2 = "sdcvfvccvbvc[微信图片_20180421114016.jpg](http://p6a87gauo.bkt.clouddn.com/user_bbb8e1a9410817736343da74634a745f.png)454564";
-        $test2 = "/\[.*\]\((.+)\)/";
-        $res = preg_replace($test2,"[链接]",$str2);
-        var_dump($res);
-        return array($pic,$res);
     }
 }
