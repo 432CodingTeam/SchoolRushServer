@@ -21,22 +21,22 @@ class Question extends Api {
                 'username' 	=> array('name' => 'username'),
             ),
             'add' => array(
-                'type'          => array('name' => "type", 'require' => true,),
+                'type'          => array('name' => "type", 'require' => true),
                 'q'             => array('name' => 'q'),
                 'A'             => array('name' => 'A'),
                 'B'             => array('name' => 'B'),
                 'C'             => array('name' => 'C'),
                 'D'             => array('name' => 'D'),
                 'F'             => array('name' => 'F'),
-                'correct'       => array('name' => 'correct', 'require' => true,),
-                'majorID'       => array('name' => 'majorID', 'require' => true,),
+                'correct'       => array('name' => 'correct', 'require' => true),
+                'majorID'       => array('name' => 'majorID', 'require' => true),
                 'challenges'    => array('name' => 'challength'),
                 'passed'        => array('name' => 'passed'),
                 'levels'        => array('name' => 'levels'),
                 'labels'        => array('name' => 'labels'),
                 'status'        => array('name' => 'status'),
-                'uid'           => array("name" => "uid", 'require'=>true,),
-                'title'         => array("name" => "title",),
+                'uid'           => array("name" => "uid", 'require'=>true),
+                'title'         => array("name" => "title",'require' => true),
             ),
             'getById' => array(
                 'id' => array("name" => "id")
@@ -60,6 +60,7 @@ class Question extends Api {
                 'levels'        => array('name' => 'levels', 'default'=>null),
                 'labels'        => array('name' => 'labels', 'default'=>null),
                 'toAnswer'      => array('name' => 'toAnswer', 'default'=>null),
+                'title'         => array('name' => 'title','require' => true),
                 'status'        => array('name' => 'status', 'default'=>null),
             ),
             'getQByuid'=>array(
@@ -99,7 +100,6 @@ class Question extends Api {
                 "majorID"   =>array("name" => "majorID", "default"=>-1),
                 "levels"    =>array("name" => "levels", "default"=>-1),
                 "uid"       =>array("name" => "uid", "default"=>-1),
-
             ),
             'getPageinformation'=>array(
                 'page' => array('name' => 'page'),
@@ -197,12 +197,9 @@ class Question extends Api {
             );
         }
         else if($data["type"]==3){ //填空题
-            $arr =  explode("____",$data["q"]);
+            //$arr =  explode("____",$data["q"]);
             $res = array(
-                "q"=>array(
-                    "pre"=>$arr[0],
-                    "suf"=>$arr[1],
-                ),
+                "q"=>$data["q"],
                 "correct"=>$data["correct"],
                 "toAnswer"=>$data["toAnswer"],
             );
@@ -326,6 +323,7 @@ class Question extends Api {
             'labels' => $this->labels,
             'toAnswer' => $this->toAnswer,
             'status' => $this->status,
+            'title' => $this->title,
         );
 
         $model = new QuestionModel();
