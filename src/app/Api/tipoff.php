@@ -2,14 +2,14 @@
 namespace App\Api;
 
 use PhalApi\Api;
-use App\Model\Follow as FollowModel;
+use App\Model\Tipoff as TipoffModel;
 /**
- * 关注接口类
+ * 举报接口类
  *
  * @author: ssh
  */
 
-class Follow extends Api {
+class Tipoff extends Api {
 
 	public function getRules() {
         return array(
@@ -17,9 +17,13 @@ class Follow extends Api {
                 'username' 	=> array('name' => 'username'),
             ),
             'add' => array(
-                'uid' => array('name' => "uid"),
-                'type'=>array('name'=>"type"),
+                'type' => array('name' => "type"),
+                'reason'=>array('name'=>"reason"),
                 'target' => array('name' => "target"),
+                'review' => array('name' => "review"),
+                'reviewuser' => array('name' => 'reviewuser'),
+                'reviewtime' => array('name' => 'reviewtime'),
+                'time' => array('name' => 'time'),
             ),
             'getById' => array(
                 'id' => array("name" => "id")
@@ -29,14 +33,14 @@ class Follow extends Api {
             ),
             'updateById' => array(
                 'id' => array('name'=> 'id','require'=>true),
-                'uid' => array('name' => "uid",'require'=>true),
-                'type'=>array('name'=>"type",'require'=>true),
-                'target' => array('name' => "target",'require'=>true),
+                'type' => array('name' => "type",'require'=>true),
+                'reason'=>array('name'=>"reason",'require'=>false,'default'=>null),
+                'target' => array('name' => "target",'require'=>true,'default'=>null),
+                'review' => array('name' => "review",'require'=>true),
+                'reviewuser' => array('name' => 'reviewuser','require'=>false,'default'=>null),
+                'reviewtime' => array('name' => 'reviewtime','require'=>false,'default'=>null),
+                'time' => array('name' => 'time','require'=>true),
             ),
-            'getFollowNum' => array(
-                'uid' => array('name'=>'uid'),
-                'type' => array('name'=>'type'),
-            )
         );
 	}
 	
@@ -58,13 +62,13 @@ class Follow extends Api {
 
     /**
      * 获取所有内容
-     * @desc 获取所有学校信息
+     * @desc 获取所有举报信息
      * 
-     * @return array data 所有学校
+     * @return array data 所有举报信息
      * 
      */
     public function getAll() {
-        $model = new FollowModel();
+        $model = new TipoffModel();
         $data = $model->getAll();
         //循环每一行 添加label与value
         $res = array();
@@ -78,13 +82,13 @@ class Follow extends Api {
 
     /**
      * 根据ID获取
-     * @desc 根据ID获取用户关注信息
+     * @desc 根据ID获取举报信息
      * @param int id 要获取的内容的id
      * 
      * @return data id 该id指定的内容
      */
     public function getById() {
-        $model = new FollowModel();
+        $model = new TipoffModel();
         $data = $model->getById($this->id);
 
         return $data;
@@ -92,58 +96,78 @@ class Follow extends Api {
 
     /**
      * 根据ID删除
-     * @desc 根据ID删除用户关注信息
+     * @desc 根据ID删除举报信息
      * 
      * @param int id 要删除的的id
      * 
      * @return int data 删除的id
      */
     public function deleteById(){
-        $model =new FollowModel();
+        $model =new TipoffModel();
         $data  =$model->deleteById($this->id);
 
         return $data;
     }
 
     /**
-     * 增加用户关注信息
-     * @desc 增加用户关注的信息
+     * 增加举报信息
+     * @desc 增加举报的信息
      * 
-     * @param int uid 用户ID
-     * @param int type 关注标签 1 关注用户 2 关注标签
-     * @param int target 被关注的用户/标签的ID
-     * @return array id 增加的用户关注的标签
+     * @param int type 举报的类型（用户/问题/评论）
+     * @param string reason 举报的原因
+     * @param int target 被举报对象的ID
+     * @param int review 是否通过审核
+     * @param int reviewuser 审核的用户
+     * @param time reviewtime 审核的时间
+     * @param time time 举报的时间
+     * 
+     * @return array id 增加的举报的信息
      */
     public function add() {
         $insert = array(
-            'uid'=>$this->uid,
             'type'=>$this->type,
+            'reason'=>$this->reason,
             'target' => $this->target,
+            'review' => $this->review,
+            'reviewuser'=>$this->reviewuser,
+            'reviewtime'=>$this->reviewtime,
+            'time'=>$this->time,
         );
 
-        $model = new FollowModel();
+        $model = new TipoffModel();
 
         $id = $model->add($insert);
 
         return $id;
     }
+
     /**
-     * 更新用户关注信息
-     * @desc 根据id更新用户关注的信息
-     * @param int uid 用户ID
-     * @param int type 关注标签 1 关注用户 2 关注标签
-     * @param int target 被关注的用户/标签的ID
-     * @return data id 更新后的用户关注的信息
+     * 更新举报信息
+     * @desc 更新举报的信息
+     * 
+     * @param int type 举报的类型（用户/问题/评论）
+     * @param string reason 举报的原因
+     * @param int target 被举报对象的ID
+     * @param int review 是否通过审核
+     * @param int reviewuser 审核的用户
+     * @param time reviewtime 审核的时间
+     * @param time time 举报的时间
+     * 
+     * @return array id 更新的举报的信息
      */
      
     public function updateById() {
-        $model = new FollowModel();
+        $model = new TipoffModel();
 
         $data = array(
             "id" => $this->id,
-            'uid'=>$this->uid,
             'type'=>$this->type,
+            'reason'=>$this->reason,
             'target' => $this->target,
+            'review' => $this->review,
+            'reviewuser'=>$this->reviewuser,
+            'reviewtime'=>$this->reviewtime,
+            'time'=>$this->time,
         );
 
         foreach($data as $key => $val) {
@@ -159,17 +183,13 @@ class Follow extends Api {
         return array("res"=>$id);
 
     }
-    
+
     /**
-     * author ssh
-     * 获取用户关注总数
-     * @param int uid 用户id
-     * @param int type 关注用户/标签
-     * @return int 该用户关注用户/标签总数
+     * 获取举报总数
      */
-    public function getFollowNum(){
-        $model = new FollowModel();
-        return $model->getFollowNum($this->uid,$this->type);
+    public function getTotalNum(){
+        $model = new TipoffModel();
+        return $model->getTotalNum();
     }
 }
 

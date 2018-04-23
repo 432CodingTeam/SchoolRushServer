@@ -3,10 +3,10 @@ namespace App\Model;
 
 use PhalApi\Model\NotORMModel as NotORM;
 
-class Follow extends NotORM {
+class Tipoff extends NotORM {
 
     protected function getTableName($id) {
-        return 'follow';
+        return 'tipoff';
     }
 
     public function getAll() {
@@ -21,6 +21,14 @@ class Follow extends NotORM {
 
         $data = $model->where("id",$id);
         $data = $data->fetchOne();
+        return $data;
+    }
+
+    public function getInforByID($id)
+    {
+        $model=$this->getORM();
+        $data=$model->where("id",$id)->fetchOne();
+        //var_dump($data);
         return $data;
     }
     public function deleteById($id) {
@@ -41,9 +49,10 @@ class Follow extends NotORM {
 
         return $model->where("id", $id)->update($data);
     }
-    public function getFollowNum($uid,$type){
+
+    public function getTotalNum(){
         $model = $this->getORM();
-        $cnt = $model->where("uid",$uid)->and("type",$type);
-        return count($cnt);
+
+        return $model->count("id");
     }
 }
