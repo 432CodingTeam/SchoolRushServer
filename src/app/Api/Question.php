@@ -108,6 +108,7 @@ class Question extends Api {
             "getTypeById" => array(
                 'id' => array("name" => "id"),
             ),
+            
         );
 	}
 	
@@ -140,6 +141,7 @@ class Question extends Api {
     }
 
     /**
+     * @author ssh
      * 根据id获取
      * @desc 根据id获取问题
      * @param int id 要获取的问题的id
@@ -669,5 +671,19 @@ class Question extends Api {
         $model = new QuestionModel();
 
         return $model -> getTypeById($this -> id);
+    }
+
+
+    public function test(){
+        $str1 = "![微信图片_20180421114016.jpg](http://p6a87gauo.bkt.clouddn.com/user_bbb8e1a9410817736343da74634a745f.png)";
+        $test1 = "/!\[.*\]\((.+)\)/";
+        $pic = preg_replace($test1,"[图片]",$str1);
+        var_dump($pic);
+
+        $str2 = "sdcvfvccvbvc[微信图片_20180421114016.jpg](http://p6a87gauo.bkt.clouddn.com/user_bbb8e1a9410817736343da74634a745f.png)454564";
+        $test2 = "/\[.*\]\((.+)\)/";
+        $res = preg_replace($test2,"[链接]",$str2);
+        var_dump($res);
+        return array($pic,$res);
     }
 }

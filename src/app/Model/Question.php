@@ -77,5 +77,5 @@ class Question extends NotORM {
 
         return $model->select('id, type')->where("id", $id)->fetchOne();
     }
-    
+
 }
