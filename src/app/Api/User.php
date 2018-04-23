@@ -118,18 +118,16 @@ class User extends Api {
         $userModel = new UserModel();
         $campusModel = new CampusModel();
         $majorModel = new MajorModel();
+        $usertoqModel = new UsertoqModel();
 
         $data = $userModel->getById($this->id);
         $campusId = $data["campusID"];
         $majorId = $data["majorID"];
         
-        $majorName = $majorModel->getById($majorId);
-        $majorName = $majorName["name"];
-        $data["majorName"] = $majorName;
-
-        $campusName = $campusModel->getById($campusId);
-        $campusName = $campusName["name"];
-        $data["campusName"] = $campusName;
+        $data["majorInfo"] = $majorModel->getById($majorId);
+        $data["campusInfo"]  = $campusModel->getById($campusId);
+        $data["solveInfo"]["passedNum"]   = $usertoqModel->getPassedNum($this->id);
+        $data["solveInfo"]["tobeSolvedNum"]   = $usertoqModel->getTobeSolvedNum($this->id);
 
         return $data;
     }

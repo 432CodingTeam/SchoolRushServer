@@ -32,7 +32,8 @@ create table campusmajorpassed
   lastweek  int default '0' not null
   comment '上一周以及之前共通过数',
   lastmonth int default '0' not null
-  comment '上一天以及之前共通过数'
+  comment '上一天以及之前共通过数',
+  total     int default '0' not null
 )
   comment '学校-分类-通过数
 关系表 用于排行'
@@ -184,7 +185,7 @@ create table question
   comment '标签 多个用逗号分开 每个问题最多7个标签',
   toAnswer   varchar(30)                        null
   comment '给答题者的话',
-  status     int(1)                             null
+  status     int(1) default '1'                 null
   comment '0 未审核
 1 审核完成
 2 问题有误 待重新编辑',
@@ -196,6 +197,17 @@ create table question
 )
   comment '问题表'
   engine = InnoDB;
+
+create trigger question_insert
+  after INSERT
+  on question
+  for each row
+  begin
+    #用户提问时 添加一条用户活跃信息
+    insert into `school-rush`.userliveness
+    (uid, action, targetID, `describe`) values
+      (NEW.uid, 5, NEW.id, "分享了问题");
+  end;
 
 create table tipoff
 (
@@ -275,6 +287,36 @@ create table user
   comment '用户表'
   engine = InnoDB;
 
+create trigger user_insert
+  after INSERT
+  on user
+  for each row
+  begin
+    # 更新学校的成员数量
+    update `school-rush`.campus
+    set members = members + 1
+    where id = NEW.campusID;
+  end;
+
+create trigger user_update
+  before UPDATE
+  on user
+  for each row
+  begin
+    #当用户更改所在高校时 更新高校成员数
+    set @oldCampusID = OLD.campusID;
+    set @newCampusID = NEW.campusID;
+    if (@oldCampusID <> @newCampusID)
+    then
+      update `school-rush`.campus
+      set members = members + 1
+      where id = @newCampusID;
+      update `school-rush`.campus
+      set members = members - 1
+      where id = @oldCampusID;
+    end if;
+  end;
+
 create table userliveness
 (
   id         bigint auto_increment
@@ -286,7 +328,8 @@ create table userliveness
 1 加入
 2 正在解决题目
 3 通过题目
-4 关注用户/标签/学校/专业',
+4 关注用户/标签/学校/专业
+5 用户分享问题',
   targetID   bigint                             null
   comment '目标ID
 当用户关注某人/用户/题目时才会有此值',
@@ -342,7 +385,7 @@ create trigger after_insert
       then
         #如果有 更新
         update `school-rush`.campusmajorpassed
-        set aday = aday + 1, aweek = aweek + 1, amonth = amonth + 1
+        set aday = aday + 1, aweek = aweek + 1, amonth = amonth + 1, total = total + 1
         where campusID = @campusID and majorID = @majorID;
       else
         #没有 添加
@@ -396,7 +439,7 @@ create trigger after_update
       then
         #如果有 更新
         update `school-rush`.campusmajorpassed
-        set aday = aday + 1, aweek = aweek + 1, amonth = amonth + 1
+        set aday = aday + 1, aweek = aweek + 1, amonth = amonth + 1, total = total + 1
         where campusID = @campusID and majorID = @majorID;
       else
         #没有 添加

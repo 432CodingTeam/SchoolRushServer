@@ -52,7 +52,6 @@ class GD {
         //设置背景颜色 白色
         $background_color = ImageColorAllocate($canvas, 255, 255, 255); 
         //设置字体
-        $font = "D:/Development/www/SchoolRushServer/public/font/font.ttf";
         //设置字体大小
         $fontSize = 190;
         //设置字体颜色

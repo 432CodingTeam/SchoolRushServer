@@ -44,38 +44,17 @@ class Usertoq extends Api {
             'getPassed' => array(
                 'uid' => array('name' => 'uid'),
             ),
+            'getTobeSolvedNum' => array(
+                'uid' => array('name' => 'uid'),
+            ),
+            'getPassedNum' => array(
+                'uid' => array('name' => 'uid'),
+            ),
             'getTopTen' => array(
                 'qid' => array('name' => 'qid'),
             ),
         );
 	}
-	
-	/**
-	 * 默认接口服务
-     * @desc 默认接口服务，当未指定接口服务时执行此接口服务
-	 * @return string title 标题
-	 * @return string content 内容
-	 * @return string version 版本，格式：X.X.X
-	 * @return int time 当前时间戳
-	 */
-	public function index() {
-        return array(
-            'title' => 'Hello ' . $this->username,
-            'version' => PHALAPI_VERSION,
-            'time' => $_SERVER['REQUEST_TIME'],
-        );
-    }
-    /**
-     * 获取用户通过题目数
-     * @desc 获取所有的用户通过题目的胡
-     * @return array data 获取的所有用户通过数
-     */
-    public function getAll() {
-        $model = new UsertoqModel();
-        $data = $model->getAll();
-
-        return $data;
-    }
 
     /**
      * 根据id获取
@@ -150,42 +129,6 @@ class Usertoq extends Api {
             return $model->updateById($id, $data);
         }
     }
-
-
-    /**
-     * 根据名字获取id
-     * @desc 根据名字获取id
-     * @param string name 要获取的id的名字
-     * @return int id 该名字对应的id
-     */
-
-  
-    /**
-     * 更新用户通过题目数
-     * @param int uid 用户id
-     * @return int qid 通过题目id
-     */
-    public function updateById() {
-        $data = array(
-            'uid'=>$this->uid,
-            'qid'=>$this->qid,
-            'status'=>$this->status,
-        );
-
-        $model = new UsertoqModel();
-
-        foreach($data as $key => $val) {
-            if($val == NULL){
-                $keys = array_keys($data);
-                $index = array_search($key, $keys);
-
-                array_splice($data, $index, 1);
-            }
-        }
-
-        $id = $model->updateById($this->id,$data);
-        return array("res"=>$id);
-    }
     /**
      * 获取用户的通过率
      * @param int uid 用户id
@@ -202,11 +145,22 @@ class Usertoq extends Api {
      * @param int uid 用户id
      * @return array data 用户待解决的问题
      */
-    public function getTobeSolved(){
+    public function getTobeSolved() {
 
         $model = new UsertoqModel();
 
         return $model->getTobeSolved($this->uid);
+    }
+    /**
+     * 获取用户待解决的问题数量
+     * @param int uid 用户id
+     * @return array data 用户待解决的问题
+     */
+    public function getTobeSolvedNum() {
+
+        $model = new UsertoqModel();
+
+        return $model->getTobeSolvedNum($this->uid);
     }
 
      /**
@@ -220,6 +174,18 @@ class Usertoq extends Api {
 
           return $model->getPassed($this->uid);
       }
+
+      /**
+      * 获取用户已经解决的问题数量
+      * @param int uid 用户id
+      * @return array data 用户已经解决的问题
+      */
+      public function getPassedNum(){
+
+        $model = new UsertoqModel();
+
+        return $model->getPassedNum($this->uid);
+    }
       
       /**
       * 获取最新通过问题的前十个用户

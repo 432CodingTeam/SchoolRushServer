@@ -18,11 +18,11 @@ class Question extends Api {
 	public function getRules() {
         return array(
             'index' => array(
-                'username' 	=> array('name' => 'username'),
+                'username' 	=> array('name' => 'username')
             ),
             'add' => array(
                 'type'          => array('name' => "type", 'require' => true,),
-                'q'             => array('name' => 'q'),
+                'q'             => array('name' => 'q', 'require' => true,),
                 'A'             => array('name' => 'A'),
                 'B'             => array('name' => 'B'),
                 'C'             => array('name' => 'C'),
@@ -36,7 +36,7 @@ class Question extends Api {
                 'labels'        => array('name' => 'labels'),
                 'status'        => array('name' => 'status'),
                 'uid'           => array("name" => "uid", 'require'=>true,),
-                'title'         => array("name" => "title",),
+                'title'         => array("name" => "title", 'require' => true,),
             ),
             'getById' => array(
                 'id' => array("name" => "id")
@@ -59,7 +59,6 @@ class Question extends Api {
                 'passed'        => array('name' => 'passed', 'default'=>null),
                 'levels'        => array('name' => 'levels', 'default'=>null),
                 'labels'        => array('name' => 'labels', 'default'=>null),
-                'toAnswer'      => array('name' => 'toAnswer', 'default'=>null),
                 'status'        => array('name' => 'status', 'default'=>null),
             ),
             'getQByuid'=>array(
@@ -108,6 +107,9 @@ class Question extends Api {
             "getTypeById" => array(
                 'id' => array("name" => "id"),
             ),
+            "getUserQuestion" => array(
+                'uid' => array("name" => "uid")
+            )
         );
 	}
 	
@@ -146,7 +148,6 @@ class Question extends Api {
      * @param int type 问题的类型 1,2,3对应选择，判断，填空题
      * @param string q 问题的内容
      * @param string correct 正确答案
-     * @param string toAnswer 给答题者的话
      * @return data data 该id指定的问题
      */
 
@@ -186,14 +187,12 @@ class Question extends Api {
                     "D"=>$arr[3],
                 ),
                 "correct"=>$opt[$i],
-                "toAnswer"=>$data["toAnswer"],
             );
         }
         else if($data["type"]==2){  //判断题
             $res = array(
                 "q"=>$data["q"],
                 "correct"=>$data["correct"],
-                "toAnswer"=>$data["toAnswer"],
             );
         }
         else if($data["type"]==3){ //填空题
@@ -204,7 +203,6 @@ class Question extends Api {
                     "suf"=>$arr[1],
                 ),
                 "correct"=>$data["correct"],
-                "toAnswer"=>$data["toAnswer"],
             );
         }
         $res["id"]      = $data["id"];
@@ -324,7 +322,6 @@ class Question extends Api {
             'passed' => $this->passed,
             'levels' => $this->levels,
             'labels' => $this->labels,
-            'toAnswer' => $this->toAnswer,
             'status' => $this->status,
         );
 
@@ -416,6 +413,50 @@ class Question extends Api {
         
         $model1=$model1->getById($pqid)->order('id DESC');
         return $model1;
+    }
+
+    /**
+     * 获取用户没有点进去过的题目
+     * @param id 用户id
+     * @return 20个一页
+     */
+    public function getUserQuestion() { //TODO:
+        $usertoqModel = new UsertoqModel();
+        $model = new QuestionModel();
+        $exceptQ = $usertoqModel->getUserAllId($this->uid);
+        $data = $model->getByExceptId($exceptQ);
+
+        $res = array();
+        while($row = $data->fetch()) {
+            $user                    = new UserModel();
+            $major                   = new majorModel();
+            $labelModel              = new LabelModel();
+
+            $arr                     = $row;
+            $arr["question"]         = $row["q"];
+            $arr["passedrate"]       = $row["challenges"] == 0 ? "0%" : 100*($row["passed"]/$row["challenges"])."%";
+            $user                    = $user->getById($row["uid"]);
+            $arr["username"]         = $user["name"];
+            $arr["useravatar"]       = $user["avatar"];
+            $major1                  = $major->getById($row["majorID"]);
+            $arr["majorName"]        = $major1["name"];
+            $name                    = $major->getById($major1["parent"]);
+            
+            $arr["majorParentName"]  = $name["name"];
+            $arr["labels"]           = $row["labels"] == null ? array() : explode(",",$row["labels"]);
+            $label_arr = array();
+            foreach( $arr["labels"] as $labelID) {
+                $label = $labelModel -> getById($labelID);
+                $_lebel = array();
+                $_lebel["id"] = $label["id"];
+                $_lebel["name"] = $label["name"];
+                array_push($label_arr, $_lebel);
+            }
+            $arr["labelsInfo"]=$label_arr;
+            array_push($res, $arr);
+        }
+
+        return $res;
     }
     /**
      * 按照关键字索引题目
