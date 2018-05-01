@@ -132,13 +132,16 @@ class Usertoq extends Api {
     /**
      * 获取用户的通过率
      * @param int uid 用户id
-     * @return float rate 通过率
+     * @return percent rate 通过率
      */
     public function getPassingRate(){
 
         $model = new UsertoqModel();
 
-        return $model->getPassingRate($this->uid);
+        $unpassed = $model->getTobeSolvedNum($this->uid);//用户未解决的问题数
+        $passed   = $model->getPassedNum($this->uid);    //用户已解决的问题数
+
+        return round($unpassed/($unpassed+$passed)*100)."%";
     }
     /**
      * 获取用户待解决的问题
