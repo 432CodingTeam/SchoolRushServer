@@ -115,4 +115,6 @@ class Usertoq extends NotORM {
         $model = $this->getORM();
         return $model->select("qid")->where("uid", $uid)->fetchAll();
     }
+
+
 }
