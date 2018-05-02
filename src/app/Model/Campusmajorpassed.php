@@ -40,6 +40,11 @@ class Campusmajorpassed extends NotORM {
         $model=$this->getORM();
         return $model->where("majorID",$majorID);
     }
+    public function getBycampusID($campusID)
+    {
+        $model=$this->getORM();
+        return $model->where("campusID",$campusID);
+    }
     public function getadayBymajorID($majorID)
 
     {

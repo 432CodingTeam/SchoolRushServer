@@ -4,6 +4,7 @@ namespace App\Api;
 use PhalApi\Api;
 use App\Model\Campusmajorpassed as CampusmajorpassedModel;
 use App\Model\Campus as CampusModel;
+use App\Model\Major as MajorModel;
 /**
  * 学校-分类-通过数关系接口类
  *
@@ -268,5 +269,40 @@ class Campusmajorpassed extends Api {
         //$allpassed = $data["aday"] + $data["lastday"];
         return $data;
     }
+     * 答题通过数学校前五专业
+     * @desc 获取答题数在学校中排名前五的专业，返回答题数，专业id和专业名称
+     * @author lxx
+     * @return array b 前五专业的信息
+     */
+    public function getTopFiveMajor()
+    {
+        $model=new CampusmajorpassedModel();
+        $model1=$model->getBycampusID($this->campusID)->fetchall();
+        $model2=new MajorModel();
+        $b=array();
+        $rule=array();
+        foreach($model1 as $v)//$b获取到该学校每个专业的题目通过量
+        {
+            if(isset($b[$v['majorID']])){
+                 $b[$v['majorID']]['pquestionCount']+=$v['aday'];
+               
+            }
+            else{
+                 $b[$v['majorID']]["pquestionCount"]=$v['aday'];
+                $b[$v['majorID']]['majorID']=$v['majorID'];
+                $b[$v['majorID']]['majorName']=$model2->getNameByID($v['majorID']);
+            }
 
+        }
+        foreach($b as $a)//倒序
+        {
+            $rules[]=$a['pquestionCount'];
+        }
+        array_multisort($rules,SORT_DESC,$b);
+        $b=array_slice($b,0,5);//取前五个
+        return $b;
+       // return array_column($b,'majorID');
+       // return array_column($b,'majorName');
+    }
 }
+
