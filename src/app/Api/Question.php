@@ -686,7 +686,7 @@ class Question extends Api {
             $q2 = $model->regularReplaceA($q1);//链接匹配后的问题内容
 
             $arr                     = $row;
-            $arr["q"]         = substr($q2,0,20);
+            $arr["q"]                = substr($q2,0,20);
             $arr["passedrate"]       = $row["challenges"] == 0 ? "0%" : 100*($row["passed"]/$row["challenges"])."%";
             $user                    = $user->getById($row["uid"]);
             $arr["username"]         = $user["name"];
@@ -753,10 +753,5 @@ class Question extends Api {
         $model->updateById($this->id,$data);
         return $model->getById($this->id);
     }
-    public function test(){
-        $model = new QuestionModel();
-        $str = "![微信图片_20180421114016.jpg](http://p6a87gauo.bkt.clouddn.com/user_bbb8e1a9410817736343da74634a745f.png)";
-        return $model->regularReplaceP($str);
 
-    }
 }

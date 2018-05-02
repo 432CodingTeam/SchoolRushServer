@@ -103,5 +103,21 @@ class Campusmajorpassed extends NotORM {
         }
         return $sum;
     }
-    //添加
+    public function getCampusPassed($campusID){
+        $model = $this->getORM();
+        
+        $row = $model->where("campusID", $campusID);
+
+        while($data = $row->fetch()){
+            $passed = $data["aday"] + $data["lastday"] + $passed;
+        }
+
+        return $passed;
+    }
+
+    public function getTopFiveMajor(){
+        $model = $this->getORM();
+
+        return $model->where("campusID", $campusID);
+    }
 }
