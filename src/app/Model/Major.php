@@ -47,8 +47,9 @@ class Major extends NotORM {
     public function getNameByID($id)
     {
         $model=$this->getORM();
-        $data=$model->where("id",$id);
-        return $data;
+        $data=$model->where("id",$id)->fetchOne();
+        
+        return $data["name"];
     }
     public function getTotalNum(){
         $model = $this->getORM();
