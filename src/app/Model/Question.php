@@ -89,7 +89,7 @@ class Question extends NotORM {
     }
     
     public function regularReplaceP($str){
-
+        
         return preg_replace('/!\[.*\]\((.+)\)/',"[图片]",$str);
     }
     public function regularReplaceA($str){
