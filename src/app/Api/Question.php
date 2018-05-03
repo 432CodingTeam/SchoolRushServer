@@ -428,10 +428,10 @@ class Question extends Api {
      * @return 20个一页
      */
     public function getUserQuestion() { //TODO:
-        $usertoqModel = new UsertoqModel();
-        $model = new QuestionModel();
-        $exceptQ = $usertoqModel->getUserAllId($this->uid);
-        $data = $model->getByExceptId($exceptQ);
+        $usertoqModel   = new UsertoqModel();
+        $model          = new QuestionModel();
+        $exceptQ        = $usertoqModel->getUserAllId($this->uid);
+        $data           = $model->getByExceptId($exceptQ);
 
         $res = array();
         while($row = $data->fetch()) {
@@ -439,8 +439,14 @@ class Question extends Api {
             $major                   = new majorModel();
             $labelModel              = new LabelModel();
 
+            $que = $row["q"];//开始的问题内容
+            $q  = $model->regularReplaceP($que); //图片匹配后的问题内容
+            $q  = $model->regularReplaceA($q);  //链接匹配后的问题内容
+            $q  = $model->regularReplaceExp($q); //将表达式去掉
+            $q  = $model->regularReplaceCode($q);
+
             $arr                     = $row;
-            $arr["question"]         = $row["q"];
+            $arr["q"]                = mb_substr($q,0,25,"UTF8");
             $arr["passedrate"]       = $row["challenges"] == 0 ? "0%" : 100*($row["passed"]/$row["challenges"])."%";
             $user                    = $user->getById($row["uid"]);
             $arr["username"]         = $user["name"];
@@ -448,7 +454,6 @@ class Question extends Api {
             $major1                  = $major->getById($row["majorID"]);
             $arr["majorName"]        = $major1["name"];
             $name                    = $major->getById($major1["parent"]);
-            
             $arr["majorParentName"]  = $name["name"];
             $arr["labels"]           = $row["labels"] == null ? array() : explode(",",$row["labels"]);
             $label_arr = array();
@@ -459,7 +464,7 @@ class Question extends Api {
                 $_lebel["name"] = $label["name"];
                 array_push($label_arr, $_lebel);
             }
-            $arr["labelsInfo"]=$label_arr;
+            $arr["labelsInfo"]       = $label_arr;
             array_push($res, $arr);
         }
 
@@ -682,11 +687,11 @@ class Question extends Api {
             $labelModel              = new LabelModel();
 
             $que = $row["q"];//开始的问题内容
-            $q1 = $model->regularReplaceP($que);//图片匹配后的问题内容
-            $q2 = $model->regularReplaceA($q1);//链接匹配后的问题内容
+            $q1  = $model->regularReplaceP($que);//图片匹配后的问题内容
+            $q2  = $model->regularReplaceA($q1);//链接匹配后的问题内容
 
             $arr                     = $row;
-            $arr["q"]         = substr($q2,0,20);
+            $arr["q"]                = substr($q2,0,20);
             $arr["passedrate"]       = $row["challenges"] == 0 ? "0%" : 100*($row["passed"]/$row["challenges"])."%";
             $user                    = $user->getById($row["uid"]);
             $arr["username"]         = $user["name"];

@@ -89,12 +89,29 @@ class Question extends NotORM {
     }
     
     public function regularReplaceP($str){
+        $res = preg_replace('/!\[.*\]\((.+)\)/','[图片]',$str);
+        if(!$res) return $str;
 
-        return preg_replace('/!\[.*\]\((.+)\)/',"[图片]",$str);
+        return $res;
     }
     public function regularReplaceA($str){
+        $res =  preg_replace('/\[.*\]\((.+)\)/','[链接]',$str);
+        if(!$res) return $str;
 
-        return preg_replace('/\[.*\]\((.+)\)/',"[链接]",$str);
+        return $res;
+    }
+
+    public function regularReplaceExp($str) {
+        $res = preg_replace('/\$\$[\s\S]*?\$\$/','[表达式]', $str);
+        if(!$res) return $str;
+        return $res;
+    }
+
+    public function regularReplaceCode($str) {
+        $res = preg_replace('/```[\s\S]*?```/','[代码]', $str);
+        if(!$res) return $str;
+        
+        return $res;
     }
 
 }

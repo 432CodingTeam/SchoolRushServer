@@ -52,4 +52,12 @@ class Userliveness extends NotORM {
         }
         return $data;
     }
+
+    public function getByIdLimit($id, $start, $length)
+    {
+        $model=$this->getORM();
+        //倒序
+        $data=$model->order("id DESC")->where("uid",$id)->limit($start, $length);
+        return $data;
+    }
 }

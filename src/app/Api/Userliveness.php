@@ -3,6 +3,7 @@ namespace App\Api;
 
 use PhalApi\Api;
 use App\Model\Userliveness as UserlivenessModel;
+use App\Model\Question as QuestionModel;
 /**
  * 用户活跃信息接口类
  *
@@ -37,7 +38,12 @@ class Userliveness extends Api {
             'getByTime'=>array(
                 'starttime'=>array('name'=>'starttime'),
                 'endtime'=>array('name'=>'endtime'),
-            )
+            ),
+            "getLivenessById" => array(
+                "id"   => array("name" => "id"),
+                "page" => array("name" => "page"),
+                "num"  => array("name" => "num"),
+            ),
         );
 	}
 	
@@ -149,5 +155,33 @@ class Userliveness extends Api {
     {
         $model=new UserlivenessModel();
         return $model->getByTime($this->starttime,$this->endtime);
+    }
+
+    /**
+     * 获取用户最近动态
+     * @param id   用户id
+     * @param page 页数
+     * @param num 每页的数量
+     * 
+     * @return array 动态
+     */
+    public function getLivenessById() {
+        $model = new UserlivenessModel();
+        $questionModel = new QuestionModel();
+        $start = $this->num * ($this->page - 1);
+        $data = $model -> getByIdLimit($this->id, $start, $this->num);
+        $res = array();
+        while($row = $data->fetch()) {
+            $targetID = $row["targetID"];
+            $action   = $row["action"];
+            //TODO: 还有好多action对应的操作没有写，后面应该写成swicth的
+            if($action == 5 || $action == 3 || $action == 2) {
+                $actionInfo = $questionModel->getById($targetID);
+                $actionInfo["view_title"] = $actionInfo["title"];
+            }
+            $row["actionInfo"] = $actionInfo;
+            array_push($res, $row);
+        }
+        return $res;
     }
 }
