@@ -294,5 +294,6 @@ class Comments extends Api {
 
         return $res;
     }
+
 }
 

@@ -37,7 +37,7 @@ class Userliveness extends NotORM {
 
         return $model->where("id", $id)->update($data);
     }
-    public function getByTime($starttime,$endtime)
+   public function getByTime($starttime,$endtime)
     {
         $model=$this->getORM();
        //$start_time=date($starttime,time());

@@ -126,7 +126,10 @@ class Userliveness extends Api {
         $id = $model->add($insert);
         return $id;
     }
-
+/**
+ * 根据id更新
+ * 
+ */
  
     public function updateById() {
         $data = array(
@@ -151,6 +154,7 @@ class Userliveness extends Api {
         $id = $model->updateById($this->id,$data);
         return array("res"=>$id);
     }
+<<<<<<< HEAD
     public function getByTime()
     {
         $model=new UserlivenessModel();
@@ -184,4 +188,6 @@ class Userliveness extends Api {
         }
         return $res;
     }
+=======
+>>>>>>> 89ca3eba16bd555ff880a0e492179a52fe4618d1
 }

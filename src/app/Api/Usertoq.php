@@ -3,6 +3,8 @@ namespace App\Api;
 
 use PhalApi\Api;
 use App\Model\Usertoq as UsertoqModel;
+use App\Model\User as UserModel;
+use App\Model\Campusmajorpassed as CampusmajorpassedModel;
 /**
  * 用户通过题目关系表接口类
  *
@@ -52,6 +54,9 @@ class Usertoq extends Api {
             ),
             'getTopTen' => array(
                 'qid' => array('name' => 'qid'),
+            ),
+            'getRateOfCampus' => array(
+                'uid' => array('name' => 'uid'),
             ),
         );
 	}
@@ -132,13 +137,16 @@ class Usertoq extends Api {
     /**
      * 获取用户的通过率
      * @param int uid 用户id
-     * @return float rate 通过率
+     * @return percent rate 通过率
      */
     public function getPassingRate(){
 
         $model = new UsertoqModel();
 
-        return $model->getPassingRate($this->uid);
+        $unpassed = $model->getTobeSolvedNum($this->uid);//用户未解决的问题数
+        $passed   = $model->getPassedNum($this->uid);    //用户已解决的问题数
+
+        return round($unpassed/($unpassed+$passed)*100,2)."%";
     }
     /**
      * 获取用户待解决的问题
@@ -228,5 +236,24 @@ class Usertoq extends Api {
 
        }
        return $arr;
+    }
+    /**
+     * 用户对学校的贡献率
+     * @desc 用户做题数占所在学校做题数的百分比
+     * @author ssh
+     * @param uid 用户id
+     * @return percent 对学校的贡献率
+     */
+    public function getRateOfCampus(){
+        $model = new UsertoqModel();
+
+        $model1 = new UserModel();
+        $data1 = $model1->getById($this->uid);
+        $campusId = $data1["campusID"];//该用户的学校ID
+        $model2 = new CampusmajorpassedModel();
+        $campusPassed = $model2->getCampusPassed($campusId);//该学校的通过数
+        $uidPassed = $model->getPassedNum($this->uid);//该用户通过数
+
+        return round($uidPassed / $campusPassed*100,2).'%';
     }
 }

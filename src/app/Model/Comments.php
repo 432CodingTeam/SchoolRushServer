@@ -47,4 +47,5 @@ class Comments extends NotORM {
 
         return $model->count("id");
     }
+
 }
