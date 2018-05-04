@@ -109,7 +109,9 @@ class Question extends Api {
                 'id' => array("name" => "id"),
             ),
             "getUserQuestion" => array(
-                'uid' => array("name" => "uid")
+                'uid'  => array("name" => "uid"),
+                'page' => array('name' => 'page'),
+                'num'  => array('name' => 'num', 'default' => 20),
             ),
             'addLikeById'=>array(
                 'id'=>array('name'=>'id'),
@@ -423,7 +425,7 @@ class Question extends Api {
     }
 
     /**
-     * 获取用户没有点进去过的题目
+     * 获取用户的题目
      * @param id 用户id
      * @return 20个一页
      */
@@ -431,7 +433,8 @@ class Question extends Api {
         $usertoqModel   = new UsertoqModel();
         $model          = new QuestionModel();
         $exceptQ        = $usertoqModel->getUserAllId($this->uid);
-        $data           = $model->getByExceptId($exceptQ);
+        $start          = $this->num * ($this->page - 1);
+        $data           = $model->getByExceptId($exceptQ, $start, $this->num);
 
         $res = array();
         while($row = $data->fetch()) {

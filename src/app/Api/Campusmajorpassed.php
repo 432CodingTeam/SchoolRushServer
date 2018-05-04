@@ -269,6 +269,7 @@ class Campusmajorpassed extends Api {
         //$allpassed = $data["aday"] + $data["lastday"];
         return $data;
     }
+    /*
      * 答题通过数学校前五专业
      * @desc 获取答题数在学校中排名前五的专业，返回答题数，专业id和专业名称
      * @author lxx
