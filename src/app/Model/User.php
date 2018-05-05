@@ -115,4 +115,8 @@ class User extends NotORM {
         
         return $model->where($filter)->limit($start, $num);
     }
+    public function getBycampusID($id){
+        $model=$this->getORM();
+        return $model->where("campusID",$id)->fetchall();
+    }
 }

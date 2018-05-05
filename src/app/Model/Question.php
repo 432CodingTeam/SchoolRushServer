@@ -78,23 +78,40 @@ class Question extends NotORM {
         return $model->select('id, type')->where("id", $id)->fetchOne();
     }
 
-    public function getByExceptId($arr) {
+    public function getByExceptId($arr, $start, $num) {
         $data = array();
         foreach($arr as $id) {
             array_push($data, (int)$id["qid"]);
         }
         $model = $this->getORM();
 
-        return $model->order('id DESC')->where("NOT id", $data);
+        return $model->order('id DESC')->where("NOT id", $data)->limit($start, $num);
     }
     
     public function regularReplaceP($str){
-        
-        return preg_replace('/!\[.*\]\((.+)\)/',"[图片]",$str);
+        $res = preg_replace('/!\[.*\]\((.+)\)/','[图片]',$str);
+        if(!$res) return $str;
+
+        return $res;
     }
     public function regularReplaceA($str){
+        $res =  preg_replace('/\[.*\]\((.+)\)/','[链接]',$str);
+        if(!$res) return $str;
 
-        return preg_replace('/\[.*\]\((.+)\)/',"[链接]",$str);
+        return $res;
+    }
+
+    public function regularReplaceExp($str) {
+        $res = preg_replace('/\$\$[\s\S]*?\$\$/','[表达式]', $str);
+        if(!$res) return $str;
+        return $res;
+    }
+
+    public function regularReplaceCode($str) {
+        $res = preg_replace('/```[\s\S]*?```/','[代码]', $str);
+        if(!$res) return $str;
+        
+        return $res;
     }
 
 }
