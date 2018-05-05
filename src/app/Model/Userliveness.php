@@ -37,7 +37,7 @@ class Userliveness extends NotORM {
 
         return $model->where("id", $id)->update($data);
     }
-   /* public function getByTime($starttime,$endtime)
+   public function getByTime($starttime,$endtime)
     {
         $model=$this->getORM();
        //$start_time=date($starttime,time());
@@ -51,5 +51,13 @@ class Userliveness extends NotORM {
         {
         }
         return $data;
-    }*/
+    }
+
+    public function getByIdLimit($id, $start, $length)
+    {
+        $model=$this->getORM();
+        //倒序
+        $data=$model->order("id DESC")->where("uid",$id)->limit($start, $length);
+        return $data;
+    }
 }

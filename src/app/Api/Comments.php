@@ -19,12 +19,10 @@ class Comments extends Api {
                 'username' 	=> array('name' => 'username'),
             ),
             'add' => array(
-                'uid' => array("name" => "uid"),
-                'qid' => array("name" => "qid"),
-                'replay' => array("name" => "replay"),
-                'agree' => array("name" => "agree"),
-                'disagree' => array("name" => "disagree"),
-                'content'=>array("name"=>"content"),
+                'uid'       => array("name"     => "uid"),
+                'qid'       => array("name"     => "qid"),
+                'reply'    => array("name"   => "reply"),
+                'content'   => array("name"     => "content"),
             ),
             'getById' => array(
                 'id' => array("name" => "id")
@@ -143,18 +141,16 @@ class Comments extends Api {
         $insert = array(
             'uid'=>$this->uid,
             'qid'=>$this->qid,
-            'time'=>date('Y-m-d H:i:s'),
-            'replay' => $this->replay,
-            'agree' => $this->agree,
-            'disagree'=>$this->disagree,
             'content'=>$this->content,
         );
 
+        if($this->reply)
+            $insert["reply"] = $this->replay; 
         $model = new CommentsModel();
 
-        $id = $model->add($insert);
+        $data = $model->add($insert);
 
-        return $id;
+        return $data;
     }
 
 

@@ -43,20 +43,20 @@ create table comments
 (
   id       bigint auto_increment
     primary key,
-  uid      bigint          not null
+  uid      bigint                             not null
   comment '评论用户',
-  qid      bigint          not null
+  qid      bigint                             not null
   comment '在哪个问题下',
-  content  varchar(300)    not null
-  comment '评论内容',
-  time     datetime        null
-  comment '评论时间',
-  reply    bigint          null
+  content  varchar(10000)                     not null
+  comment '评论内容 最多1w字',
+  reply    bigint                             null
   comment '回复的评论id 空即为非回复评论',
-  agree    int default '0' null
+  agree    int default '0'                    null
   comment '支持数',
-  disagree int default '0' null
+  disagree int default '0'                    null
   comment '反对数',
+  time     datetime default CURRENT_TIMESTAMP null
+  comment '评论时间',
   constraint comments_id_uindex
   unique (id)
 )
@@ -102,6 +102,17 @@ create table label
   comment '标签名 不可重复'
 )
   comment '标签表'
+  engine = InnoDB;
+
+create table livenesscampus
+(
+  id       bigint auto_increment
+    primary key,
+  liveID   bigint not null,
+  campusID bigint not null,
+  constraint livenesscampus_id_uindex
+  unique (id)
+)
   engine = InnoDB;
 
 create table major
@@ -157,8 +168,8 @@ create table question
   type       int(1)                             null
   comment '题型 选择1 判断2 填空3
 开放题目4',
-  q          varchar(1000)                      not null
-  comment '问题内容 最多1000字',
+  q          varchar(20000)                     not null
+  comment '问题内容 最多2W字',
   A          varchar(20)                        null
   comment '选项A',
   B          varchar(20)                        null
@@ -183,8 +194,6 @@ create table question
   comment '出题人的id',
   labels     varchar(255)                       null
   comment '标签 多个用逗号分开 每个问题最多7个标签',
-  toAnswer   varchar(30)                        null
-  comment '给答题者的话',
   status     int(1) default '1'                 null
   comment '0 未审核
 1 审核完成
@@ -296,6 +305,9 @@ create trigger user_insert
     update `school-rush`.campus
     set members = members + 1
     where id = NEW.campusID;
+    insert into `school-rush`.userliveness
+    (uid, action, targetID, `describe`)
+    values (NEW.id, 4, NEW.campusID, "加入了SchoolRush");
   end;
 
 create trigger user_update
@@ -328,8 +340,11 @@ create table userliveness
 1 加入
 2 正在解决题目
 3 通过题目
-4 关注用户/标签/学校/专业
-5 用户分享问题',
+4 关注用户
+5 用户分享问题
+6 关注标签
+7 关注学校
+8 关注专业',
   targetID   bigint                             null
   comment '目标ID
 当用户关注某人/用户/题目时才会有此值',
@@ -337,6 +352,17 @@ create table userliveness
   time       datetime default CURRENT_TIMESTAMP null
 )
   engine = InnoDB;
+
+create trigger usertoq_after_insert
+  after INSERT
+  on userliveness
+  for each row
+  begin
+    set @campusID = (select campusID
+                     from `school-rush`.user
+                     where user.id = NEW.uid);
+    insert into livenesscampus (liveID, campusID) values (new.id, @campusID);
+  end;
 
 create table usertoq
 (
@@ -418,7 +444,7 @@ create trigger after_update
   for each row
   begin
     #因为前台的更新只可能将status从0变成1 所以
-    if (NEW.status = 1)
+    if (NEW.status = 1 and OLD.status = 0)
     then
       #更新用户活跃表
       insert into `school-rush`.userliveness
