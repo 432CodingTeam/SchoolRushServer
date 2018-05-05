@@ -1,3 +1,22 @@
+drop table if exists `campus`;
+drop table if exists `campusmajorpassed`;
+drop table if exists `comments`;
+drop table if exists `follow`;
+drop table if exists `group`;
+drop table if exists `groupactivity`;
+drop table if exists `label`;
+drop table if exists `livenesscampus`;
+drop table if exists `major`;
+drop table if exists `majorrank`;
+drop table if exists `operation`;
+drop table if exists `question`;
+drop table if exists `tipoff`;
+drop table if exists `token`;
+drop table if exists `user`;
+drop table if exists `userliveness`;
+drop table if exists `usertogroup`;
+drop table if exists `usertoq`;
+
 create table campus
 (
   id      bigint auto_increment
@@ -82,16 +101,36 @@ create table follow
 
 create table `group`
 (
-  id      bigint auto_increment
+  id        bigint auto_increment
     primary key,
-  name    varchar(15)  null
+  name      varchar(15)   null
   comment '群组名字',
-  creator bigint       null
+  creator   bigint        null
   comment '创建者ID',
-  members varchar(500) not null
-  comment '群组成员ID 以“，”分隔'
+  members   int           not null
+  comment '群组成员数',
+  introduce varchar(3000) not null
+  comment '小组介绍',
+  avatar    varchar(200)  null
+  comment '群组头像地址'
 )
   comment '群组表 群组人数限制100'
+  engine = InnoDB;
+
+create table groupactivity
+(
+  id          bigint auto_increment
+    primary key,
+  title       varchar(100)                       not null
+  comment '标题',
+  questionsID bigint                             not null
+  comment '题集ID',
+  gid         bigint                             not null
+  comment '所属的小组id',
+  starttime   datetime default CURRENT_TIMESTAMP null,
+  constraint groupactivity_id_uindex
+  unique (id)
+)
   engine = InnoDB;
 
 create table label
@@ -337,14 +376,15 @@ create table userliveness
   comment '用户id',
   action     int(3)                             not null
   comment '用户动作
-1 加入
+1 加入SchoolRush
 2 正在解决题目
 3 通过题目
 4 关注用户
 5 用户分享问题
 6 关注标签
 7 关注学校
-8 关注专业',
+8 关注专业
+9 加入小组',
   targetID   bigint                             null
   comment '目标ID
 当用户关注某人/用户/题目时才会有此值',
@@ -363,6 +403,19 @@ create trigger usertoq_after_insert
                      where user.id = NEW.uid);
     insert into livenesscampus (liveID, campusID) values (new.id, @campusID);
   end;
+
+create table usertogroup
+(
+  id       bigint auto_increment
+    primary key,
+  uid      bigint                             not null,
+  gid      int                                null
+  comment '群组id',
+  jiontime datetime default CURRENT_TIMESTAMP not null,
+  constraint usertogroup_id_uindex
+  unique (id)
+)
+  engine = InnoDB;
 
 create table usertoq
 (
@@ -480,5 +533,4 @@ create trigger after_update
       where id = NEW.qid;
     end if;
   end;
-
 

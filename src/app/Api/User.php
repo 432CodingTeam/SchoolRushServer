@@ -64,7 +64,7 @@ class User extends Api {
              ),  
              'getGoodAtRankTop'=>array(
                  'num'=>array('name'=>'num'),
-                 'uid'=>array('name'=>'uid'),
+                 'id'=>array('name'=>'id'),
              ),
             "login" => array(
                 "name" => array("name" => "name"),
@@ -399,16 +399,20 @@ class User extends Api {
      */
     public function  getGoodAtRankTop()
     {
-        $model1=new QuestionModel();
-        $model2=new UsertoqModel();
-        $model3=new MajorModel();
-        $pq=$model2->getPQIdByuid($this->uid);
-        $tp=array();
+        $model1 = new QuestionModel();
+        $model2 = new UsertoqModel();
+        $model3 = new MajorModel();
+        $pq     = $model2->getPQIdByuid($this->id);
+        $tp     = array();
         foreach($pq as $pqs)
         {
-            $tp[]=$pqs['id'];
+            $tp[]=$pqs['qid'];
         }
-        $model=$model1->getById($tp)->fetchAll();//获取到所有通过的问题信息
+        $model = $model1->getByIdArray($tp);//获取到所有通过的问题信息
+        if($model == false) {
+            return array("msg" => "无数据", "res" => false);
+        }
+        $model = $model->fetchAll();
         $major=array();
         $d=0;
         for($i=0;$i<sizeof($model);$i++)//将题目专业id保存在major数组里，将对应的题目数量保存在num数组里
@@ -430,10 +434,13 @@ class User extends Api {
         array_multisort($num,SORT_DESC,$major);//排序
         for($i=0;$i<sizeof($major);$i++)
         {
-            $information=$model3->getNameByID($major[$i]["id"])->fetchone();
-            $major[$i]["majorname"]=$information["name"];
-            $major[$i]["percent"]=100*sprintf("%.2f", $num[$i]/sizeof($model));
+            $information = $model3->getNameByID($major[$i]["id"]);
+
+            $major[$i]["name"] = $information;
+            $major[$i]["value"]   = 100*sprintf("%.2f", $num[$i]/sizeof($model));
         }
+        if(!$this->num)
+            $this->num = 5;
         return array_slice($major,0,$this->num);
     }
     /**
