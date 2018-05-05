@@ -47,5 +47,9 @@ class Comments extends NotORM {
 
         return $model->count("id");
     }
+    public function getByQid($qid){
+        $model = $this->getORM();
 
+        return $model->where("qid", $qid);
+    }
 }

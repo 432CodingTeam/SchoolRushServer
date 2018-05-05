@@ -55,7 +55,7 @@ class Comments extends Api {
                 'id'=>array('name'=>'id'),
             ),
             'getCommentsPage'=>array(
-                'qid'=>array('name'=>'id'),
+                'qid'=>array('name'=>'qid'),
                 'page' => array('name' => 'page'),
                 'num' => array('name' => 'num', 'default' => 20),
             ),
@@ -262,7 +262,7 @@ class Comments extends Api {
         return $model->getById($this->id);
     }
     /**
-     * 获取一页的评论 默认为20条/页
+     * 获取指定问题的一页的评论 默认为20条/页
      * @author lxx
      * @param page 页数
      * @param num 可选 多少条每页
@@ -271,7 +271,7 @@ class Comments extends Api {
      */
     public function getCommentsPage() {
         $model = new CommentsModel();
-        $model1=$model->getAll()->order('time DESC');
+        $model1=$model->getByQid($this->qid)->order('time DESC');
         
         $start = ($this->page - 1) * $this->num;
         $data =  $model1->limit($start, $this->num);
@@ -288,7 +288,16 @@ class Comments extends Api {
             $questionModel =new QuestionModel();
             $qid=$row["qid"];
             $question=$questionModel->getById($qid);
-            $row["question"] = $question["q"];
+            //将问题描述中的图片/链接用正则表达式替换
+            $q = $questionModel->regularReplaceP($question);
+            $que = $questionModel->regularReplaceA($q);
+            $row["question"] = $que["q"];
+            // 将content中的图片/链接用正则表达式替换
+            $content = $row["content"];
+            $c = $questionModel->regularReplaceP($content);
+            $con = $questionModel->regularReplaceA($c);
+            $row["content"] = $con;
+
             array_push($res, $row);
         }
 
