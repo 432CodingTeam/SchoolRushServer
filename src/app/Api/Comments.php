@@ -61,22 +61,6 @@ class Comments extends Api {
             ),
         );
 	}
-	
-	/**
-	 * 默认接口服务
-     * @desc 默认接口服务，当未指定接口服务时执行此接口服务
-	 * @return string title 标题
-	 * @return string content 内容
-	 * @return string version 版本，格式：X.X.X
-	 * @return int time 当前时间戳
-	 */
-	public function index() {
-        return array(
-            'title' => 'Hello ' . $this->username,
-            'version' => PHALAPI_VERSION,
-            'time' => $_SERVER['REQUEST_TIME'],
-        );
-    }
 
     /**
      * 获取所有内容
@@ -283,7 +267,10 @@ class Comments extends Api {
             //获取用户名 将用户名也添加到获取的数据中
             $userModel = new UserModel();
             $user = $userModel->getById($uid);
-            $row["uName"] = $user["name"];
+            $userInfo = array("id"     => $user["id"],
+                              "name"   => $user["name"],
+                              "avatar" => $user["avatar"]);
+            $row["userInfo"] = $userInfo;
             //将题目描述添加到获取的数据中
             $questionModel =new QuestionModel();
             $qid=$row["qid"];
@@ -296,7 +283,7 @@ class Comments extends Api {
             $content = $row["content"];
             $c = $questionModel->regularReplaceP($content);
             $con = $questionModel->regularReplaceA($c);
-            $row["content"] = $con;
+            $row["zip-content"] = $con;
 
             array_push($res, $row);
         }
