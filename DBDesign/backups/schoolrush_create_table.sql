@@ -128,6 +128,8 @@ create table groupactivity
   gid         bigint                             not null
   comment '所属的小组id',
   starttime   datetime default CURRENT_TIMESTAMP null,
+  content     bigint                             not null
+  comment '活动的介绍',
   constraint groupactivity_id_uindex
   unique (id)
 )
@@ -533,4 +535,6 @@ create trigger after_update
       where id = NEW.qid;
     end if;
   end;
+
+
 
