@@ -89,7 +89,10 @@ class User extends Api {
                 "identify"  => array("name" => "identify", "default" => -1, "require" => false),
                 "campusID"  => array("name" => "campusID", "default" => -1, "require" => false),
                 "majorID"   => array("name" => "majorID", "default" => -1, "require" => false),
-            )
+            ),
+            'getRankAtcampus'=>array(
+                'id'=>array('name'=>'id'),
+            ),
         );
 	}
 
@@ -614,5 +617,35 @@ class User extends Api {
         }
 
         return $res;
+    }
+    /**
+     * 获取用户在学校排行榜
+     * @desc 根据用户做题贡献率获取用户在学校的排行榜
+     * @author lxx
+     * @param int id 用户id
+     * @return int offset 用户在学校的排行
+     */
+    public function getRankAtcampus(){
+        $user=new UserModel();
+        $usertoq = new UsertoqModel();
+        $rules=array();
+        $users=$user->getBycampusID($user->getById($this->id)["campusID"]);
+        foreach($users as &$u)
+        {
+            $sum=$usertoq->getPassed($u["id"])->fetchall();
+            $u["passed"]=count($sum);
+        }
+        
+        foreach($users as $a)//倒序
+        {
+            $rules[]=$a['passed'];
+        }
+        array_multisort($rules,SORT_DESC,$users);
+        foreach($users as $a)//分离用户排行榜的id
+        {
+            $ids[]=$a['id'];
+        }
+        $offset=array_search($this->id,$ids);//在用户排行榜id中寻找该用户所在的下标
+        return $offset+1;
     }
 }

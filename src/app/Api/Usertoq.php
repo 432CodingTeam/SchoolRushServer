@@ -259,18 +259,5 @@ class Usertoq extends Api {
 
         return round($uidPassed / $campusPassed*100,2).'%';
     }
-    /**
-     * 用户贡献在学校的排行
-     */
-    // public function getRankofCampus(){
-    //     $model = new UsertoqModel();
 
-    //     $rate = $model->getRate($this->uid);//用户的贡献率
-    //     //学校不同用户的贡献率的集合（数组）
-    //     // $campus_data = new CampusmajorpassedModel();
-    //     // while($rows = $campus_data->fetch()){
-    //     //     var_dump($rows);
-    //     // }
-    //     return $rate;
-    // }
 }

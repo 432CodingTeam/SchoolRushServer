@@ -161,7 +161,7 @@ class Follow extends Api {
     }
     
     /**
-     * author ssh
+     * @author ssh
      * 获取用户关注总数
      * @param int uid 用户id
      * @param int type 关注用户/标签
