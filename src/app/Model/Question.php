@@ -95,21 +95,11 @@ class Question extends NotORM {
     }
     
     public function regularReplaceP($str){
-<<<<<<< HEAD
-<<<<<<< HEAD
-        
-        return preg_replace('/!\[.*\]\((.+)\)/',"[图片]",$str);
-=======
-=======
->>>>>>> 45a4c0acdb4a270286ecaa0210b6671711842e27
+
         $res = preg_replace('/!\[.*\]\((.+)\)/','[图片]',$str);
         if(!$res) return $str;
 
         return $res;
-<<<<<<< HEAD
->>>>>>> 95216cf8bfc9a02bf09c98be6df65e8e7645b37e
-=======
->>>>>>> 45a4c0acdb4a270286ecaa0210b6671711842e27
     }
     public function regularReplaceA($str){
         $res =  preg_replace('/\[.*\]\((.+)\)/','[链接]',$str);

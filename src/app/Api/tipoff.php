@@ -4,7 +4,7 @@ namespace App\Api;
 use PhalApi\Api;
 use App\Model\Tipoff as TipoffModel;
 /**
- * 用户通过题目关系表接口类
+ * 举报接口类
  *
  */
 
@@ -12,9 +12,6 @@ class Tipoff extends Api {
 
 	public function getRules() {
         return array(
-            'index' => array(
-                'username' 	=> array('name' => 'username'),
-            ),
             'getById' => array(
                 'id' => array("name" => "id")
             ),
@@ -37,32 +34,16 @@ class Tipoff extends Api {
             ),
             'updateById' => array(
                 'id' => array("name" => 'id','require'=>true),
-                'type' => array('name' => "type",'require'=>false,'default'=>null),
-                'reason'=>array('name'=>"reason",'require'=>false,'default'=>null),
-                'target'=>array('name'=>'target','require'=>false,'default'=>null),
-                'review'=>array('name'=>"review",'require'=>false,'default'=>null),
-                'reviewuser'=>array('name'=>"reviewuser",'require'=>false,'default'=>null),
-                'reviewtime'=>array('name'=>"reviewtime",'require'=>false,'default'
-                =>null),
+                'type' => array('name' => "type",'require'=>true),
+                'reason'=>array('name'=>"reason",'default'=>null),
+                'target'=>array('name'=>'target','require'=>true),
+                'review'=>array('name'=>"review",'default'=>null),
+                'reviewuser'=>array('name'=>"reviewuser",'default'=>null),
+                'reviewtime'=>array('name'=>"reviewtime",'default'=>null),
             ),
         );
 	}
-	
-	/**
-	 * 默认接口服务
-     * @desc 默认接口服务，当未指定接口服务时执行此接口服务
-	 * @return string title 标题
-	 * @return string content 内容
-	 * @return string version 版本，格式：X.X.X
-	 * @return int time 当前时间戳
-	 */
-	public function index() {
-        return array(
-            'title' => 'Hello ' . $this->username,
-            'version' => PHALAPI_VERSION,
-            'time' => $_SERVER['REQUEST_TIME'],
-        );
-    }
+
     /**
      * 获取所有举报信息
      * @desc 获取所有举报信息

@@ -20,9 +20,6 @@ use App\Common\GD;
 class User extends Api {
 	public function getRules() {
         return array(
-            'index' => array(
-                'username' 	=> array('name' => 'username'),
-            ),
             'add' => array(
                 'name' => array('name' => "name"),
                 'pass'=>array('name'=>"pass"),
@@ -46,15 +43,15 @@ class User extends Api {
                 'id' => array('name' => 'id','require'=>true),
                 'name' => array('name' => "name",'require'=>true),
                 'pass'=>array('name'=>"pass",'require'=>true),
-                'identify'=>array('name'=>"identify",'require'=>false,'default'=>null),
+                'identify'=>array('name'=>"identify",'default'=>null),
                 'email'=>array('name'=>"email",'require'=>true),
                 'tel'=>array('name'=>"tel",'require'=>true),
                 'campusID'=>array('name'=>"campusID",'require'=>true),
                 'majorID'=>array('name'=>"majorID",'require'=>true),
-                'vice'=>array('name'=>"vice",'require'=>false,'default'=>null),
-                'avatar'=>array('name'=>"avatar",'require'=>false,'default'=>null),
-                'gender'=>array('name'=>"gender",'require'=>false,'default'=>null),
-                'describe'=>array('name'=>"describe",'require'=>false,'default'=>null),
+                'vice'=>array('name'=>"vice",'default'=>null),
+                'avatar'=>array('name'=>"avatar",'default'=>null),
+                'gender'=>array('name'=>"gender",'default'=>null),
+                'describe'=>array('name'=>"describe",'default'=>null),
             ),
             'getByName'=>array(
                 'name'=>array('name'=>'name'),

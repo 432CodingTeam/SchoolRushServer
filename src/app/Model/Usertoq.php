@@ -21,7 +21,12 @@ class Usertoq extends NotORM {
         $data=$model->where("id",$id);
         return $data;
     }
-
+    public function getByuid($uid)
+    {
+        $model=$this->getORM();
+        $data=$model->where("uid",$uid);
+        return $data;
+    }
     public function deleteById($id) {
         $model = $this->getORM();
 
@@ -79,9 +84,9 @@ class Usertoq extends NotORM {
         return count($model->where('uid',$uid)->and('status',1));
     }
 
-    public function getTopTen($qid){
+    public function getUpdatePassedTen($qid){
         $model = $this->getORM();
-        $data = $model->where('qid',$qid)->and('status',1);
+        $data = $model->order("id DESC")->where('qid',$qid)->and('status',1)->limit(10);
         return $data;
     }
     public function getQuestionByTime($start,$end)
