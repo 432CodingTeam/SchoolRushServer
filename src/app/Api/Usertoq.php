@@ -14,9 +14,6 @@ class Usertoq extends Api {
 
 	public function getRules() {
         return array(
-            'index' => array(
-                'username' 	=> array('name' => 'username'),
-            ),
             'passedQuestion' => array(
                 'uid'       => array('name' => "uid"),
                 'qid'       => array('name' =>"qid"),
@@ -34,8 +31,10 @@ class Usertoq extends Api {
             'updateById' => array(
                 'id' => array("name" => 'id','require'=>true),
                 'uid' => array('name' => "uid",'require'=>true),
-                'qid'=>array('name'=>"qid",'require'=>false,'default'=>null),
+                'qid'=>array('name'=>"qid",'default'=>null),
                 'status'=>array('name'=>'status','require'=>true),
+                'passtime'=>array('name'=>'passtime','default'=>null),
+                'starttime'=>array('name'=>'starttime','default'=>null),
             ),
             'getPassingRate' => array(
                 'uid' => array('name' => 'uid'),
@@ -52,7 +51,7 @@ class Usertoq extends Api {
             'getPassedNum' => array(
                 'uid' => array('name' => 'uid'),
             ),
-            'getTopTen' => array(
+            'getUpdatePassedTen' => array(
                 'qid' => array('name' => 'qid'),
             ),
             'getRateOfCampus' => array(
@@ -201,21 +200,16 @@ class Usertoq extends Api {
       /**
       * 获取最新通过问题的前十个用户
       * @param int qid 题目id
-      * @return array data 最新通过问题的前十个用户id
+      * @return array arr 最新通过问题的前十个用户id
       */
-      public function getTopTen(){
+      public function getUpdatePassedTen(){
           $model = new UsertoqModel();
-        
-          $data = $model->getTopTen($this->qid);
-          $arr=array();
+          $data = $model->getUpdatePassedTen($this->qid);
+          $arr = array();
           foreach($data as $data){
-            $arr[]=$data['uid'];
-        }
-        $top=array_reverse($arr);
-        for($i=0;$i<10;$i++){
-            $topten[$i] = $top[$i];
-        }
-          return $topten;
+              $arr[] = $data['uid'];
+          }
+          return $arr;
       }
        /**
       * 获取最近8小时的答题情况
@@ -259,18 +253,5 @@ class Usertoq extends Api {
 
         return round($uidPassed / $campusPassed*100,2).'%';
     }
-    /**
-     * 用户贡献在学校的排行
-     */
-    // public function getRankofCampus(){
-    //     $model = new UsertoqModel();
 
-    //     $rate = $model->getRate($this->uid);//用户的贡献率
-    //     //学校不同用户的贡献率的集合（数组）
-    //     // $campus_data = new CampusmajorpassedModel();
-    //     // while($rows = $campus_data->fetch()){
-    //     //     var_dump($rows);
-    //     // }
-    //     return $rate;
-    // }
 }

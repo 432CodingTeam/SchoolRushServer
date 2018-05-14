@@ -15,9 +15,6 @@ class Campusmajorpassed extends Api {
 
 	public function getRules() {
         return array(
-            'index' => array(
-                'username' 	=> array('name' => 'username'),
-            ),
             'add' => array(
                 'majorID' => array('name' => "majorID"),
                 'campusID'=>array('name'=>"campusID"),
@@ -35,15 +32,15 @@ class Campusmajorpassed extends Api {
                 'id'=> array("name" => "id")
             ),
             'updateById' => array(
-                'id' => array("name" => "id",'require'=>true),
-                'majorID' => array('name' => "majorID",'require'=>true),
-                'campusID'=>array('name'=>"campusID",'require'=>true),
-                'aday'=>array('name'=>'aday','require'=>false,'default'=>null),
-                'aweek'=>array('name'=>'aweek','require'=>false,'default'=>null),
-                'amonth'=>array('name'=>'amonth','require'=>false,'default'=>null),
-                'lastday'=>array('name'=>'lastday','require'=>false,'default'=>null),
-                'lastweek'=>array('name'=>'lastweek','require'=>false,'default'=>null),
-                'lastmonth'=>array('name'=>'lastmonth','require'=>false,'default'=>null),
+                'id'       => array("name" => "id",'require'=>true),
+                'majorID'  => array('name' => "majorID",'require'=>true),
+                'campusID' => array('name'=>"campusID",'require'=>true),
+                'aday'     => array('name'=>'aday', 'default' => null),
+                'aweek'    => array('name'=>'aweek', 'default' => null),
+                'amonth'   => array('name'=>'amonth', 'default' => null),
+                'lastday'  => array('name'=>'lastday', 'default' => null),
+                'lastweek' => array('name'=>'lastweek', 'default' => null),
+                'lastmonth'=> array('name'=>'lastmonth', 'default' => null),
             ),
             'dayRankList'=>array(
                 'majorID'=>array('name'=>'majorID'),
@@ -62,22 +59,6 @@ class Campusmajorpassed extends Api {
             )
         );
 	}
-	
-	/**
-	 * 默认接口服务
-     * @desc 默认接口服务，当未指定接口服务时执行此接口服务
-	 * @return string title 标题
-	 * @return string content 内容
-	 * @return string version 版本，格式：X.X.X
-	 * @return int time 当前时间戳
-	 */
-	public function index() {
-        return array(
-            'title' => 'Hello ' . $this->username,
-            'version' => PHALAPI_VERSION,
-            'time' => $_SERVER['REQUEST_TIME'],
-        );
-    }
 
     /**
      * 获取所有学校通过数

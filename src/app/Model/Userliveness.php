@@ -53,11 +53,17 @@ class Userliveness extends NotORM {
         return $data;
     }
 
-    public function getByIdLimit($id, $start, $length)
+    public function getByIdLimit($uid, $start, $length)
     {
         $model=$this->getORM();
         //倒序
-        $data=$model->order("id DESC")->where("uid",$id)->limit($start, $length);
+        $data=$model->order("id DESC")->where("uid",$uid)->limit($start, $length);
         return $data;
+    }
+
+    public function getRecentJionU($gid){
+        $model = $this->getORM();
+
+        return $model->order("id DESC")->where("action", 7)->and("targetID", $gid)->limit(12);
     }
 }

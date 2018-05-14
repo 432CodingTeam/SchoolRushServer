@@ -17,9 +17,6 @@ class Question extends Api {
 
 	public function getRules() {
         return array(
-            'index' => array(
-                'username' 	=> array('name' => 'username')
-            ),
             'add' => array(
                 'type'          => array('name' => "type", 'require' => true,),
                 'q'             => array('name' => 'q', 'require' => true,),
@@ -35,8 +32,9 @@ class Question extends Api {
                 'levels'        => array('name' => 'levels'),
                 'labels'        => array('name' => 'labels'),
                 'status'        => array('name' => 'status'),
-                'uid'           => array("name" => "uid", 'require'=>true,),
-                'title'         => array("name" => "title", 'require' => true,),
+                'uid'           => array("name" => "uid", 'require'=>true),
+                'title'         => array("name" => "title", 'require' => true),
+                'like'          => array('name' => 'like')
             ),
             'getById' => array(
                 'id' => array("name" => "id")
@@ -62,6 +60,7 @@ class Question extends Api {
                 'toAnswer'      => array('name' => 'toAnswer', 'default'=>null),
                 'title'         => array('name' => 'title','require' => true),
                 'status'        => array('name' => 'status', 'default'=>null),
+                'like'          => array('name' => 'like', 'default'=>null),
             ),
             'getQByuid'=>array(
                 'uid' => array('name' => 'uid'),
@@ -121,21 +120,6 @@ class Question extends Api {
             ),
         );
 	}
-	
-	/**
-	 * 默认接口服务
-     * @desc 默认接口服务， 标题
-	 * @return string content 内容
-	 * @return string version 版本，格式：X.X.X
-	 * @return int time 当前时间戳
-	 */
-	public function index() {
-        return array(
-            'title' => 'Hello ' . $this->username,
-            'version' => PHALAPI_VERSION,
-            'time' => $_SERVER['REQUEST_TIME'],
-        );
-    }
 
     /**
      * 获取所有的问题
@@ -332,6 +316,7 @@ class Question extends Api {
             'labels' => $this->labels,
             'status' => $this->status,
             'title' => $this->title,
+            'like' => $this->like,
         );
 
         $model = new QuestionModel();

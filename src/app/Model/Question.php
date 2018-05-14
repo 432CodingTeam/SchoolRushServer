@@ -95,6 +95,7 @@ class Question extends NotORM {
     }
     
     public function regularReplaceP($str){
+
         $res = preg_replace('/!\[.*\]\((.+)\)/','[图片]',$str);
         if(!$res) return $str;
 

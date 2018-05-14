@@ -13,9 +13,6 @@ class Campus extends Api {
 
 	public function getRules() {
         return array(
-            'index' => array(
-                'username' 	=> array('name' => 'username'),
-            ),
             'add' => array(
                 'name' => array('name' => "name"),
                 'members'=>array('name'=>"members"),
@@ -29,11 +26,11 @@ class Campus extends Api {
                 'id' => array("name" => "id")
             ),
             'updateById' => array(
-                'id' => array('name'=> 'id','require'=>true),
+                'id' => array('name'=>'id','require'=>true),
                 'name' => array('name' => "name",'require'=>true),
-                'members'=>array('name'=>"members",'default'=>null,'require'=>false),
-                'badge' => array('name' => "badge",'default'=>null,'require'=>false),
-                'locate' => array('name' => "locate",'default'=>null,'require'=>false)
+                'members'=>array('name'=>"members", 'default' => null),
+                'badge' => array('name' => "badge", 'default' => null),
+                'locate' => array('name' => "locate", 'default' => null)
             ),
             'getIdByName'=>array(
                 'id'=>array('name'=>"id"),
@@ -44,22 +41,6 @@ class Campus extends Api {
         );
 	}
 	
-	/**
-	 * 默认接口服务
-     * @desc 默认接口服务，当未指定接口服务时执行此接口服务
-	 * @return string title 标题
-	 * @return string content 内容
-	 * @return string version 版本，格式：X.X.X
-	 * @return int time 当前时间戳
-	 */
-	public function index() {
-        return array(
-            'title' => 'Hello ' . $this->username,
-            'version' => PHALAPI_VERSION,
-            'time' => $_SERVER['REQUEST_TIME'],
-        );
-    }
-
     /**
      * 获取所有内容
      * @desc 获取所有学校信息

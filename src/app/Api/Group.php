@@ -13,13 +13,12 @@ class Group extends Api {
 
 	public function getRules() {
         return array(
-            'index' => array(
-                'username' 	=> array('name' => 'username'),
-            ),
             'add' => array(
                 'name' => array('name' => "name"),
                 'creator'=>array('name'=>"creator"),
                 'members'=>array('name'=>"members"),
+                'introduce'=>array('name'=>'introduce'),
+                'avatar'=>array('name'=>'avatar'),
             ),
             'getById' => array(
                 'id' => array("name" => "id")
@@ -30,8 +29,10 @@ class Group extends Api {
             'updateById' => array(
                 'id' => array('name' => "id",'require'=>true),
                 'name' => array('name' => "name",'require'=>true),
-                'creator'=>array(   'name'=>"creator",'require'=>true,'default'=>null),
-                'members'=>array('name'=>"members",'require'=>false,'default'=>null),
+                'creator'=>array(   'name'=>"creator",'default'=>null),
+                'members'=>array('name'=>"members",'default'=>null),
+                'introduce'=>array('name'=>'introduce', 'default' => null),
+                'avatar'=>array('name'=>'avatar'),
             ),
             'getIdByName'=>array(
                 'name'=>array('name'=>"name"),
@@ -41,22 +42,6 @@ class Group extends Api {
             ),
         );
 	}
-	
-	/**
-	 * 默认接口服务
-     * @desc 默认接口服务，当未指定接口服务时执行此接口服务
-	 * @return string title 标题
-	 * @return string content 内容
-	 * @return string version 版本，格式：X.X.X
-	 * @return int time 当前时间戳
-	 */
-	public function index() {
-        return array(
-            'title' => 'Hello ' . $this->username,
-            'version' => PHALAPI_VERSION,
-            'time' => $_SERVER['REQUEST_TIME'],
-        );
-    }
 
     /**
      * 获取所有群组信息
@@ -129,6 +114,8 @@ class Group extends Api {
             "name"=>$this->name,
             "creator"=>$this->creator,
             "members"=>$this->members,
+            'introduce'=>$this->introduce,
+            'avatar'=>$this->avatar,
         );
 
         $model = new GroupModel();
@@ -153,7 +140,9 @@ class Group extends Api {
             "id"=>$this->id,
             "name"=>$this->name,
             "creator"=>$this->creator,
-            "members"=>$this->members
+            "members"=>$this->members,
+            'introduce'=>$this->introduce,
+            'avatar'=>$this->avatar,
         );
     
         foreach($data as $key => $val) {

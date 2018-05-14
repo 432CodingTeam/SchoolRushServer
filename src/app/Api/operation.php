@@ -13,9 +13,6 @@ class Operation extends Api {
 
 	public function getRules() {
         return array(
-            'index' => array(
-                'username' 	=> array('name' => 'username'),
-            ),
             'add' => array(
                 'uid' => array('name' => "uid"),
                 'operatetime'=>array('name'=>"operatetime"),
@@ -32,8 +29,8 @@ class Operation extends Api {
                 'id' => array('name' => "id",'require'=>true),
                 'uid' => array('name' => "uid",'require'=>true),
                 'operatetime'=>array('name'=>"operatetime",'require'=>true),
-                'type'=>array('name'=>"type",'require'=>false,'default'=>null),
-                'desc'=>array('name'=>'desc','require'=>false,'default'=>null),
+                'type'=>array('name'=>"type",'default'=>null),
+                'desc'=>array('name'=>'desc','default'=>null),
             ),
             'getIdByName'=>array(
                 'name'=>array('name'=>"name"),
@@ -43,22 +40,6 @@ class Operation extends Api {
             ),
         );
 	}
-	
-	/**
-	 * 默认接口服务
-     * @desc 默认接口服务，当未指定接口服务时执行此接口服务
-	 * @return string title 标题
-	 * @return string content 内容
-	 * @return string version 版本，格式：X.X.X
-	 * @return int time 当前时间戳
-	 */
-	public function index() {
-        return array(
-            'title' => 'Hello ' . $this->username,
-            'version' => PHALAPI_VERSION,
-            'time' => $_SERVER['REQUEST_TIME'],
-        );
-    }
 
     /**
      * 获取所有操作信息

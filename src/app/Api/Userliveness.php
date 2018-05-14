@@ -3,24 +3,30 @@ namespace App\Api;
 
 use PhalApi\Api;
 use App\Model\Userliveness as UserlivenessModel;
+use App\Model\Livenesscampus as LivenesscampusModel;
 use App\Model\Question as QuestionModel;
+use App\Model\User as UserModel;
+use App\Model\Group as GroupModel;
+use App\Model\Major as MajorModel;
+use App\Model\Label as LabelModel;
+use App\Model\Campus as CampusModel;
 /**
  * 用户活跃信息接口类
  *
+ * @author ssh
  */
 
 class Userliveness extends Api {
 
 	public function getRules() {
         return array(
-            'index' => array(
-                'username' 	=> array('name' => 'username'),
-            ),
             'add' => array(
                 'time' => array("name" => "time"),
                 'uid'=>array('name'=>"uid"),
-                'answer'=>array('name'=>"answer"),
-                'quiz'=>array('name'=>"quiz"),
+                'action'=>array('name'=>"action"),
+                'targetID'=>array('name'=>"targetID"),
+                'describe'=>array('name'=>'describe'),
+                'time'=>array('name'=>'time'),
             ),
             'getById' => array(
                 'id' => array("name" => "id")
@@ -30,38 +36,28 @@ class Userliveness extends Api {
             ),
             'updateById' => array(
                 'id' => array('name' => 'id','require'=>true),
-                'time' => array('name' => "time",'require'=>true),
                 'uid'=>array('name'=>"uid",'require'=>true),
-                'answer'=>array('name'=>"answer",'require'=>false,'default'=>null),
-                'quiz'=>array('name'=>"quiz",'require'=>false,'default'=>null),
+                'action'=>array('name'=>"action",'require'=>true),
+                'targetID'=>array('name'=>"targetID",'require'=>true),
+                'describe'=>array('name'=>'describe', 'default' => null),
+                'time'=>array('name'=>'time', 'default' => null),
             ),
             'getByTime'=>array(
                 'starttime'=>array('name'=>'starttime'),
                 'endtime'=>array('name'=>'endtime'),
             ),
             "getLivenessById" => array(
-                "id"   => array("name" => "id"),
+                "uid"   => array("name" => "uid"),
                 "page" => array("name" => "page"),
                 "num"  => array("name" => "num"),
             ),
+            'getCampusLiveness' => array(
+                'campusID' => array("name" => "campusID"),
+                'page'     => array("name" => "page"),
+                'num'      => array("name" => "num")
+            )
         );
 	}
-	
-	/**
-	 * 默认接口服务
-     * @desc 默认接口服务，当未指定接口服务时执行此接口服务
-	 * @return string title 标题
-	 * @return string content 内容
-	 * @return string version 版本，格式：X.X.X
-	 * @return int time 当前时间戳
-	 */
-	public function index() {
-        return array(
-            'title' => 'Hello ' . $this->username,
-            'version' => PHALAPI_VERSION,
-            'time' => $_SERVER['REQUEST_TIME'],
-        );
-    }
 
     /**
      * 获取所有用户活跃记录
@@ -162,7 +158,7 @@ class Userliveness extends Api {
 
     /**
      * 获取用户最近动态
-     * @param id   用户id
+     * @param uid   用户id
      * @param page 页数
      * @param num 每页的数量
      * 
@@ -170,21 +166,91 @@ class Userliveness extends Api {
      */
     public function getLivenessById() {
         $model = new UserlivenessModel();
-        $questionModel = new QuestionModel();
         $start = $this->num * ($this->page - 1);
-        $data = $model -> getByIdLimit($this->id, $start, $this->num);
+        $data = $model -> getByIdLimit($this->uid, $start, $this->num);
         $res = array();
         while($row = $data->fetch()) {
             $targetID = $row["targetID"];
             $action   = $row["action"];
-            //TODO: 还有好多action对应的操作没有写，后面应该写成swicth的
-            if($action == 5 || $action == 3 || $action == 2) {
-                $actionInfo = $questionModel->getById($targetID);
-                $actionInfo["view_title"] = $actionInfo["title"];
-            }
-            $row["actionInfo"] = $actionInfo;
+
+            $model1 = $this->getTypeModel($action);
+            $targetInfo = $model1->getById($targetID);
+            $row["targetInfo"] = $targetInfo;
+
             array_push($res, $row);
         }
         return $res;
     }
+    /**
+     * 获取学校的动态
+     * @param int campusID 学校ID
+     * @param int page 页数
+     * @param int num  每页的数量
+     */
+    public function getCampusLiveness(){
+        $model = new UserlivenessModel();
+        $model1 = new LivenesscampusModel();
+        $start = $this->num * ($this->page - 1);
+        $lives = $model1->getLiveIDByCampusID($this->campusID,$start,$this->num);
+
+        while($line = $lives->fetch()){
+            $liveID = $line["liveID"];
+            $data = $model->getById($liveID);
+            $res = array();
+            while($row = $data->fetch()) {
+                $targetID = $row["targetID"];
+                $action   = $row["action"];
+
+                $model2 = $this->getTypeModel($action);
+                $targetInfo = $model2->getById($targetID);
+                $row["targetInfo"] = $targetInfo;
+
+                array_push($res, $row);
+            }
+        }
+        return $res;
+    }
+
+    public function getTypeModel($action){
+        switch($action){
+            case "1":
+                return null;
+                break;
+            case "2":
+                $model = new QuestionModel();
+                return $model;
+                break;
+            case "3":
+                $model = new QuestionModel();
+                return $model;
+                break;
+            case "4":
+                $model = new UserModel();
+                return $model;
+                break;
+            case "5":
+                $model = new QuestionModel();
+                return $model;
+                break;
+            case "6":
+                $model = new LabelModel();
+                return $model;
+                break;
+            case "7":
+                $model = new CampusModel();
+                return $model;
+                break;
+            case "8":
+                $model = new MajorModel();
+                return $model;
+                break;
+            case "9":
+                $model = new GroupModel();
+                return $model;
+                break;
+            default:
+                break;
+        }
+    }
+
 }
