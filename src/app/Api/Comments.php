@@ -58,7 +58,6 @@ class Comments extends Api {
             ),
         );
 	}
-	
     /**
      * 获取所有内容
      * @desc 获取所有评论信息
@@ -264,7 +263,10 @@ class Comments extends Api {
             //获取用户名 将用户名也添加到获取的数据中
             $userModel = new UserModel();
             $user = $userModel->getById($uid);
-            $row["uName"] = $user["name"];
+            $userInfo = array("id"     => $user["id"],
+                              "name"   => $user["name"],
+                              "avatar" => $user["avatar"]);
+            $row["userInfo"] = $userInfo;
             //将题目描述添加到获取的数据中
             $questionModel =new QuestionModel();
             $qid=$row["qid"];
@@ -277,7 +279,7 @@ class Comments extends Api {
             $content = $row["content"];
             $c = $questionModel->regularReplaceP($content);
             $con = $questionModel->regularReplaceA($c);
-            $row["content"] = $con;
+            $row["zip-content"] = $con;
 
             array_push($res, $row);
         }
