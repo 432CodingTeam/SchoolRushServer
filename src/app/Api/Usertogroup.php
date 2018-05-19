@@ -4,12 +4,14 @@ namespace App\Api;
 use PhalApi\Api;
 use App\Model\Usertogroup as UsertogroupModel;
 use App\Model\Userliveness as UserlivenessModel;
+use App\Model\User as UserModel;
+use App\Model\Groupactivity as GroupactivityModel;
+use App\Model\Usertoq as UsertoqModel;
 /**
  * 用户小组关系接口类
  *
  * @author: ssh
  */
-
 class Usertogroup extends Api {
 
 	public function getRules() {
@@ -40,6 +42,11 @@ class Usertogroup extends Api {
             ),
             'getRecentJionU' => array(
                 'gid' => array('name' => 'gid')
+            ),
+            'getUserGroupactivitys'=>array(
+                'uid'=>array('name'=>'uid'),
+                'page' => array('name' => 'page', "default" => 1),
+                'num'  => array('name' => 'num', "default" => 20),
             ),
         );
 	}
@@ -197,6 +204,61 @@ class Usertogroup extends Api {
         }
 
         return $arr;
+    }
+    /**
+     * 获取指定用户加入的小组活动
+     * @desc 获取该用户参与小组的多有活动，返回指定的二十个活动（默认最新的20个）
+     * @author lxx
+     * @param int uid 用户id
+     * @param int page 获取第几页，默认第一页
+     * @param int num 一页几行，默认20行
+     * 
+     * @return array res 获取的一页用户所在小组的活动信息
+     */
+    public function getUserGroupactivitys(){
+
+        $model1 = new GroupactivityModel();
+        $usertogroupModel=new UsertogroupModel();
+        $usertoqModel=new UsertoqModel();
+        $group=$usertogroupModel->getByuid($this->uid);
+        $alldata=array();
+            $time=array();
+            $res = array();
+        foreach($group as $g){
+            $data =  $model1->getBygid($g["gid"]);//获取该小组的所有活动
+            $usertogroup=$usertogroupModel->getBygid($g["gid"]);//该小组的成员加入小组信息
+     
+            //一页的活动信息
+            foreach($data as $d)
+            {
+                $time[]=$d["starttime"];
+                $questionsId = explode(',',$d["questionsID"]); //获取该活动的问题列表
+               
+                    $passeduser=0;
+                    foreach($usertogroup as $user)//成员人数
+                    {
+                        $usertoq=$usertoqModel->getByuid($user["uid"])->where("status",1)->fetchall();//该成员的所有通过答题情况
+                        $passedquestion=array();
+                        foreach($usertoq as $u)//将该用户通过的问题id保存在这个变量当中
+                        {
+                            $passedquestion[]=$u["qid"];
+                        }
+                        $cnt=0;
+                        foreach($questionsId as $q)//在用户通过的问题中找活动中的问题
+                        {
+                            if(in_array($q,$passedquestion)){ $cnt++;}//问题在用户已通过问题中加一
+                        }
+                        if($cnt==count($questionsId)) $passeduser++;
+                    }    
+                   $d["passeduserNum"]=$passeduser;
+                        array_push($res, $d);
+            }
+        }
+        
+    array_multisort($time,SORT_DESC,$res);
+    
+    $start = ($this->page - 1) *$this->num;
+    return array_slice($res,$start,$this->num);//获取前二十
     }
 }
 
