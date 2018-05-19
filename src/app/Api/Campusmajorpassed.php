@@ -56,7 +56,10 @@ class Campusmajorpassed extends Api {
             ),
             'getTopFiveMajor'=>array(
                 'campusID' => array('name' => 'campusID'),
-            )
+            ),
+            'getCampusPassedNum'=>array(
+                'cid' => array('name' => 'cid'),
+            ),
         );
 	}
 
@@ -285,6 +288,23 @@ class Campusmajorpassed extends Api {
         return $b;
        // return array_column($b,'majorID');
        // return array_column($b,'majorName');
+    }
+
+    /**
+     * 获取某学校解决问题总数
+     * @param int cid 学校id
+     * @return int 总数量
+     */
+    public function getCampusPassedNum() {
+        $model = new CampusmajorpassedModel();
+
+        $res = $model -> getBycampusID($this->cid);
+        $total = 0;
+        while($row = $res->fetch()) {
+            $num = $row["total"];
+            $total = $total + $num;
+        }
+        return $total;
     }
 }
 

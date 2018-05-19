@@ -627,7 +627,7 @@ class User extends Api {
         $rules=array();
         $id = $user->getById($this->id);
         $id = $id["campusID"];
-        $users=$user->getBycampusID();
+        $users=$user->getBycampusID($id);
         foreach($users as &$u)
         {
             $sum=$usertoq->getPassed($u["id"])->fetchall();
