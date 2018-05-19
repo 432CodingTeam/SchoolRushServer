@@ -22,6 +22,10 @@ class Usertoq extends Api {
                 'uid'       => array('name' => "uid"),
                 'qid'       => array('name' =>"qid"),
             ),
+            'isPassed' => array(
+                'uid'       => array('name' => "uid"),
+                'qid'       => array('name' =>"qid"),
+            ),
             'getById' => array(
                 'id' => array("name" => "id")
             ),
@@ -135,6 +139,19 @@ class Usertoq extends Api {
             $id = $passedStatus["id"];
             return $model->updateById($id, $data);
         }
+    }
+    /**
+     * 判断用户是否通过指定题目
+     * @param int uid 用户id
+     * @param int qid 问题id
+     * 
+     * @return bool 是否通过
+     */
+    public function isPassed(){
+        $model = new UsertoqModel();
+        $passedStatus = $model -> getPassedStatus($this->uid, $this->qid);
+
+        return $passedStatus ? true : false;
     }
     /**
      * 获取用户的通过率
