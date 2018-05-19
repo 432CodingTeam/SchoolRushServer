@@ -24,6 +24,13 @@ class Groupactivity extends NotORM {
         return $data;
     }
 
+    public function getBygid($gid) {
+        $model = $this->getORM();
+
+        $data = $model->where("gid",$gid);
+        $data = $data->fetchall();
+        return $data;
+    }
     public function getIdByName($name)
     {
         $model=$this->getORM();

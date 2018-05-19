@@ -174,8 +174,10 @@ class Groupactivity extends Api {
         $usertogroup=$usertogroupModel->getBygid($this->gid);//该小组的成员加入小组信息
         //一页的活动信息
         $res = array();
+        $time=array();
         foreach($data as $d)
         {
+            $time[]=$d["starttime"];
             $questionsId = explode(',',$d["questionsID"]); //获取该活动的问题列表
            
                 $passeduser=0;
@@ -197,6 +199,7 @@ class Groupactivity extends Api {
                $d["passeduserNum"]=$passeduser;
                     array_push($res, $d);
         }
+        array_multisort($time,SORT_DESC,$res);
         return $res;
     }
 

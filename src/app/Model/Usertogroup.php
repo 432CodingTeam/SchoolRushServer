@@ -23,7 +23,13 @@ class Usertogroup extends NotORM {
         $data = $data->fetchOne();
         return $data;
     }
+    public function getByuid($uid) {
+        $model = $this->getORM();
 
+        $data = $model->where("uid",$uid);
+        $data = $data->fetchall();
+        return $data;
+    }
     public function deleteById($id) {
         $model = $this->getORM();
 
