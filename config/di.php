@@ -31,13 +31,15 @@ $di->notorm = new NotORMDatabase($di->config->get('dbs'), $di->debug);
 
 //access-control-allow-origin 可访问域名设置
 $allow_origin = array(
-    "http://localhost:8080"
+    "http://localhost:8080",
+    "http://schoolrush.iimt.me",
+    "http://localhost"
 );
 $origin = "";
 foreach ($allow_origin as $ori) {
     if($origin == "")
         $origin = $ori;
-    $origin .= "," . $ori;
+    $origin .= ";" . $ori;
 }
 $di->response->addHeaders('Access-Control-Allow-Origin',$allow_origin[0]);
 $di->response->addHeaders('Access-Control-Allow-Methods','GET, POST');

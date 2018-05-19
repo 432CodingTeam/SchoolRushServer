@@ -26,7 +26,9 @@ class Token {
             "expiretime" => date("Y-m-d H:i:s", strtotime("+2 hour")), //token有效期为20分钟
         );
 
-        return $tokenModel->add($data);
+        $insert_res = $tokenModel->add($data);
+        $insert_res = $tokenModel->getByUid($uid);
+        return $insert_res;
     }
 
     //删除一条token

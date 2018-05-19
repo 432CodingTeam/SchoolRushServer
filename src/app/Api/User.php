@@ -9,7 +9,7 @@ use App\Model\Major as MajorModel;
 use App\Model\Campus as CampusModel;
 use App\Model\Token as TokenModel;
 use App\Domain\Token as TokenDomain;
-use App\Common\Upload;
+use App\Common\Upload as QNUpload;
 use App\Common\GD;
 /**
  * 用户接口类
@@ -42,7 +42,6 @@ class User extends Api {
             'updateById' => array(
                 'id' => array('name' => 'id','require'=>true),
                 'name' => array('name' => "name",'require'=>true),
-                'pass'=>array('name'=>"pass",'require'=>true),
                 'identify'=>array('name'=>"identify",'default'=>null),
                 'email'=>array('name'=>"email",'require'=>true),
                 'tel'=>array('name'=>"tel",'require'=>true),
@@ -184,12 +183,7 @@ class User extends Api {
         $insert = array(
             'name'      => $this->name,
             'pass'      => $this->pass,
-            'identify'  => $this->identify,
             'email'     => $this->email,
-            'tel'       => $this->tel,
-            'campusID'  => $this->campusID,
-            'majorID'   => $this->majorID,
-            'vice'      => $this->vice,
             'avatar'    =>  "",  //头像地址先留空 后面上传之后更新
         );
         
@@ -265,7 +259,7 @@ class User extends Api {
             if(!$saveRes)
                 return array("res"=>false, "error"=>"保存本地图片失败");
             //上传到七牛云 将avatar设置为外链地址
-            $upload = new Upload();
+            $upload = new QNUpload();
             $upRes = $upload->uploadToQNY($saveRes["filePath"],$saveRes["fileName"]);
             if(is_array($upRes))
                 return array("res"=>false, "msg"=>"图片上传失败", "error"=>$upRes["error"]);
@@ -274,8 +268,6 @@ class User extends Api {
 
         $data = array(
             'id'=>$this->id,
-            'name'=>$this->name,
-            'pass'=>$this->pass,
             'identify'=>$this->identify,
             'email'=>$this->email,
             'tel'=>$this->tel,
@@ -633,7 +625,9 @@ class User extends Api {
         $user=new UserModel();
         $usertoq = new UsertoqModel();
         $rules=array();
-        $users=$user->getBycampusID($user->getById($this->id)["campusID"]);
+        $id = $user->getById($this->id);
+        $id = $id["campusID"];
+        $users=$user->getBycampusID();
         foreach($users as &$u)
         {
             $sum=$usertoq->getPassed($u["id"])->fetchall();
