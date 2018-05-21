@@ -3,6 +3,7 @@ namespace App\Api;
 
 use PhalApi\Api;
 use App\Model\Question as QuestionModel;
+use App\Domain\Question as QuestionDomain;
 use App\Model\Usertoq as UsertoqModel;
 use App\Model\User as UserModel;
 use App\Model\Major as MajorModel;
@@ -118,6 +119,11 @@ class Question extends Api {
             'deleteLikeById'=>array(
                 'id'=>array('name'=>'id'),
             ),
+            'search' => array(
+                'keys' => array("name" => "key"),
+                'page' => array("name" => "page"),
+                "num"  => array("name" => "num"),
+            ),
         );
 	}
 
@@ -132,6 +138,33 @@ class Question extends Api {
         $data = $model->getAll();
 
         return $data;
+    }
+    /**
+     * 搜索问题
+     * @param 搜索框的文本
+     */
+    public function search() {
+        $keys = $this->keys;
+        $keys = explode(" ", $keys);
+        $keyArr = array();
+        foreach($keys as $key) {
+            array_push($keyArr, $key);
+        }
+        $domain = new QuestionDomain();
+        $model  = new QuestionModel();
+
+        $result = $domain->searchByKeyArr($keyArr);
+        //计算如何删除
+        $start = $this->num * ($this->page - 1);
+        $result = array_slice($result, $start,$this->num, true);
+        $res = array();
+
+        foreach($result as $key => $val) {
+            array_push($res, $key);
+        }
+
+        $res = $model->getByIdArr($res);
+        return $domain->getQCardInfo($res);
     }
 
     /**
@@ -420,43 +453,10 @@ class Question extends Api {
         $exceptQ        = $usertoqModel->getUserAllId($this->uid);
         $start          = $this->num * ($this->page - 1);
         $data           = $model->getByExceptId($exceptQ, $start, $this->num);
+        $questionDomain = new QuestionDomain();
+        
 
-        $res = array();
-        while($row = $data->fetch()) {
-            $user                    = new UserModel();
-            $major                   = new majorModel();
-            $labelModel              = new LabelModel();
-
-            $que = $row["q"];//开始的问题内容
-            $q  = $model->regularReplaceP($que); //图片匹配后的问题内容
-            $q  = $model->regularReplaceA($q);  //链接匹配后的问题内容
-            $q  = $model->regularReplaceExp($q); //将表达式去掉
-            $q  = $model->regularReplaceCode($q);
-
-            $arr                     = $row;
-            $arr["q"]                = mb_substr($q,0,25,"UTF8");
-            $arr["passedrate"]       = $row["challenges"] == 0 ? "0%" : 100*($row["passed"]/$row["challenges"])."%";
-            $user                    = $user->getById($row["uid"]);
-            $arr["username"]         = $user["name"];
-            $arr["useravatar"]       = $user["avatar"];
-            $major1                  = $major->getById($row["majorID"]);
-            $arr["majorName"]        = $major1["name"];
-            $name                    = $major->getById($major1["parent"]);
-            $arr["majorParentName"]  = $name["name"];
-            $arr["labels"]           = $row["labels"] == null ? array() : explode(",",$row["labels"]);
-            $label_arr = array();
-            foreach( $arr["labels"] as $labelID) {
-                $label = $labelModel -> getById($labelID);
-                $_lebel = array();
-                $_lebel["id"] = $label["id"];
-                $_lebel["name"] = $label["name"];
-                array_push($label_arr, $_lebel);
-            }
-            $arr["labelsInfo"]       = $label_arr;
-            array_push($res, $arr);
-        }
-
-        return $res;
+        return $questionDomain->getQCardInfo($data);
     }
     /**
      * 按照关键字索引题目

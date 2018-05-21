@@ -93,6 +93,17 @@ class Question extends NotORM {
 
         return $model->order('id DESC')->where("NOT id", $data)->limit($start, $num);
     }
+
+    public function getByIdArr($idArr) {
+        $model = $this->getORM();
+
+        return $model->where("id", $idArr);
+    }
+
+    public function searchByKey($key) {
+        $model = $this->getORM();
+        return $model->select("id")->where('title LIKE ?', "%".$key."%")->or('q LIKE ?', "%".$key."%");
+    }
     
     public function regularReplaceP($str){
 

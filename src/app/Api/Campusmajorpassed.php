@@ -263,6 +263,9 @@ class Campusmajorpassed extends Api {
     {
         $model=new CampusmajorpassedModel();
         $model1=$model->getBycampusID($this->campusID)->fetchall();
+        if(!$model1) {
+            return array("res" => false, "message" => "没有数据");
+        }
         $model2=new MajorModel();
         $b=array();
         $rule=array();
@@ -286,8 +289,6 @@ class Campusmajorpassed extends Api {
         array_multisort($rules,SORT_DESC,$b);
         $b=array_slice($b,0,5);//取前五个
         return $b;
-       // return array_column($b,'majorID');
-       // return array_column($b,'majorName');
     }
 
     /**
