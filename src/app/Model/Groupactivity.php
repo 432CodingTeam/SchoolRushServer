@@ -63,4 +63,12 @@ class Groupactivity extends NotORM {
         return $data;
     }
     
+    /**
+     * 根据数组中的id选择
+     */
+    public function getByIdArrLatest($idArr, $start, $num) {
+        $model = $this->getORM();
+
+        return $model -> order("starttime DESC") -> where("gid", $idArr) -> limit($start, $num);
+    }
 }

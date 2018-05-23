@@ -3,6 +3,7 @@ namespace App\Api;
 
 use PhalApi\Api;
 use App\Model\Groupactivity as GroupactivityModel;
+use App\Model\Group as GroupModel;
 use App\Model\Usertogroup as UsertogroupModel;
 use App\Model\Usertoq as UsertoqModel;
 /**
@@ -40,7 +41,11 @@ class Groupactivity extends Api {
                 'gid'=>array('name'=>'gid'),
                 'page' => array('name' => 'page', "default" => 1),
                 'num'  => array('name' => 'num', "default" => 20),
-                
+            ),
+            'getActivitysByUid' => array(
+                'id' => array('name' => "id", "require" => true),
+                'num' => array("name" => "num", 'default'=>20),
+                'page' => array("name" => "page", 'default' => 1),
             ),
         );
 	}
@@ -201,6 +206,27 @@ class Groupactivity extends Api {
         }
         array_multisort($time,SORT_DESC,$res);
         return $res;
+    }
+
+        /**
+     * 获取用户所在群的活动
+     * @param id 用户id
+     * @param num 每页容量
+     * @param page 页数
+     * @return 数组
+     */
+    public function getActivitysByUid() {
+        $groupModel = new GroupactivityModel();
+        $usertoGroupModel = new UsertoGroupModel();
+        $start = ($this->page - 1) * $this->num;
+
+        $relData = $usertoGroupModel -> getByuid($this->id);
+        $groups = array();
+        while($row = $relData -> fetch()) {
+            array_push($groups, $row["gid"]);
+        }
+        $data = $groupModel -> getByIdArrLatest($groups, $start, $this->num);
+        return $data;
     }
 
 }

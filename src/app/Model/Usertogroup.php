@@ -27,7 +27,6 @@ class Usertogroup extends NotORM {
         $model = $this->getORM();
 
         $data = $model->where("uid",$uid);
-        $data = $data->fetchall();
         return $data;
     }
     public function deleteById($id) {
