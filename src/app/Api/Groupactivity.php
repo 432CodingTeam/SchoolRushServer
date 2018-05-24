@@ -188,8 +188,11 @@ class Groupactivity extends Api {
                 $passeduser=0;
                 foreach($usertogroup as $user)//成员人数
                 {
-                    $usertoq=$usertoqModel->getByuid($user["uid"])->where("status",1)->fetchall();//该成员的所有通过答题情况
+                    $usertoq=$usertoqModel->getPassedAllById($user["uid"]);//该成员的所有通过答题情况
                     $passedquestion=array();
+                    // while ($u = mysql_fetch_array($usertoq)){
+                    //     $passedquestion[]=$u["qid"];
+                    // }
                     foreach($usertoq as $u)//将该用户通过的问题id保存在这个变量当中
                     {
                         $passedquestion[]=$u["qid"];

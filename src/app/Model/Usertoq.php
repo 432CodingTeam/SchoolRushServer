@@ -14,7 +14,11 @@ class Usertoq extends NotORM {
         $data=$model->select("*");
          return $data;
     }
-
+    public function getPassedAllById($id){
+        $model=$this->getORM();
+        $data=$model->where("id",$id)->where("status",1);
+         return $data;
+    }
     public function getById($id)
     {
         $model=$this->getORM();
@@ -53,7 +57,12 @@ class Usertoq extends NotORM {
         //把data赋值成问题id
         return $data;
     }
-    
+    public function getPQuestionidByuid($uid)
+    {
+        $model=$this->getORM();
+        $data= $model->where("uid",$uid)->and('status',1);
+        //把data赋值成问题id
+    }
     public function getUnPQIdByuid($uid)
     {
         $model=$this->getORM();

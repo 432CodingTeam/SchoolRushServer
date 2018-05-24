@@ -262,7 +262,7 @@ class Campusmajorpassed extends Api {
     public function getTopFiveMajor()
     {
         $model=new CampusmajorpassedModel();
-        $model1=$model->getBycampusID($this->campusID)->fetchall();
+        $model1=$model->getBycampusID($this->campusID);
         if(!$model1) {
             return array("res" => false, "message" => "没有数据");
         }
