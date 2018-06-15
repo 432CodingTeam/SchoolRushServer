@@ -347,31 +347,34 @@ class User extends Api {
         $tp=array();
         foreach($pq as $pqs)
         {
-            $tp[]=$pqs['id'];
+            $tp[]=$pqs['qid'];
         }
-        $model=$model1->getById($tp)->fetchAll();//获取到所有通过的问题信息
+        $model=$model1->getByIds($tp);//获取到所有通过的问题信息
         $major=array();
         $d=0;
-        for($i=0;$i<sizeof($model);$i++)//将题目专业id保存在major数组里，将对应的题目数量保存在num数组里
+        $cnt=0;
+        while($m=$model->fetch())//将题目专业id保存在major数组里，将对应的题目数量保存在num数组里
         {
             for($j=0;$j<sizeof($major);$j++)
             {
-                if($major[$j]["id"]==$model[$i]["majorID"])
+                if($major[$j]["id"]==$m["majorID"])
                 {
+                    $cnt=0;
                     $num[$j]++;
                     break;
                 }
             }
             if($j==sizeof($major)) 
             {
-                $major[]["id"]=$model[$i]["majorID"];
+                $major[$d++]["id"]=$m["majorID"];
                 $num[]=1;
             }
         }
         array_multisort($num,SORT_DESC,$major);//排序
         for($i=0;$i<sizeof($major);$i++)
         {
-            $information=$model3->getNameByID($major[$i]["id"])->fetchone();
+            $information=$model3->getNameByID($major[$i]["id"]);
+            //return $information;
             $major[$i]["majorname"]=$information["name"];
             $major[$i]["percent"]=100*sprintf("%.2f", $num[$i]/sizeof($model));
         }
