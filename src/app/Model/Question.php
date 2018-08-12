@@ -23,6 +23,12 @@ class Question extends NotORM {
         $data = $data->fetchOne();
         return $data;
     }
+    public function getByIds($id){
+        $model = $this->getORM();
+
+        $data = $model->where("id",$id);
+        return $data;
+    }
     public function getByIdArray($id) {
         $model = $this->getORM();
 
