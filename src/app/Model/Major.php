@@ -3,6 +3,9 @@ namespace App\Model;
 
 use PhalApi\Model\NotORMModel as NotORM;
 
+/**
+ * 专业表 Model层
+ */
 class Major extends NotORM {
 
     protected function getTableName($id) {
@@ -55,5 +58,16 @@ class Major extends NotORM {
         $model = $this->getORM();
 
         return $model->count("id");
+    }
+
+    /**
+     * 根据name字段模糊查询  最多返回30条(防止高频字段消耗计算资源)
+     * @author iimT
+     * @param query 查询字段
+     */
+    public function getByLike($query) {
+        $model = $this -> getORM();
+        $query = '%' . $query . '%';
+        return $model -> select('id, name') -> where('name LIKE ?', $query) -> limit(30);
     }
 }

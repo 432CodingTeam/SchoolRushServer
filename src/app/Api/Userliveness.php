@@ -55,7 +55,10 @@ class Userliveness extends Api {
                 'campusID' => array("name" => "campusID"),
                 'page'     => array("name" => "page"),
                 'num'      => array("name" => "num")
-            )
+            ),
+            'getUserSharedNum' => array(
+                'uid' => array("name" => "uid"),
+            ),
         );
 	}
 
@@ -150,6 +153,18 @@ class Userliveness extends Api {
         $id = $model->updateById($this->id,$data);
         return array("res"=>$id);
     }
+
+    /**
+     * 获取用户分享的问题数
+     * @param uid
+     */
+    public function getUserSharedNum() {
+        $model=new UserlivenessModel();
+
+        return $model -> getUserSharedNum($this->uid);
+    }
+
+
     public function getByTime()
     {
         $model=new UserlivenessModel();
@@ -174,6 +189,9 @@ class Userliveness extends Api {
             $action   = $row["action"];
 
             $model1 = $this->getTypeModel($action);
+            if(!$model1) {
+                continue;
+            }
             $targetInfo = $model1->getById($targetID);
             $row["targetInfo"] = $targetInfo;
 
@@ -210,7 +228,9 @@ class Userliveness extends Api {
         }
         return $res;
     }
-
+    /**
+     * 根据不同的action 返回不同的model
+     */
     public function getTypeModel($action){
         switch($action){
             case "1":
@@ -252,5 +272,6 @@ class Userliveness extends Api {
                 break;
         }
     }
+    
 
 }

@@ -46,4 +46,36 @@ class Follow extends NotORM {
         $cnt = $model->where("uid",$uid)->and("type",$type);
         return count($cnt);
     }
+
+    public function getFollowerNum($uid){
+        $model = $this->getORM();
+        $cnt = $model->where("target",$uid)->and("type",1);
+        return count($cnt);
+    }
+
+    public function isRepeat($uid, $type, $target) {
+        $model = $this->getORM();
+
+        $data = count($model -> where("uid", $uid) -> and("type", $type) -> and("target", $target));
+
+        return $data != 0 ? true : false;
+    }
+
+    public function deleteByInfo($uid, $type, $target) {
+        $model = $this->getORM();
+
+        return $model -> where("uid", $uid) -> and("type", $type) -> and("target", $target) -> delete();
+    }
+
+    public function getFollowUserIds($uid, $start, $length) {
+        $model = $this -> getORM();
+
+        return $model -> select("target") -> where("uid", $uid) -> where("type", 1) -> limit($start, $length);
+    }
+
+    public function getFollowerUserIds($uid, $start, $length) {
+        $model = $this -> getORM();
+
+        return $model -> select("uid") -> where("target", $uid) -> where("type", 1) -> limit($start, $length);
+    }
 }

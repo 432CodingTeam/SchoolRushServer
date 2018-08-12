@@ -70,6 +70,7 @@ class User extends NotORM {
     
     //将base64转为图片 失败返回false 成功返回文件路径和文件名
     public function base64toImg($base64, $imgName) {
+        $imgName = md5($imgName);
         $imgName = "user_" . $imgName . '.png';
         if (strstr($base64,",")) {
             $base64 = explode(',',$base64);
@@ -81,7 +82,7 @@ class User extends NotORM {
         $a = file_put_contents($path. $imgName, $img);
         if($a)
             return array("filePath"=>$path.$imgName, "fileName"=>$imgName);
-        return false;
+        return $a;
     }
     public function getBylikenamePage($name, $start, $num)
     {
@@ -118,5 +119,16 @@ class User extends NotORM {
     public function getBycampusID($id){
         $model=$this->getORM();
         return $model->where("campusID",$id)->fetchall();
+    }
+
+    public function getLivenessInfoById($id) {
+        return $this->getById($id);
+    }
+
+    public function getAvatarByUid($uid) {
+        $model  = $this -> getORM();
+
+        $res    = $model -> select('avatar') -> where('id', $uid) -> fetchOne();
+        return $res;
     }
 }

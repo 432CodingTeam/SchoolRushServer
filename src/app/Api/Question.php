@@ -124,6 +124,10 @@ class Question extends Api {
                 'page' => array("name" => "page"),
                 "num"  => array("name" => "num"),
             ),
+            'searchSimple' => array(
+                'key' => array("name" => "key"),
+                "num"  => array("name" => "num", "default" => 20),
+            ),
         );
 	}
 
@@ -138,6 +142,15 @@ class Question extends Api {
         $data = $model->getAll();
 
         return $data;
+    }
+    /**
+     * 搜索问题 但是只要title和id
+     * @param 搜索的关键词
+     */
+    public function searchSimple(){
+        $model = new QuestionModel();
+
+        return $model->searchSimple($this->key, $this->num);
     }
     /**
      * 搜索问题

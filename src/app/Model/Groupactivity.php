@@ -62,6 +62,12 @@ class Groupactivity extends NotORM {
         
         return $data;
     }
+
+    public function getAllByLimie($start, $num) {
+        $model = $this->getORM();
+
+        return $model -> select("id, title, questionsID, gid, starttime") -> order("starttime DESC") -> limit($start, $num);
+    }
     
     /**
      * 根据数组中的id选择

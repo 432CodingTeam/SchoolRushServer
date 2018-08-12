@@ -33,6 +33,27 @@ class Follow extends Api {
             'getFollowNum' => array(
                 'uid' => array('name'=>'uid'),
                 'type' => array('name'=>'type'),
+            ),
+            'getFollowerNum' => array(
+                'uid' => array('name'=>'uid'),
+            ),
+            'isFollowed' => array(
+                'uid' => array('name' => "uid"),
+                'type'=>array('name'=>"type"),
+                'target' => array('name' => "target"),
+            ),
+            'unFollow' => array(
+                'uid' => array('name' => "uid"),
+                'type'=>array('name'=>"type"),
+                'target' => array('name' => "target"),
+            ),
+            'getFollowedIds' => array(
+                'id' => array('name' => 'id', 'require' => true),
+                'page' => array('name' => 'page', 'require' => false, 'default' => 1),
+            ),
+            'getFollowerIds' => array(
+                'id' => array('name' => 'id', 'require' => true),
+                'page' => array('name' => 'page', 'require' => false, 'default' => 1),
             )
         );
 	}
@@ -103,9 +124,31 @@ class Follow extends Api {
 
         $model = new FollowModel();
 
+        $isRepeat = $model -> isRepeat($this->uid, $this->type, $this->target);
+        if($isRepeat) {
+            return array("msg" => "已经关注了。");
+        }
         $id = $model->add($insert);
 
         return $id;
+    }
+    /**
+     * 用户是否已经关注了
+     * 
+     */
+    public function isFollowed() {
+        $model = new FollowModel();
+
+        return $model -> isRepeat($this->uid, $this->type, $this->target);
+    }
+
+    /**
+     * 取消关注
+     */
+    public function unFollow() {
+        $model = new FollowModel();
+
+        return $model -> deleteByInfo($this->uid, $this->type, $this->target);
     }
     /**
      * 更新用户关注信息
@@ -142,7 +185,7 @@ class Follow extends Api {
     
     /**
      * @author ssh
-     * 获取用户关注总数
+     * 用户关注了多少指定类型的
      * @param int uid 用户id
      * @param int type 关注用户/标签
      * @return int 该用户关注用户/标签总数
@@ -150,6 +193,56 @@ class Follow extends Api {
     public function getFollowNum(){
         $model = new FollowModel();
         return $model->getFollowNum($this->uid,$this->type);
+    }
+
+    /**
+     * @author ssh
+     * 用户被多少人关注
+     * @param int uid 用户id
+     * @param int type 关注用户/标签
+     * @return int 该用户关注用户/标签总数
+     */
+    public function getFollowerNum(){
+        $model = new FollowModel();
+        return $model->getFollowerNum($this->uid);
+    }
+
+    /**
+     * @author iimT
+     * @desc 获取用户关注的用户id，每页20个
+     * @param bigint id 用户id
+     * @param int    page 页数 默认为1
+     * @return array 关注的用户数组
+     */
+    public function getFollowedIds() {
+        $model  = new FollowModel();
+        $length = 20;
+        $start  = ($this->page - 1) * $length;
+        $result = $model -> getFollowUserIds($this->id, $start, $length);
+        $data   = array();
+        foreach ($result as $val) {
+            array_push($data, $val['target']);
+        }
+        return $data;
+    }
+
+    /**
+     * @author iimT
+     * @desc 获取用户关注的用户id，每页20个
+     * @param bigint id 用户id
+     * @param int    page 页数 默认为1
+     * @return array 关注的用户数组
+     */
+    public function getFollowerIds() {
+        $model  = new FollowModel();
+        $length = 20;
+        $start  = ($this->page - 1) * $length;
+        $result = $model -> getFollowerUserIds($this->id, $start, $length);
+        $data   = array();
+        foreach ($result as $val) {
+            array_push($data, $val['uid']);
+        }
+        return $data;
     }
 }
 

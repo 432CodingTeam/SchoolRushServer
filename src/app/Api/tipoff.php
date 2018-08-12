@@ -112,14 +112,6 @@ class Tipoff extends Api {
         );
 
         $model = new TipoffModel();
-        foreach($data as $key => $val) {
-            if($val == NULL){
-                $keys = array_keys($data);
-                $index = array_search($key, $keys);
-
-                array_splice($data, $index, 1);
-            }
-        }
         $id = $model->add($insert);
 
         return $id;

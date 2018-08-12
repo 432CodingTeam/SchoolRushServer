@@ -3,9 +3,11 @@ namespace App\Api;
 
 use PhalApi\Api;
 use App\Model\Groupactivity as GroupactivityModel;
+use App\Domain\Groupactivity as GroupactivityDomain;
 use App\Model\Group as GroupModel;
 use App\Model\Usertogroup as UsertogroupModel;
 use App\Model\Usertoq as UsertoqModel;
+use App\Model\Question as QuestionModel;
 /**
  * 小组活动接口类
  *
@@ -20,7 +22,6 @@ class Groupactivity extends Api {
                 'title' => array('name' => "title"),
                 'questionsID'=>array('name'=>"questionsID"),
                 'gid' => array('name' => "gid"),
-                'starttime' => array('name' => "starttime"),
                 'content' => array('name' => 'content'),
             ),
             'getById' => array(
@@ -44,6 +45,17 @@ class Groupactivity extends Api {
             ),
             'getActivitysByUid' => array(
                 'id' => array('name' => "id", "require" => true),
+                'num' => array("name" => "num", 'default'=>20),
+                'page' => array("name" => "page", 'default' => 1),
+            ),
+            'getActivityCompleteInfo' => array(
+                'id' => array('name' => "id", "require" => true),
+            ),
+            'getActivityUserPassInfo' => array(
+                'uid' => array('name' => "uid", "require" => true),
+                'aid' => array('name' => "aid", "require" => true),
+            ),
+            'getSiteActivityByPage' => array(
                 'num' => array("name" => "num", 'default'=>20),
                 'page' => array("name" => "page", 'default' => 1),
             ),
@@ -99,7 +111,6 @@ class Groupactivity extends Api {
      * @param string title 标题
      * @param int questionsID 题集ID
      * @param int gid 所属小组的id
-     * @param time starttime 开始时间
      * @param string content 活动的介绍
      * 
      * @return array id 增加的小组活动的信息
@@ -109,7 +120,6 @@ class Groupactivity extends Api {
             'title'=>$this->title,
             'questionsID'=>$this->questionsID,
             'gid' => $this->gid,
-            'starttime' => $this->starttime,
             'content' => $this->content,
         );
 
@@ -172,6 +182,7 @@ class Groupactivity extends Api {
         $model = new GroupactivityModel();
         $usertogroupModel=new UsertogroupModel();
         $usertoqModel=new UsertoqModel();
+        $groupModel = new GroupModel();
 
         $start = ($this->page - 1) * $this->num;
         $data =  $model->getByLimit($start, 20,$this->gid);
@@ -185,30 +196,33 @@ class Groupactivity extends Api {
             $time[]=$d["starttime"];
             $questionsId = explode(',',$d["questionsID"]); //获取该活动的问题列表
            
-                $passeduser=0;
-                foreach($usertogroup as $user)//成员人数
+            $passeduser=0;
+            foreach($usertogroup as $user)//成员人数
+            {
+                $usertoq=$usertoqModel->getByuid($user["uid"])->where("status",1)->fetchall();//该成员的所有通过答题情况
+                $passedquestion=array();
+                foreach($usertoq as $u)//将该用户通过的问题id保存在这个变量当中
                 {
-                    $usertoq=$usertoqModel->getByuid($user["uid"])->where("status",1)->fetchall();//该成员的所有通过答题情况
-                    $passedquestion=array();
-                    foreach($usertoq as $u)//将该用户通过的问题id保存在这个变量当中
-                    {
-                        $passedquestion[]=$u["qid"];
-                    }
-                    $cnt=0;
-                    foreach($questionsId as $q)//在用户通过的问题中找活动中的问题
-                    {
-                        if(in_array($q,$passedquestion)){ $cnt++;}//问题在用户已通过问题中加一
-                    }
-                    if($cnt==count($questionsId)) $passeduser++;
-                }    
-               $d["passeduserNum"]=$passeduser;
-                    array_push($res, $d);
+                    $passedquestion[]=$u["qid"];
+                }
+                $cnt=0;
+                foreach($questionsId as $q)//在用户通过的问题中找活动中的问题
+                {
+                    if(in_array($q,$passedquestion)){ $cnt++;}//问题在用户已通过问题中加一
+                }
+                if($cnt==count($questionsId)) $passeduser++;
+            }    
+            $d["passeduserNum"]=$passeduser;
+            $questionsArr = explode(",", $d["questionsID"]);
+            $d["questionNum"] = count($questionsArr);
+            // $d["groupInfo"] = $groupModel -> getById($d["gid"]);
+            array_push($res, $d);
         }
         array_multisort($time,SORT_DESC,$res);
         return $res;
     }
 
-        /**
+    /**
      * 获取用户所在群的活动
      * @param id 用户id
      * @param num 每页容量
@@ -227,6 +241,69 @@ class Groupactivity extends Api {
         }
         $data = $groupModel -> getByIdArrLatest($groups, $start, $this->num);
         return $data;
+    }
+
+    /**
+     * 获取全站小组活动 按页
+     * @param page 页数
+     * @param num 每页容量
+     */
+    public function getSiteActivityByPage() {
+        $start = ($this->page - 1) * $this->num;
+        $domain = new GroupactivityDomain();
+
+        return $domain->getSiteActivityByPage($start, $this->num);
+    }
+
+    /**
+     * 查看活动完成情况
+     * @param id 活动id
+     */
+    public function getActivityCompleteInfo() {
+        $usertoGroupModel = new UsertogroupModel();
+        $usertoQModel     = new UsertoqModel();
+        $model            = new GroupactivityModel();
+        $activity         = $model -> getById($this->id);
+        $groupUserIdArr = $usertoGroupModel -> getGroupUserArr($activity["gid"]);
+        $questionsIdArr = explode(",", $activity["questionsID"]);
+
+        $total = count($groupUserIdArr);
+        $pass_num = 0;
+        foreach($groupUserIdArr as $uid) {
+            $is_pass = $usertoQModel -> checkUserPassQuestionArr($uid, $questionsIdArr);
+            if($is_pass) {
+                $pass_num = $pass_num + 1;
+            }
+        }
+        return array("pass" => $pass_num, "total" => $total);
+    }
+
+    /**
+     * 获取某用户在某活动的完成情况
+     * @param aid 活动id
+     * @param uid 用户id
+     */
+    public function getActivityUserPassInfo() {
+        $usertoGroupModel = new UsertogroupModel();
+        $model            = new GroupactivityModel();
+        $usertoQModel     = new UsertoqModel();
+        $questionModel    = new QuestionModel();
+        $activity         = $model -> getById($this->aid);
+        $questionsIdArr   = explode(",", $activity["questionsID"]);
+
+        $result = array();
+        foreach($questionsIdArr as $qid) {
+            $status = $usertoQModel -> getUserPassed($this->uid, $qid);
+            $q_title = $questionModel -> getTitleById($qid);
+            $q_title = $q_title["title"];
+
+            array_push($result, array(
+                "id" => $qid,
+                "status" => $status,
+                "title" => $q_title
+            ));
+        }
+        return $result;
     }
 
 }

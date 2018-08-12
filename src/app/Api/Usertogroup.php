@@ -7,6 +7,7 @@ use App\Model\Userliveness as UserlivenessModel;
 use App\Model\User as UserModel;
 use App\Model\Groupactivity as GroupactivityModel;
 use App\Model\Usertoq as UsertoqModel;
+use App\Model\Group as GroupModel;
 /**
  * 用户小组关系接口类
  *
@@ -47,6 +48,9 @@ class Usertogroup extends Api {
                 'uid'=>array('name'=>'uid'),
                 'page' => array('name' => 'page', "default" => 1),
                 'num'  => array('name' => 'num', "default" => 20),
+            ),
+            'getUserGroup' => array(
+                'uid' => array('name' => 'uid'),
             ),
         );
 	}
@@ -156,14 +160,10 @@ class Usertogroup extends Api {
      * @return array id 删除的用户-小组关系
      */
     public function delete(){
-        $delete = array(
-            'uid' => $this->uid,
-            'gid' => $this->gid
-        );
 
         $model = new UsertogroupModel();
 
-        $id = $model->delete($delete);
+        $id = $model->deleteByUidAndGid($this->uid, $this->gid);
 
         return $id;
     }
@@ -196,11 +196,15 @@ class Usertogroup extends Api {
      * @return array recentJion 用户id
      */
     public function getRecentJionU(){
-        $model = new UserlivenessModel();
+        $model = new UsertogroupModel();
+        $userModel = new UserModel();
+        $num = 12;
 
-        $data = $model->getRecentJionU($this->gid);
-        foreach($data as $data){
-            $arr[]=$data['uid'];
+        $data = $model->getLatestJoin($this->gid, $num);
+        $arr = array();
+        foreach($data as $d){
+            $d["user"] = $userModel -> getById($d['uid']);
+            array_push($arr, $d);
         }
 
         return $arr;
@@ -259,6 +263,25 @@ class Usertogroup extends Api {
     
     $start = ($this->page - 1) *$this->num;
     return array_slice($res,$start,$this->num);//获取前二十
+    }
+
+    /**
+     * 获取用户加入的小组
+     * @param uid 用户id
+     */
+    public function getUserGroup() {
+        $model = new UsertogroupModel();
+        $groupModel = new GroupModel();
+
+        $data = $model -> getUserGroup($this->uid);
+        $result = array();
+        while($row = $data -> fetch()) {
+            $gid  = $row["gid"];
+            $row["group"] = $groupModel -> getById($gid);
+
+            array_push($result, $row);
+        }
+        return $result;
     }
 }
 

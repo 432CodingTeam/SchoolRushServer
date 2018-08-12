@@ -50,4 +50,11 @@ class Livenesscampus extends NotORM {
         $data = $model->order("id DESC")->where("campusID", $campusID)->limit($start,$length);
         return $data;
     }
+
+    public function getLiveIDByCampusIDLatest($campusID,$start,$length){
+        $model = $this->getORM();
+
+        $data = $model->select("liveID")->order("id DESC")->where("campusID", $campusID)->limit($start,$length);
+        return $data;
+    }
 }

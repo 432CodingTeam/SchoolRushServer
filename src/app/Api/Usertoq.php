@@ -5,6 +5,8 @@ use PhalApi\Api;
 use App\Model\Usertoq as UsertoqModel;
 use App\Model\User as UserModel;
 use App\Model\Campusmajorpassed as CampusmajorpassedModel;
+use App\Model\Question as QuestionModel;
+use App\Domain\Question as QuestionDomain;
 /**
  * 用户通过题目关系表接口类
  *
@@ -48,6 +50,8 @@ class Usertoq extends Api {
             ),
             'getPassed' => array(
                 'uid' => array('name' => 'uid'),
+                'page' => array('name' => 'page'),
+                'num' => array('name' => 'num'),
             ),
             'getTobeSolvedNum' => array(
                 'uid' => array('name' => 'uid'),
@@ -149,9 +153,7 @@ class Usertoq extends Api {
      */
     public function isPassed(){
         $model = new UsertoqModel();
-        $passedStatus = $model -> getPassedStatus($this->uid, $this->qid);
-
-        return $passedStatus ? true : false;
+        return $passedStatus = $model -> getPassedStatus($this->uid, $this->qid);
     }
     /**
      * 获取用户的通过率
@@ -197,9 +199,19 @@ class Usertoq extends Api {
       */
       public function getPassed(){
 
-          $model = new UsertoqModel();
+        $model = new UsertoqModel();
+        $questionModel = new QuestionModel();
+        $questionDomain = new QuestionDomain();
+        $start = ($this->page - 1) * $this->num;
+        $data = $model->getPassed($this->uid, $start, $this->num);
+        $idArr = array();
+        while($row = $data -> fetch()) {
+            $qid = $row["qid"];
+            array_push($idArr, $qid);
+        }
+        $q_res = $questionModel -> getByIdArr($idArr);
 
-          return $model->getPassed($this->uid);
+        return $questionDomain->getQCardInfo($q_res);
       }
 
       /**
@@ -270,5 +282,4 @@ class Usertoq extends Api {
 
         return round($uidPassed / $campusPassed*100,2).'%';
     }
-
 }

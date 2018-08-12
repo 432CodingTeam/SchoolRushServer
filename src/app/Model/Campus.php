@@ -67,4 +67,8 @@ class Campus extends NotORM {
 
         return $model->count("id");
     }
+
+    public function getLivenessInfoById($id) {
+        return $this->getById($id);
+    }
 }

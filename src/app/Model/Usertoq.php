@@ -72,10 +72,10 @@ class Usertoq extends NotORM {
         return count($model->where('uid',$uid)->and('status',0));
     }
 
-    public function getPassed($uid){
+    public function getPassed($uid, $start = 0, $num = 100){
         $model = $this->getORM();
 
-        return $model->where('uid',$uid)->and('status',1);
+        return $model->where('uid',$uid)->and('status',1) -> limit($start, $num);
     }
 
     public function getPassedNum($uid){
@@ -89,26 +89,6 @@ class Usertoq extends NotORM {
         $data = $model->order("id DESC")->where('qid',$qid)->and('status',1)->limit(10);
         return $data;
     }
-    public function getQuestionByTime($start,$end)
-    {
-        $model=$this->getORM();
-     
-        //return $model->where('createtime','between time',[$start,$end])->select();
-        //return $model->where('createtime','>time',$start);
-       // return $start;
-
-        //return $model->where('createtime',"2017-04-15 06:31:22");
-        $model1=$model->fetchAll();
-        
-        $d=0;
-        foreach($model1 as $m)
-        {
-            //return $m["createtime"];
-            if($m["passtime"]>=$start&&$m["passtime"]<=$end)
-            $arr[$d++]=$m;
-        }
-        return $arr;
-    }
 
     public function getPassedStatus($uid, $qid) {
         $model = $this->getORM();
@@ -121,5 +101,23 @@ class Usertoq extends NotORM {
         return $model->select("qid")->where("uid", $uid)->fetchAll();
     }
 
+    /**
+     * 查看用户是否通过一组问题
+     */
+    public function checkUserPassQuestionArr($uid, $questionsArr) {
+        $q_num = count($questionsArr);
+        $model = $this->getORM();
+
+        $count = count($model -> select("id") -> where("qid", $questionsArr) -> and("uid", $uid));
+        return $q_num == $count ? true : false;
+    }
+
+    public function getUserPassed($uid, $qid) {
+        $model = $this->getORM();
+
+        $data = $model -> select("status") -> where("uid", $uid) -> where("qid", $qid)->fetchOne();
+        if(!$data) return false;
+        return $data["status"] == 1 ? true : false;
+    }
     
 }

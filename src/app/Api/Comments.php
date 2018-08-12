@@ -183,8 +183,8 @@ class Comments extends Api {
     }
     /**
      * @author lxx
-     * 增加一个点赞数
-     * @desc 根据评论id增加一个对该评论的点赞数
+     * 增加一个支持数
+     * @desc 根据评论id增加一个对该评论的支持数
      * @param int id 评论id
      * @return data model 返回该条评论的所有信息
      */
@@ -198,8 +198,8 @@ class Comments extends Api {
     }
      /**
      * @author lxx
-     * 减少一个点赞数
-     * @desc 根据评论id减少一个对该评论的点赞数
+     * 减少一个支持数
+     * @desc 根据评论id减少一个对该评论的支持数
      * @param int id 评论id
      * @return data model 返回该条评论的所有信息
      */
@@ -213,8 +213,8 @@ class Comments extends Api {
     }
       /**
      * @author lxx
-     * 增加一个差评数
-     * @desc 根据评论id增加一个对该评论的差评数
+     * 增加一个反对数
+     * @desc 根据评论id增加一个对该评论的反对数
      * @param int id 评论id
      * @return data model 返回该条评论的所有信息
      */
@@ -228,8 +228,8 @@ class Comments extends Api {
     }
      /**
      * @author lxx
-     * 减少一个差评数
-     * @desc 根据评论id减少一个对该评论的差评数
+     * 减少一个反对数
+     * @desc 根据评论id减少一个对该评论的反对数
      * @param int id 评论id
      * @return data model 返回该条评论的所有信息
      */

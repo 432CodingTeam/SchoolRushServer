@@ -402,6 +402,9 @@ class User extends Api {
             return array("msg" => "无数据", "res" => false);
         }
         $model = $model->fetchAll();
+        if(count($model) == 0) {
+            return array("msg" => "无数据", "res" => false);
+        }
         $major=array();
         $d=0;
         for($i=0;$i<sizeof($model);$i++)//将题目专业id保存在major数组里，将对应的题目数量保存在num数组里
@@ -628,9 +631,12 @@ class User extends Api {
         $id = $user->getById($this->id);
         $id = $id["campusID"];
         $users=$user->getBycampusID($id);
+        if(!$users) {
+            return 0;
+        }
         foreach($users as &$u)
         {
-            $sum=$usertoq->getPassed($u["id"])->fetchall();
+            $sum=$usertoq->getPassed($u["id"])->fetchAll();
             $u["passed"]=count($sum);
         }
         

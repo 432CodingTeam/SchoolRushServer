@@ -49,9 +49,10 @@ class Usertogroup extends NotORM {
         return $id;
     }
 
-    public function delete($delete_data) {
+    //TODO: 改!
+    public function deleteByUidAndGid($uid, $gid) {
         $model = $this->getORM();
-        $id = $model->insert($delete_data);
+        $id = $model -> where("uid",$uid) -> and("gid", $gid)->delete();
         
         return $id;
     }
@@ -67,5 +68,28 @@ class Usertogroup extends NotORM {
         $data = $model->where("gid",$gid);
         $data = $data->fetchall();
         return $data;
+    }
+
+    public function getGroupUserArr($uid) {
+        $model = $this -> getORM();
+        $data = $model -> select("uid") -> where("gid", $uid);
+        $res = array();
+
+        while($row = $data -> fetch()) {
+            array_push($res, $row["uid"]);
+        }
+        return $res;
+    }
+
+    public function getLatestJoin($gid, $num) {
+        $model = $this->getORM();
+
+        return $model -> order("jointime DESC") -> where("gid", $gid) -> limit(0, $num);
+    }
+
+    public function getUserGroup($uid) {
+        $model = $this->getORM();
+
+        return $model -> order("jointime DESC") -> where("uid", $uid);
     }
 }

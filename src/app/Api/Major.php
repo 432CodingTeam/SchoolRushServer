@@ -6,7 +6,7 @@ use App\Model\Major as MajorModel;
 /**
  * 专业接口类
  *
- * @author: dogstar <chanzonghuang@gmail.com> 2014-10-04
+ * @author: iimT
  */
 
 class Major extends Api {
@@ -33,6 +33,9 @@ class Major extends Api {
             'getIdByName'=>array(
                 'name'=>array('name'=>'name'),
             ),
+            'getByLike' => array(
+                'query' => array('name' => 'query', 'require' => true)
+            )
         );
 	}
 	
@@ -158,5 +161,17 @@ class Major extends Api {
     public function getTotalNum(){
         $model = new MajorModel();
         return $model->getTotalNum();
+    }
+
+    /**
+     * 根据专业名称模糊查询
+     * @author iimT
+     * @param query 
+     * @return array 查询结果，只返回id与name字段
+     */
+    public function getBylike() {
+        $model = new MajorModel();
+
+        return $model -> getByLike($this -> query);
     }
 }

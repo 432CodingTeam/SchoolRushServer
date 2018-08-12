@@ -104,6 +104,37 @@ class Question extends NotORM {
         $model = $this->getORM();
         return $model->select("id")->where('title LIKE ?', "%".$key."%")->or('q LIKE ?', "%".$key."%");
     }
+
+    /**
+     * 根据关键字搜索，只选择title和id字段
+     * @param key 关键字
+     * @param num 数量限制
+     */
+    public function searchSimple($key, $num) {
+        $model = $this->getORM();
+        return $model -> select("id, title") -> order("createtime DESC") -> where("title LIKE ?", "%" . $key . "%") -> limit(0, $num);
+    }
+
+    public function getLivenessInfoById($id) {
+        $data = $this->getById($id);
+        $data["q"] = $this->getRegPlaceQ($data['q']);
+        $data['q'] = mb_substr($data['q'],0,25,"UTF8");
+        return $data;
+    }
+
+    public function getRegPlaceQ($q) {
+        $q = $this->regularReplaceP($q);
+        $q = $this->regularReplaceA($q);
+        $q = $this->regularReplaceExp($q);
+        return $this->regularReplaceCode($q);
+    }
+
+    public function getTitleById($id) {
+        $model = $this->getORM();
+
+        $data = $model -> select("title") -> where("id", $id) -> fetchOne();
+        return $data;
+    }
     
     public function regularReplaceP($str){
 

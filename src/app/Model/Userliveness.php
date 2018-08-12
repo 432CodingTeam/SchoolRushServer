@@ -53,6 +53,21 @@ class Userliveness extends NotORM {
         return $data;
     }
 
+    public function getUserSharedNum($uid) {
+        $model = $this->getORM();
+        return count($model -> where("uid", $uid) -> and("action", 5));
+    }
+
+    public function getUserSolved($id) {
+        $model = $this->getORM();
+        return count($model -> where("uid", $id) -> and("action", 3));
+    }
+
+    public function getUserShared($id) {
+        $model = $this->getORM();
+        return count($model -> where("id", $id) -> and("action", 5));
+    }
+
     public function getByIdLimit($uid, $start, $length)
     {
         $model=$this->getORM();
@@ -65,5 +80,11 @@ class Userliveness extends NotORM {
         $model = $this->getORM();
 
         return $model->order("id DESC")->where("action", 7)->and("targetID", $gid)->limit(12);
+    }
+
+    public function getByIdArr($idArr) {
+        $model = $this->getORM();
+
+        return $model ->order("time DESC") -> where("id", $idArr);
     }
 }
