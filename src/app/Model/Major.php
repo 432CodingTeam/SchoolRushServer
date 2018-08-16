@@ -70,4 +70,15 @@ class Major extends NotORM {
         $query = '%' . $query . '%';
         return $model -> select('id, name') -> where('name LIKE ?', $query) -> limit(30);
     }
+
+    /**
+     * 根据专业的父专业ID值查找
+     * @author iimT
+     * @param parentID 父专业ID
+     */
+    public function getByParent($parentID) {
+        $model = $this -> getORM();
+        
+        return $model -> where('parent', $parentID);
+    }
 }

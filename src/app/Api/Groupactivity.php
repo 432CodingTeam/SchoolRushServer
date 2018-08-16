@@ -215,7 +215,6 @@ class Groupactivity extends Api {
             $d["passeduserNum"]=$passeduser;
             $questionsArr = explode(",", $d["questionsID"]);
             $d["questionNum"] = count($questionsArr);
-            // $d["groupInfo"] = $groupModel -> getById($d["gid"]);
             array_push($res, $d);
         }
         array_multisort($time,SORT_DESC,$res);

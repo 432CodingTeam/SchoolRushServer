@@ -13,29 +13,32 @@ class Major extends Api {
 
 	public function getRules() {
         return array(
-            'add' => array(
-                'name' => array('name' => "name"),
-                'parent'=>array('name'=>"parent"),
-                'ranklist'=>array('name'=>'ranklist'),
+            'add'           => array(
+                'name'          => array('name' => "name"),
+                'parent'        => array('name' => "parent"),
+                'ranklist'      => array('name' => 'ranklist'),
 
             ),
-            'getById' => array(
-                'id' => array("name" => "id")
+            'getById'       => array(
+                'id'            => array("name" => "id")
             ),
-            'deleteById' => array(
-                'id'=> array("name" => "id")
+            'deleteById'    => array(
+                'id'            => array("name" => "id")
             ),
-            'updateById' => array(
-                'id' => array('name' => 'id','require'=>true),
-                'name' => array('name' => "name",'require'=>true),
-                'parent'=>array('name'=>"parent",'require'=>true),
+            'updateById'    => array(
+                'id'            => array('name' => 'id',        'require' => true),
+                'name'          => array('name' => "name",      'require' => true),
+                'parent'        => array('name' => "parent",    'require' => true),
             ),
-            'getIdByName'=>array(
-                'name'=>array('name'=>'name'),
+            'getIdByName'   =>array(
+                'name'          => array('name' => 'name'),
             ),
-            'getByLike' => array(
-                'query' => array('name' => 'query', 'require' => true)
-            )
+            'getByLike'     => array(
+                'query'         => array('name' => 'query',     'require' => true)
+            ),
+            'getByParent'   => array(
+                'id'            => array('name' => 'id',        'require' => true)
+            ),
         );
 	}
 	
@@ -173,5 +176,17 @@ class Major extends Api {
         $model = new MajorModel();
 
         return $model -> getByLike($this -> query);
+    }
+
+    /**
+     * 根据专业的父专业ID值查询
+     * @author iimT
+     * @param id 父专业ID
+     * @return 查询结果
+     */
+    public function getByParent() {
+        $model = new MajorModel();
+
+        return $model -> getByParent($this -> id);
     }
 }
