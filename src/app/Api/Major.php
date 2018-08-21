@@ -167,7 +167,7 @@ class Major extends Api {
     }
 
     /**
-     * 根据专业名称模糊查询
+     * 根据专业名称模糊查询 (不包括大分类专业：如哲学)
      * @author iimT
      * @param query 
      * @return array 查询结果，只返回id与name字段
