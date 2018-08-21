@@ -31,18 +31,20 @@ class Group extends Api {
                 'id'            => array( "name" => "id")
             ),
             'updateById'    => array(
-                'id'            => array( 'name' => "id",        'require' => true),
-                'name'          => array( 'name' => "name",      'require' => true),
-                'creator'       => array( 'name' => "creator",   'default' => null),
-                'members'       => array( 'name' => "members",   'default' => null),
-                'introduce'     => array( 'name' => 'introduce', 'default' => null),
+                'id'            => array( 'name' => "id",          'require' => true),
+                'name'          => array( 'name' => "name",        'require' => true),
+                'creator'       => array( 'name' => "creator",     'default' => null),
+                'members'       => array( 'name' => "members",     'default' => null),
+                'introduce'     => array( 'name' => 'introduce',   'default' => null),
                 'avatar'        => array( 'name' => 'avatar'),
             ),
-            'getIdByName'   =>array(
+            'getIdByName'   => array(
                 'name'          => array( 'name' =>"name"),
             ),
-            'getIdByName'   =>array(
-                'name'          => array( 'name' =>"name"),
+            'getPageByMid'      => array(
+                'mid'            => array( 'name' => 'mid',        'require' => true),
+                'page'           => array( 'name' => 'page',       'default' => 1),
+                'length'         => array( 'name' => 'length',     'default' => 20),
             ),
         );
 	}
@@ -196,5 +198,28 @@ class Group extends Api {
     public function getTotalNum(){
         $model = new GroupModel();
         return $model->getTotalNum();
+    }
+
+    /**
+     * 按页根据专业ID获取群组
+     * @author iimT
+     * @param mid 专业id
+     * @param page 页数
+     * @param length 页容量
+     * @return 群组信息
+     */
+    public function getPageByMid() {
+        $model           = new GroupModel();
+        $groupMajorModel = new GroupMajorModel();
+        $mid             = $this -> mid;
+        $length          = $this -> length;
+        $start           = ($this -> page - 1) * $length;
+
+        $groupIDs        = $groupMajorModel -> getPageByMid($mid, $start, $length);
+        $Ids             = array();
+        while($row = $groupIDs -> fetch()) {
+            array_push($Ids, $row['gid']);
+        }
+        return $model -> getByIds($Ids);
     }
 }

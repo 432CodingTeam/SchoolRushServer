@@ -51,4 +51,10 @@ class Group extends NotORM {
 
         return $model->count("id");
     }
+
+    public function getByIds($ids) {
+        $model = $this -> getORM();
+
+        return $model -> where("id", $ids);
+    }
 }

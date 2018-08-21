@@ -15,6 +15,7 @@ class GroupMajor extends NotORM {
 
   /**
    * 添加一条记录
+   * @author iimT
    * @param data 数据
    * @return 插入结果 完整数据
    */
@@ -22,6 +23,19 @@ class GroupMajor extends NotORM {
     $model = $this -> getORM();
 
     return $model -> insert($data);
+  }
+
+  /**
+   * 按页根据mid(专业ID)获取群组ID
+   * @author iimT
+   * @param mid 专业ID
+   * @param start 起
+   * @param length 页长度
+   */
+  public function getPageByMid($mid, $start, $length) {
+    $model = $this -> getORM();
+
+    return $model -> select ("gid") -> where("mid", $mid) -> limit($start, $length);
   }
 
 }
