@@ -31,7 +31,6 @@ class Question extends Api {
                 'challenges'    => array('name' => 'challength'),
                 'passed'        => array('name' => 'passed'),
                 'levels'        => array('name' => 'levels'),
-                'labels'        => array('name' => 'labels'),
                 'status'        => array('name' => 'status'),
                 'uid'           => array("name" => "uid", 'require'=>true),
                 'title'         => array("name" => "title", 'require' => true),
@@ -110,8 +109,8 @@ class Question extends Api {
             ),
             "getUserQuestion" => array(
                 'uid'  => array("name" => "uid"),
-                'page' => array('name' => 'page'),
-                'num'  => array('name' => 'num', 'default' => 20),
+                'page' => array('name' => 'page', 'default' => 1),
+                'num'  => array('name' => 'num',  'default' => 20),
             ),
             'addLikeById'=>array(
                 'id'=>array('name'=>'id'),
@@ -128,11 +127,16 @@ class Question extends Api {
                 'key' => array("name" => "key"),
                 "num"  => array("name" => "num", "default" => 20),
             ),
+            'getPageByLid' => array(
+                'lid'       => array("name" => "lid"),
+                "page"      => array("name" => "page",      "default" => 1),
+                "length"    => array("name" => "length",    "default" => 20),
+            ),
         );
 	}
 
     /**
-     * 获取所有的问题
+     * 获取所有的问题 【弃用】
      * @desc获取所有的问题
      * @return array data 获取的所有问题
      */
@@ -152,12 +156,13 @@ class Question extends Api {
 
         return $model->searchSimple($this->key, $this->num);
     }
+
     /**
      * 搜索问题
      * @param 搜索框的文本
      */
     public function search() {
-        $keys = $this->keys;
+        $keys = $this -> keys;
         $keys = explode(" ", $keys);
         $keyArr = array();
         foreach($keys as $key) {
@@ -209,7 +214,7 @@ class Question extends Api {
                 $temp = $arr[$i];
                 $rand = rand(0,3);
                 $arr[$i] = $arr[$rand];
-                $arr[$rand] = $temp;    
+                $arr[$rand] = $temp;
             }
             for($i=0;$i<count($arr);$i++){
                 if($correct==$arr[$i]){               
@@ -219,35 +224,35 @@ class Question extends Api {
             $opt = array("A","B","C","D");
 
             $res = array(
-                "q"=>$data["q"],
-                "options"=>array(
-                    "A"=>$arr[0],
-                    "B"=>$arr[1],
-                    "C"=>$arr[2],
-                    "D"=>$arr[3],
+                "q"       => $data["q"],
+                "options" => array(
+                    "A" => $arr[0],
+                    "B" => $arr[1],
+                    "C" => $arr[2],
+                    "D" => $arr[3],
                 ),
-                "correct"=>$opt[$i],
+                "correct" => $opt[$i],
             );
         }
         else if($data["type"]==2){  //判断题
             $res = array(
-                "q"=>$data["q"],
-                "correct"=>$data["correct"],
+                "q"         => $data["q"],
+                "correct"   => $data["correct"],
             );
         }
         else if($data["type"]==3){ //填空题
             //$arr =  explode("____",$data["q"]);
             $res = array(
-                "q"=>$data["q"],
-                "correct"=>$data["correct"],
+                "q"         => $data["q"],
+                "correct"   => $data["correct"],
             );
         }
         $res["id"]      = $data["id"];
         $res["type"]    = $data["type"];
         $res["title"]   = $data["title"];
         //题目信息完成 组装出题人信息
-        $uInfo = $userModel -> getById($data["uid"]);
-        $res["user"] = $uInfo;
+        $uInfo          = $userModel -> getById($data["uid"]);
+        $res["user"]    = $uInfo;
         return $res;
     }
 
@@ -262,7 +267,7 @@ class Question extends Api {
     public function deleteById()
     {
         $model = new QuestionModel();
-        $data = $model->deleteById($this->id);
+        $data  = $model->deleteById($this->id);
 
         return $data;
     }
@@ -287,27 +292,26 @@ class Question extends Api {
 
     public function add() {
         $insert = array(
-            'type'=>$this->type,
-            'q'=>$this->q,
-            'A'=>$this->A, 
-            'B'=>$this->B,
-            'C'=>$this->C,
-            'D'=>$this->D,
-            'F'=>$this->F,
-            'correct'=>$this->correct,
-            'majorID'=>$this->majorID,
-            'challenges'=>$this->challenges,
-            'passed'=>$this->passed,
-            'levels'=>$this->levels,
-            'labels'=>$this->labels,
-            'status' => $this->status,
-            'uid'   => $this->uid,
-            'title' => $this->title,
+            'type'          => $this -> type,
+            'q'             => $this -> q,
+            'A'             => $this -> A, 
+            'B'             => $this -> B,
+            'C'             => $this -> C,
+            'D'             => $this -> D,
+            'F'             => $this -> F,
+            'correct'       => $this -> correct,
+            'majorID'       => $this -> majorID,
+            'challenges'    => $this -> challenges,
+            'passed'        => $this -> passed,
+            'levels'        => $this -> levels,
+            'status'        => $this -> status,
+            'uid'           => $this -> uid,
+            'title'         => $this -> title,
         );
 
         foreach($insert as $key => $val) {
             if($val == NULL){
-                $keys = array_keys($insert);
+                $keys  = array_keys($insert);
                 $index = array_search($key, $keys);
 
                 array_splice($insert, $index, 1);
@@ -315,17 +319,10 @@ class Question extends Api {
         }
 
         $model = new QuestionModel();
-
-        $id = $model->add($insert);
+        $id    = $model->add($insert);
 
         return $id;
     }
-     /**
-     * 根据名字获取id
-     * @desc 根据名字获取id
-     * @param string name 要获取的id的名字
-     * @return int id 该名字对应的id
-     */
 
      /**
      * 更新题目
@@ -347,37 +344,36 @@ class Question extends Api {
      */
     public function updateById() {
         $data = array(
-            'type' => $this->type,
-            'q' => $this->q,
-            'A' => $this->A,
-            'B' => $this->B,
-            'C' => $this->C,
-            'D' => $this->D,
-            'F' => $this->F,
-            'correct' => $this->correct,
-            'majorID' => $this->majorID,
-            'challenges' => $this->challenges,
-            'passed' => $this->passed,
-            'levels' => $this->levels,
-            'labels' => $this->labels,
-            'status' => $this->status,
-            'title' => $this->title,
-            'like' => $this->like,
+            'type'          => $this -> type,
+            'q'             => $this -> q,
+            'A'             => $this -> A,
+            'B'             => $this -> B,
+            'C'             => $this -> C,
+            'D'             => $this -> D,
+            'F'             => $this -> F,
+            'correct'       => $this -> correct,
+            'majorID'       => $this -> majorID,
+            'challenges'    => $this -> challenges,
+            'passed'        => $this -> passed,
+            'levels'        => $this -> levels,
+            'status'        => $this -> status,
+            'title'         => $this -> title,
+            'like'          => $this -> like,
         );
 
         $model = new QuestionModel();
 
         foreach($data as $key => $val) {
             if($val == NULL){
-                $keys = array_keys($data);
+                $keys  = array_keys($data);
                 $index = array_search($key, $keys);
 
                 array_splice($data, $index, 1);
             }
         }
 
-        $id = $model->updateById($this->id,$data);
-        return array("res"=>$id);
+        $id = $model -> updateById($this -> id,$data);
+        return array("res" => $id);
     }
     /**
      * 获取用户最近提出的问题
@@ -463,16 +459,16 @@ class Question extends Api {
     public function getUserQuestion() { //TODO:
         $usertoqModel   = new UsertoqModel();
         $model          = new QuestionModel();
-        $exceptQ        = $usertoqModel->getUserAllId($this->uid);
-        $start          = $this->num * ($this->page - 1);
-        $data           = $model->getByExceptId($exceptQ, $start, $this->num);
+        $exceptQ        = $usertoqModel -> getUserAllId($this -> uid);
+        $start          = $this -> num * ($this -> page - 1);
+        $data           = $model -> getByExceptId($exceptQ, $start, $this->num);
         $questionDomain = new QuestionDomain();
         
 
         return $questionDomain->getQCardInfo($data);
     }
     /**
-     * 按照关键字索引题目
+     * 按照关键字索引题目 [弃用]
      * @desc 根据题目内容关键字出现次数对题目进行排序（关键字按照空格分割，未出现关键字的题目不显示）
      * @param string key 关键字
      * @return array question 返回的题目
@@ -753,11 +749,23 @@ class Question extends Api {
      */
     public function deleteLikeById()
     {
-        $model=new QuestionModel();
-        $data=$model->getById($this->id);
-        if($data["like"]>=0) $data["like"]--;
-        $model->updateById($this->id,$data);
-        return $model->getById($this->id);
+        $model  = new QuestionModel();
+        $data   = $model -> getById($this -> id);
+
+        if($data["like"] >= 0)
+            $data["like"]--;
+        $model -> updateById($this -> id,$data);
+
+        return $model -> getById($this -> id);
+    }
+
+    public function getPageByLid() {
+        $domain     = new QuestionDomain();
+        $length     = $this -> length;
+        $start      = ($this -> page - 1) * $this -> length;
+        $questions  = $domain -> getQuestionsByLabel($this -> lid, $start, $length);
+
+        return $domain -> getQCardInfo($questions);
     }
 
 }
