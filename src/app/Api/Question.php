@@ -8,6 +8,7 @@ use App\Model\Usertoq as UsertoqModel;
 use App\Model\User as UserModel;
 use App\Model\Major as MajorModel;
 use App\Model\Label as LabelModel;
+use App\Model\QuestionLabel as QuestionLabelModel;
 /**
  * 问题接口类
  *
@@ -30,6 +31,7 @@ class Question extends Api {
                 'majorID'       => array('name' => 'majorID', 'require' => true),
                 'challenges'    => array('name' => 'challength'),
                 'passed'        => array('name' => 'passed'),
+                'labels'        => array('name' => 'labels'),
                 'levels'        => array('name' => 'levels'),
                 'status'        => array('name' => 'status'),
                 'uid'           => array("name" => "uid", 'require'=>true),
@@ -318,9 +320,21 @@ class Question extends Api {
             }
         }
 
-        $model = new QuestionModel();
-        $id    = $model->add($insert);
+        $model  = new QuestionModel();
+        $id     = $model->add($insert);
 
+        $labels = explode(',', $this -> labels);
+        $questionLabelModel = new QuestionLabelModel();
+
+        $rows = array();
+        foreach($labels as $v) {
+            $row = array();
+            $row['qid'] = $id;
+            $row['lid'] = $v;
+
+            array_push($rows, $row);
+        }
+        $questionLabelModel -> addByArray($rows);
         return $id;
     }
 

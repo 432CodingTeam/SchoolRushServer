@@ -34,6 +34,12 @@ class QuestionLabel extends NotORM {
   public function getPageQIdByLid($lid, $start, $length) {
     $model = $this -> getORM();
 
-    return $model -> select("qid") -> where("lid", $lid) -> limit($start, $length);
+    return $model -> select("qid") -> where("lid", $lid) -> order("id DESC") -> limit($start, $length);
+  }
+
+  public function addByArray($rows) {
+    $model = $this -> getORM();
+
+    return $model -> insert_multi($rows);
   }
 }

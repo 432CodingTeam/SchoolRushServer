@@ -43,9 +43,7 @@ class Question extends NotORM {
     }
     public function add($insert_data) {
         $model = $this->getORM();
-        $id = $model->insert($insert_data);
-
-        return $id;
+        return $model->insert($insert_data);
     }
 
     public function updateById($id,$data) {

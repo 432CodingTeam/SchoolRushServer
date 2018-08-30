@@ -15,9 +15,9 @@ class User extends NotORM {
     }
     public function getById($id)
     {
-        $model=$this->getORM();
-        $data=$model->where("id",$id);
-        $data = $data->fetchOne();
+        $model = $this -> getORM();
+        $data  = $model -> where("id",$id);
+        $data  = $data -> fetchOne();
         return $data;
     }
     public function deleteById($id) {

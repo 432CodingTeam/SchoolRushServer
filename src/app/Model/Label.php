@@ -39,7 +39,7 @@ class Label extends NotORM {
     {
         $model=$this->getORM();
         $data=$model->where("name",$name);
-        //var_dump($data);
+
         return $data;
     }
     public function updateById($id, $data) {
@@ -57,5 +57,11 @@ class Label extends NotORM {
         $model = $this->getORM();
 
         return $model -> where("id", $Ids);
+    }
+
+    public function getByQuery($query) {
+        $model = $this -> getORM();
+        $query = '%' . $query . '%';
+        return $model -> where("name LIKE ?", $query) -> limit(30);
     }
 }

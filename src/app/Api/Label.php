@@ -6,7 +6,7 @@ use App\Model\Label as LabelModel;
 /**
  * 标签服务类
  *
- * @author: dogstar <chanzonghuang@gmail.com> 2014-10-04
+ * @author: iimT
  */
 
 class Label extends Api {
@@ -28,6 +28,9 @@ class Label extends Api {
             ),
             'getIdByName'=>array(
                 'name'=>array('name'=>'name'),
+            ),
+            'getByQueryName'=>array(
+                'query'=>array('name'=>'query'),
             ),
         );
 	}
@@ -129,8 +132,20 @@ class Label extends Api {
             }
         }
 
-        $id = $model->updateById($this->id,$data);
+        $id = $model->updateById($this -> id, $data);
         return array("res"=>$id);    
+    }
+
+    /**
+     * 根据标签名搜索标签
+     * @author iimT
+     * @param query 搜索关键字
+     * @return 搜索结果
+     */
+    public function getByQueryName() {
+        $model = new LabelModel();
+
+        return $model -> getByQuery($this -> query);
     }
 
 }
