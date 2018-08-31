@@ -249,9 +249,10 @@ class Question extends Api {
                 "correct"   => $data["correct"],
             );
         }
-        $res["id"]      = $data["id"];
-        $res["type"]    = $data["type"];
-        $res["title"]   = $data["title"];
+        $res["id"]       = $data["id"];
+        $res["type"]     = $data["type"];
+        $res["title"]    = $data["title"];
+        $res["levels"]   = $data["levels"];
         //题目信息完成 组装出题人信息
         $uInfo          = $userModel -> getById($data["uid"]);
         $res["user"]    = $uInfo;
