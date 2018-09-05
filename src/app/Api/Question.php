@@ -9,6 +9,7 @@ use App\Model\User as UserModel;
 use App\Model\Major as MajorModel;
 use App\Model\Label as LabelModel;
 use App\Model\QuestionLabel as QuestionLabelModel;
+use App\Model\Analysis as AnalysisModel;
 /**
  * 问题接口类
  *
@@ -36,6 +37,7 @@ class Question extends Api {
                 'status'        => array('name' => 'status'),
                 'uid'           => array("name" => "uid", 'require'=>true),
                 'title'         => array("name" => "title", 'require' => true),
+                'analysis'      => array("name" => "analysis", 'require' => true),
                 'like'          => array('name' => 'like')
             ),
             'getById' => array(
@@ -300,6 +302,7 @@ class Question extends Api {
      * @param string passed 通过人数
      * @param int levels 问题难度星级
      * @param int labels 标签，用逗号隔开
+     * @param int analysis 问题分析内容，用逗号隔开
      * @return int id 增加题目内容
      */
 
@@ -331,22 +334,24 @@ class Question extends Api {
             }
         }
 
+        //插入问题
         $model  = new QuestionModel();
-        $id     = $model->add($insert);
+        $_q     = $model -> add($insert);
 
+        //插入问题标签
         $labels = explode(',', $this -> labels);
         $questionLabelModel = new QuestionLabelModel();
 
         $rows = array();
         foreach($labels as $v) {
             $row = array();
-            $row['qid'] = $id;
+            $row['qid'] = $_q;
             $row['lid'] = $v;
 
             array_push($rows, $row);
         }
         $questionLabelModel -> addByArray($rows);
-        return $id;
+        return $_q;
     }
 
      /**

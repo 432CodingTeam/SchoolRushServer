@@ -7,6 +7,8 @@ use App\Model\User as UserModel;
 use App\Model\Campusmajorpassed as CampusmajorpassedModel;
 use App\Model\Question as QuestionModel;
 use App\Domain\Question as QuestionDomain;
+use App\Model\Analysis as AnalysisModel;
+
 /**
  * 用户通过题目关系表接口类
  *
@@ -19,6 +21,7 @@ class Usertoq extends Api {
             'passedQuestion' => array(
                 'uid'       => array('name' => "uid"),
                 'qid'       => array('name' =>"qid"),
+                'analysis'  => array('name' =>"analysis"),
             ),
             'solveQuestion' => array(
                 'uid'       => array('name' => "uid"),
@@ -111,6 +114,15 @@ class Usertoq extends Api {
             'status'    => 1,
             'passtime'  => date('Y-m-d H:i:s'),
         );
+
+        //插入问题分析
+        $analysis_data = array(
+            'qid'       => $this -> qid,
+            'uid'       => $this -> uid,
+            'content'   => $this -> analysis
+        );
+        $analysisModel = new AnalysisModel();
+        $insert_analysis = $analysisModel -> add($analysis_data);
 
         $model = new UsertoqModel();
         $passedStatus = $model -> getPassedStatus($this->uid, $this->qid);
