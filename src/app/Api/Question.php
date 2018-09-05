@@ -134,6 +134,16 @@ class Question extends Api {
                 "page"      => array("name" => "page",      "default" => 1),
                 "length"    => array("name" => "length",    "default" => 20),
             ),
+            'getUserSolvingQuestion' => array(
+                'uid' => array('name' => 'uid'),
+                'page' => array("name" => "page"),
+                "num"  => array("name" => "num"),
+            ),
+            'getUserSolvedQuestion' => array(
+                'uid' => array('name' => 'uid'),
+                'page' => array("name" => "page"),
+                "num"  => array("name" => "num"),
+            ),
         );
 	}
 
@@ -476,12 +486,61 @@ class Question extends Api {
         $model          = new QuestionModel();
         $exceptQ        = $usertoqModel -> getUserAllId($this -> uid);
         $start          = $this -> num * ($this -> page - 1);
-        $data           = $model -> getByExceptId($exceptQ, $start, $this->num);
+        $data           = $model -> getByExceptId($exceptQ, $start, $this -> num);
         $questionDomain = new QuestionDomain();
         
 
-        return $questionDomain->getQCardInfo($data);
+        return $questionDomain -> getQCardInfo($data);
     }
+
+    /**
+     * 获取用户正在解决的题目
+     * @param uid 用户id
+     * @param page 页数
+     * @param num 页容量
+     */
+    public function getUserSolvingQuestion() {
+        $usertoqModel   = new UsertoqModel();
+        $model          = new QuestionModel();
+        $questionDomain = new QuestionDomain();
+        $start          = $this -> num * ($this -> page - 1);
+        $length         = $this -> num;
+        $solvings       = $usertoqModel -> getSolving($this -> uid, $start, $length);
+        $Qids           = array();
+
+        while($row = $solvings -> fetch()) {
+            array_push($Qids, $row['qid']);
+        }
+        
+        $data           = $model -> getByIdArr($Qids);
+
+        return $questionDomain -> getQCardInfo($data);
+    }
+
+    /**
+     * 获取用户已解决的题目
+     * @param uid 用户id
+     * @param page 页数
+     * @param num 页容量
+     */
+    public function getUserSolvedQuestion() {
+        $usertoqModel   = new UsertoqModel();
+        $model          = new QuestionModel();
+        $questionDomain = new QuestionDomain();
+        $start          = $this -> num * ($this -> page - 1);
+        $length         = $this -> num;
+        $solvings       = $usertoqModel -> getSolved($this -> uid, $start, $length);
+        $Qids           = array();
+
+        while($row = $solvings -> fetch()) {
+            array_push($Qids, $row['qid']);
+        }
+        
+        $data           = $model -> getByIdArr($Qids);
+
+        return $questionDomain -> getQCardInfo($data);
+    }
+
     /**
      * 按照关键字索引题目 [弃用]
      * @desc 根据题目内容关键字出现次数对题目进行排序（关键字按照空格分割，未出现关键字的题目不显示）

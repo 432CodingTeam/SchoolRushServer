@@ -75,6 +75,24 @@ class Usertoq extends NotORM {
         return $model->where('uid',$uid)->and('status',0);
     }
 
+    /**
+     * 给待解决页面使用
+     */
+    public function getSolving($uid, $start, $length){
+        $model = $this->getORM();
+
+        return $model->where('uid', $uid)-> and('status',0) -> limit($start, $length);
+    }
+
+    /**
+     * 给已解决页面使用
+     */
+    public function getSolved($uid, $start, $length){
+        $model = $this->getORM();
+
+        return $model->where('uid',$uid)->and('status',1) -> limit($start, $length);
+    }
+
     public function getTobeSolvedNum($uid){
         $model = $this->getORM();
 
@@ -101,8 +119,9 @@ class Usertoq extends NotORM {
 
     public function getPassedStatus($uid, $qid) {
         $model = $this->getORM();
-        $data = $model->where('qid',$qid)->and('uid',$uid)->fetchOne();
-        return $data;
+        $data = $model->where('qid',$qid)->and('uid',$uid) -> fetchOne();
+        if(!@$data) return false;
+        return $data['status'] == 1;
     }
 
     public function getUserAllId($uid) {

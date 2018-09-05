@@ -9,7 +9,7 @@ use App\Model\Major as MajorModel;
 use App\Model\Campus as CampusModel;
 use App\Model\Token as TokenModel;
 use App\Domain\Token as TokenDomain;
-use App\Common\Upload as QNUpload;
+use App\Common\Upload as MyUpload;
 use App\Common\GD;
 /**
  * 用户接口类
@@ -259,8 +259,8 @@ class User extends Api {
             if(!$saveRes)
                 return array("res"=>false, "error"=>"保存本地图片失败");
             //上传到七牛云 将avatar设置为外链地址
-            $upload = new QNUpload();
-            $upRes = $upload->uploadToQNY($saveRes["filePath"],$saveRes["fileName"]);
+            $upload = new MyUpload();
+            $upRes = $upload -> uploadToUPYUN($saveRes);
             if(is_array($upRes))
                 return array("res"=>false, "msg"=>"图片上传失败", "error"=>$upRes["error"]);
             $this->avatar = $upRes;

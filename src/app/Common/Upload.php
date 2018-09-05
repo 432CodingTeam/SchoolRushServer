@@ -7,14 +7,16 @@ use Qiniu\Storage\UploadManager;
 use Qiniu\Cdn\CdnManager;
 
 class Upload {
-    private $access_key = "CovGkjm--Qq7QrozUQ04Ds874KnmETGRzx6OfDOL";
-    private $secret_key = "FEC2IJQ1WsWJpQTFHLtp7ODwk4WKn9ppkqrEL0f1";
+    private $IS_TEST     = true;
+    private $ROOT        = "http://localhost/SchoolRushServer/public/upload/";
+    private $access_key  = "CovGkjm--Qq7QrozUQ04Ds874KnmETGRzx6OfDOL";
+    private $secret_key  = "FEC2IJQ1WsWJpQTFHLtp7ODwk4WKn9ppkqrEL0f1";
     private $bucket_name = "schoolrush";
     private $cloudDomain = "http://p6a87gauo.bkt.clouddn.com/";
     
     //上传到七牛云 返回外链地址
     public function uploadToQNY($filePath, $imgName) {
-        $Auth = new Auth($this->access_key, $this->secret_key);
+        $Auth = new Auth($this -> access_key, $this -> secret_key);
 
         $expires = 3600;
         $policy = null;
@@ -45,5 +47,12 @@ class Upload {
         if($refreshErr !== NULL)
             return false; //刷新失败
         return $refreshResult; //返回刷新成功的结果
+    }
+
+    /**
+     * 返回本地图片的地址
+     */
+    public function uploadToUPYUN($file) {
+        return $this -> ROOT . $file["fileName"];
     }
 }

@@ -123,12 +123,23 @@ class GD {
         return $res;
     }
 
-    //返回上传的base64图片的地址
+    /**
+     * 将base64转换成图片 返回图片信息
+     */
+    public function uploadToLocal($base64, $name) {
+        $userModel = new UserModel();
+        $toImgFile = $userModel -> base64toImg($base64, $name);
+        if(!$toImgFile)
+            return array("res" => false, "msg" => "base64转换为图片时失败");
+        return $toImgFile;
+    }
+
+    //返回上传的base64图片在本地的地址
     public function base64Upload($base64, $name) {
         $userModel = new UserModel();
         $Upload = new Upload();
 
-        $toImgFile = $userModel->base64toImg($base64, $name);
+        $toImgFile = $userModel -> base64toImg($base64, $name);
         
         if(!$toImgFile)
             return array("res" => false, "msg" => "base64转换为图片时失败");

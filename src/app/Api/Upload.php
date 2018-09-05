@@ -2,7 +2,7 @@
 namespace App\Api;
 
 use PhalApi\Api;
-use App\Common\Upload as QNUpload;
+use App\Common\Upload as MyUpload;
 use App\Common\GD;
 
 /**
@@ -27,6 +27,10 @@ class Upload extends Api {
             ),
         ),
         "base64UploadQNY" => array(
+            "img" => array("name" => "img"),
+            "name" => array("name" => "name"),
+        ),
+        "base64UploadUPY" => array(
             "img" => array("name" => "img"),
             "name" => array("name" => "name"),
         )
@@ -56,15 +60,28 @@ class Upload extends Api {
         $rs["msg"] = "移动文件失败！";
         return $rs;
       }
-      $upload = new QNUpload();
+      $upload = new MyUpload();
       $rs['code'] = 1;
       $rs['url'] = $upload -> uploadToQNY($imgPath, $name . $ext);
       return $rs;
   }
 
   public function base64UploadQNY() {
-      $GD = new GD();
-      return $GD->base64Upload($this->img, md5($this->name . $_SERVER['REQUEST_TIME']));
+        $GD = new GD();
+        return $GD->base64Upload($this -> img, md5($this -> name . $_SERVER['REQUEST_TIME']));
   }
+
+
+  /**
+   * base64上传到又拍云 【测试版本】
+   * @return 图片地址
+   */
+  public function base64UploadUPY() {
+        $GD     = new GD();
+        $upload = new MyUpload();
+        $image  = $GD -> uploadToLocal($this -> img, md5($this -> name . $_SERVER['REQUEST_TIME']));
+
+        return $upload -> uploadToUPYUN($image);
+    }
 
 }
