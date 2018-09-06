@@ -27,7 +27,6 @@ class Token {
         );
 
         $insert_res = $tokenModel->add($data);
-        $insert_res = $tokenModel->getByUid($uid);
         return $insert_res;
     }
 

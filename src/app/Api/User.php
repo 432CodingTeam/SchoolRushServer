@@ -89,6 +89,9 @@ class User extends Api {
             'getRankAtcampus'=>array(
                 'id'=>array('name'=>'id'),
             ),
+            'getUserByToken' => array(
+                'token' => array('name' => 'token')
+            )
         );
 	}
 
@@ -198,7 +201,7 @@ class User extends Api {
 
         //在返回的数据中添加一条token
         $tokenModel = new TokenDomain();
-        $tokenRes = $tokenModel->add($res["id"]);
+        $tokenRes = $tokenModel -> add($res["id"]);
         $res["token"] = $tokenRes["token"];
         $res["avatar"] = $this->avatar; //更新头像地址
         return $res;
@@ -654,5 +657,15 @@ class User extends Api {
         }
         $offset=array_search($this->id,$ids);//在用户排行榜id中寻找该用户所在的下标
         return $offset+1;
+    }
+
+    public function getUserByToken() {
+        $token = $this -> token;
+        $model = new UserModel();
+        $tokenModel = new TokenModel();
+
+        $t = $tokenModel -> getByToken($token) -> fetchOne();
+        if(@!$t) return false;
+        return $model -> getById($t['uid']);
     }
 }
