@@ -26,6 +26,7 @@ class Usertoq extends Api {
             'solveQuestion' => array(
                 'uid'       => array('name' => "uid"),
                 'qid'       => array('name' =>"qid"),
+                'analysis'  => array('name' =>"analysis"),
             ),
             'isPassed' => array(
                 'uid'       => array('name' => "uid"),
@@ -141,8 +142,8 @@ class Usertoq extends Api {
      */
     public function solveQuestion() {
         $data = array(
-            'uid'    => $this->uid,
-            'qid'    => $this->qid,
+            'uid'    => $this -> uid,
+            'qid'    => $this -> qid,
             'status' => 0,
         );
 

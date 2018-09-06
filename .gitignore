@@ -6,6 +6,8 @@ public/docs
 
 public/uploads
 
+config/dbs.php
+
 gitc
 
 .idea/

@@ -59,6 +59,13 @@ class Label extends NotORM {
         return $model -> where("id", $Ids);
     }
 
+    public function hasNamedLabel($name) {
+        $model = $this->getORM();
+        $data  = $model->where("name",$name) -> fetchOne();
+        if(!$data) return false;
+        return $data['id'];
+    }
+
     public function getByQuery($query) {
         $model = $this -> getORM();
         $query = '%' . $query . '%';

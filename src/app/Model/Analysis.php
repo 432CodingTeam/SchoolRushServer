@@ -15,7 +15,12 @@ class Analysis extends NotORM {
 
   public function add($data) {
     $model = $this -> getORM();
+    
+    //防止两次
+    $cnt = count($model -> where('qid', $data['qid']) -> and('uid', $data['uid']));
+    if($cnt == 1) return;
 
+    $model = $this -> getORM();
     return $model -> insert($data);
   }
 

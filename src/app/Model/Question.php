@@ -167,4 +167,12 @@ class Question extends NotORM {
         return $res;
     }
 
+    /**
+     * 临时使用
+     */
+    // public function getAllDemo() {
+    //     $model = $this -> getORM();
+
+    //     return $model -> select('id, `keys`') -> where('id > 185');
+    // }
 }

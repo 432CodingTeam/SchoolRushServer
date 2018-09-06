@@ -8,7 +8,8 @@ use Qiniu\Cdn\CdnManager;
 
 class Upload {
     private $IS_TEST     = true;
-    private $ROOT        = "http://localhost/SchoolRushServer/public/upload/";
+    private $ROOT        = "http://api.iimt.me/public/upload/";
+    private $TEST_ROOT   = "http://localhost/SchoolRushServer/public/upload/";
     private $access_key  = "CovGkjm--Qq7QrozUQ04Ds874KnmETGRzx6OfDOL";
     private $secret_key  = "FEC2IJQ1WsWJpQTFHLtp7ODwk4WKn9ppkqrEL0f1";
     private $bucket_name = "schoolrush";
@@ -53,6 +54,8 @@ class Upload {
      * 返回本地图片的地址
      */
     public function uploadToUPYUN($file) {
-        return $this -> ROOT . $file["fileName"];
+        if(\PhalApi\DI()->config->get('sys.debug'))
+            return $this -> TEST_ROOT . $file["fileName"];
+        return $this -> ROOT. $file["fileName"];
     }
 }

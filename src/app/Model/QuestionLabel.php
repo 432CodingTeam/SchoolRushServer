@@ -37,6 +37,12 @@ class QuestionLabel extends NotORM {
     return $model -> select("qid") -> where("lid", $lid) -> order("id DESC") -> limit($start, $length);
   }
 
+  public function add($data) {
+    $model = $this -> getORM();
+
+    return $model -> insert($data);
+  }
+
   public function addByArray($rows) {
     $model = $this -> getORM();
 

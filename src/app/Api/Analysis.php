@@ -4,6 +4,9 @@ namespace App\Api;
 use PhalApi\Api;
 use App\Model\Analysis as AnalysisModel;
 use App\Model\User as UserModel;
+use App\Model\Question as QuestionModel;
+use App\Model\Label as LabelModel;
+use App\Model\QuestionLabel as QuestionLabelModel;
 use App\Model\UserAgreeAnalysis as UserAgreeAnalysisModel;
 /**
  * 用户赞同问题分析-接口类
@@ -112,4 +115,45 @@ class Analysis extends Api {
     return $userAgree -> hasAgree($this -> uid, $this -> aid);
   }
   
+
+  /**
+   * 临时使用
+   */
+
+  // public function demo() {
+  //   $questionModel = new QuestionModel();
+  //   $labelModel = new LabelModel();
+  //   $questionLabelModel = new QuestionLabelModel();
+    
+  //   //获取所有问题
+  //   $allQ = $questionModel -> getAllDemo();
+
+  //   while($q = $allQ -> fetch()) {
+  //     $qid = $q['id'];
+  //     $labels = explode(',', $q['keys']);
+  //     foreach ($labels as $lName) {
+  //       $lid = $labelModel -> hasNamedLabel($lName);
+  //       if(!$lid) {
+  //         //没有这个label，插入label
+  //         $newLabelData = array('name' => $lName);
+  //         $newLabel = $labelModel -> add($newLabelData);
+  //         $lid = $newLabel['id'];
+  //       }
+
+  //       $newRel = array('qid' => $qid, 'lid' => $lid);
+  //       $questionLabelModel -> add($newRel);
+  //     }
+      
+  //   }
+
+  //   //判断是否存在label $labelModel -> hasNamedLabel('CSS1');
+
+  //   //插入label 并获取id
+    
+
+  //   //插入关系
+    
+
+  //   return 1;
+  //  }
 }
