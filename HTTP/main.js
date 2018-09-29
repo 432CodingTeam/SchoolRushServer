@@ -30,7 +30,9 @@ var API = {
         GetGoodAtRankTop: "GetGoodAtRankTop",
         GetRankAtcampus : "GetRankAtcampus",    //获取校园排名
         getUserByToken  : "getUserByToken",
-        
+        getTotalNum     : "getTotalNum",
+        getOnlineNum    : "getOnlineNum",
+        getPage         : "getPage",
     },
     Campus: {
         root   : "Campus",
@@ -56,6 +58,8 @@ var API = {
         search                : "search",
         searchSimple          : "searchSimple",
         getPageByLid          : "getPageByLid",
+        getTotalNum           : "getTotalNum",
+        getPageByFilter       : "getPageByFilter",
     },
     Usertoq: {
         root          : "Usertoq",
@@ -100,10 +104,14 @@ var API = {
         getLivenessByCampusId: "getLivenessByCampusId",
     },
     Group: {
-        root        : "Group",
-        add         : "add",
-        GetById     : "GetById",
-        getPageByMid: "getPageByMid",
+        root            : "Group",
+        add             : "add",
+        GetById         : "GetById",
+        getPage         : "getPage",
+        getPageByMid    : "getPageByMid",
+        searchByName    : "searchByName",
+        getFilterPage   : "getFilterPage",
+
     },
     Groupactivity: {
         root                    : "Groupactivity",

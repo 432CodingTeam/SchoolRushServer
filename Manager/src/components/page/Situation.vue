@@ -136,7 +136,7 @@ export default {
     },
     getcurOnlineNum() {
       let that = this
-      let url  = this.$API.getService("User", "GetOnlineNum")
+      let url  = this.$API.getService("User", "getOnlineNum")
 
       this.$API.get(url).then((res) => {
 
@@ -158,7 +158,6 @@ export default {
       })
     },
     getAdminInfo() {
-      this.userInfo = JSON.parse(localStorage.getItem(""))
     },
     initData() {
       this.getAdminInfo()

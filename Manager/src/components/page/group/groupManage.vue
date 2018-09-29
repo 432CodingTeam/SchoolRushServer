@@ -187,7 +187,7 @@ export default {
       
       const that = this
       const url  = this.$API.getService("Group", "searchByName")
-      
+
       this.$API.post(url, data).then((res) => {
         console.log(res)
         that.formData = res.data.data
@@ -200,7 +200,7 @@ export default {
     },
     filter() {
       const that = this
-      const url = this.$API.getService("Group", "GetFilterPage")
+      const url = this.$API.getService("Group", "getFilterPage")
       let Data = this.filterData
       Data.page = 1
       Data.num = this.perPageNum

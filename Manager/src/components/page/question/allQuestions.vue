@@ -8,9 +8,9 @@
       </el-breadcrumb>
     </div>
     <el-tabs v-model="questionType">
-      <el-tab-pane label="选择题" name="1"><select-list review="false"></select-list></el-tab-pane>
-      <el-tab-pane label="填空题" name="2"><blank-list review="false"></blank-list></el-tab-pane>
-      <el-tab-pane label="判断题" name="3"><judge-list review="false"></judge-list></el-tab-pane>
+      <el-tab-pane label="选择题" name=1><select-list review="false"></select-list></el-tab-pane>
+      <el-tab-pane label="填空题" name=2><blank-list review="false"></blank-list></el-tab-pane>
+      <el-tab-pane label="判断题" name=3><judge-list review="false"></judge-list></el-tab-pane>
     </el-tabs>
   </div>
 </template>
@@ -22,11 +22,10 @@ import blankList from "./blankList"
 export default {
   data() {
     return {
-      questionType: "2",
+      questionType: 1,
     };
   },
   methods: {
-    
   },
   watch: {
   },
