@@ -1,0 +1,257 @@
+/* 这里定义一些复用的样式 */
+html
+  /* 1rem = 10px */
+  font-size: 62.5%
+  background: #fafafa
+  font-family: "Helvetica Neue",Helvetica,"PingFang SC","Hiragino Sans GB","Microsoft YaHei","微软雅黑",Arial,sans-serif
+body
+  overflow-y: scroll
+  overflow-x: hidden
+li
+  list-style: none
+
+/*定义滚动条高宽及背景 高宽分别对应横竖滚动条的尺寸*/  
+::-webkit-scrollbar  
+  width: 6px
+  height: 6px
+  background-color: #fafafa
+  
+/*定义滚动条轨道 内阴影+圆角*/  
+::-webkit-scrollbar-track  
+  -webkit-box-shadow: inset 0 0 6px rgba(0,0,0,0.3)
+  border-radius: 5px
+  background-color: #F5F5F5
+  
+/*定义滑块 内阴影+圆角*/
+::-webkit-scrollbar-thumb  
+  border-radius: 10px
+  -webkit-box-shadow: inset 0 0 6px rgba(0,0,0,.3)
+  background-color: #999
+
+$nav-height: 5rem
+.app
+  padding-top: $nav-height
+  .container
+      margin-top: 1rem
+.float-left
+  float: left
+.flex
+  /* flex布局 */
+  display: flex
+  display: -webkit-flex
+.left
+  float: left
+.right
+  float: right
+
+.Button:focus
+  outline: none
+.Button:hover
+  background-color: #0077fe
+.circle-img
+  border-radius: 50%
+  height: 100%
+.square-img
+  border-radius: .5rem
+ul
+  li
+    list-style: none
+
+/* 输入框中placeholder的颜色 */
+
+input.warn::-webkit-input-placeholder
+  color: red
+input.warn:-moz-placeholder
+  color: red
+input.warn::-moz-placeholder
+  color: red
+input.warn:-ms-input-placeholder
+  color: red
+
+input.search::-webkit-input-placeholder
+  color: #888888
+input.search:-moz-placeholder
+  color: #a9a999
+input.search::-moz-placeholder
+  color: #a9a999
+input.search:-ms-input-placeholder
+  color: #a9a999
+.grid-no-padding
+  padding: 0
+
+.card
+  border-radius: .3rem
+  box-shadow: 0 0 0.3rem 0 #ccc
+.card-container
+  pdding-bottom: 1rem
+  border-radius: .3rem
+  box-shadow: 0 0 .3rem 0 #ccc
+  background: #fff
+  overflow: hidden
+.sidebar-container
+  float: right
+  margin-left: 0
+  padding: 0
+  margin: 0
+  padding-left: .5rem
+  position: absolute
+  right: 0
+  .sidebar-item
+    border-radius: .3rem
+    box-shadow: 0 0 .3rem 0 #ccc
+    background: #fff
+.school
+  margin-top: 1rem
+  padding: 1.5rem 0
+.sidebar-userinfo-container
+  p
+    text-align: center
+    .userinfo-data-num
+      font-size: 2.3rem
+      font-weight: bold
+    .userinfo-username
+      padding: .5rem 0
+      padding-top: 1rem
+      font-size: 2rem
+      font-weight: bold
+    .userinfo-locate-school,.userinfo-qinfo,.userinfo-school,.userinfo-user-school
+      padding: .5rem 0
+    .userinfo-school
+      padding-top: 1rem
+.sidebar-fastto-container
+  margin-top: 1rem
+  padding: .5rem 0
+  overflow: hidden
+  .fastto
+    li
+      cursor: pointer
+      p
+        padding: 1.1rem 0
+        font-size: 1.4rem
+        width: 100%
+        padding-left: 2rem
+        text-align: left
+        border: none
+        i.ivu-icon
+          width: 3rem
+          font-size: 1.8rem
+        a
+          color: #495060
+    li:hover
+      background: #e6e6e6
+.sidebar-info-container
+  height: 15rem
+  border-radius: .3rem
+  margin-top: 1rem
+  color: #8590a6
+  font-size: 1.4rem
+.ivu-modal
+  top: 7rem
+
+.card-right-container
+  width: 75%
+  padding: 1rem 1.5rem
+  p
+    padding-top: .5rem
+  .title
+    font-size: 2.5rem
+    a
+      color: #555
+  .q-set-info
+    span
+      margin-right: .5rem
+.Img
+  vertical-align: top
+.img-auto-fit
+  margin-top: .2rem
+  height: 90%
+.Input
+  width: 100%
+.school-badge
+  width: 5rem
+  border-radius: 50%
+.campus-name
+  font-size: 1.8rem
+  padding: 1rem 0
+  font-weight: bold
+.content-container
+  float: left
+  padding: 0
+  margin: 0
+  padding-right: .5rem
+  margin-bottom: 1rem
+  .index-filter
+    padding: 1rem
+.card-left-container
+  justify-content: center
+  flex-direction: column
+  position: absolute
+  left: 0
+  top: 0
+  bottom: 0
+  width: 25%
+  border-right: .1rem solid #e9e9e9
+  box-sizing: border-box
+  .flex-container
+    flex-direction: column
+    .label-container
+      flex-wrap: wrap
+      justify-content: center
+      $tag-height: 2.3rem
+      .Tag
+        border-radius: .1rem
+        height: $tag-height
+        line-height: $tag-height
+        padding: 0 1rem
+        font-size: 1.4rem
+.link
+  color: #495060
+.link:hover
+  color: #0084ff
+.poptip
+  margin: 0 auto
+  display: block
+  .ivu-poptip-body
+    z-index: 1501
+    background: rgb(245, 245, 245)
+  .ivu-poptip-rel
+    left: 22%
+#comment
+  .editor
+    z-index: 99
+
+
+@media (max-width: 992px)
+  .sidebar-container
+    display: none
+  .content-container
+    float: none
+    padding: 0
+  .nav-right
+    padding-right: .5rem
+@media (max-width: 960px)
+  .nav-left
+    .search-container
+      display: none
+@media (max-width: 767px)
+  .nav-left
+    .nav-title
+      display: none
+  .content-container
+    float: left
+    padding: 0
+    margin: 0
+    padding-right: .5rem
+    margin-bottom: 1rem
+    .index-filter
+      padding: 1rem
+      .ivu-select-selection
+        margin: 1rem 0
+@media (max-width: 500px)
+  #logo
+    display: none
+  
+
+
+/* 引用样式 自定义样式  放到最后面覆盖common.sass */
+@import "./campus"
