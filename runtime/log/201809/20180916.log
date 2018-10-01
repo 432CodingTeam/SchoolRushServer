@@ -1,9 +1,0 @@
-2018-09-16 18:19:32|ERROR|App.NeiHan618_Album.AddLikeById|PDOException: You have an error in your SQL syntax; check the manual that corresponds to your MariaDB server version for the right syntax to use near 'like + 1 WHERE (id = '26')' at line 1 in D:\Development\www\SchoolRushServer\vendor\phalapi\notorm\src\NotORM\Result.php:261
-Stack trace:
-#0 D:\Development\www\SchoolRushServer\vendor\phalapi\notorm\src\NotORM\Result.php(409): NotORM_Result->query('UPDATE album SE...', Array)
-#1 D:\Development\www\SchoolRushServer\src\app\Model\NeiHan618\Album.php(55): NotORM_Result->update(Array)
-#2 D:\Development\www\SchoolRushServer\src\app\Api\NeiHan618\Album.php(121): App\Model\NeiHan618\Album->addLikeById('26')
-#3 [internal function]: App\Api\NeiHan618\Album->addLikeById()
-#4 D:\Development\www\SchoolRushServer\vendor\phalapi\kernal\src\PhalApi.php(49): call_user_func(Array)
-#5 D:\Development\www\SchoolRushServer\public\index.php(9): PhalApi\PhalApi->response()
-#6 {main}
