@@ -1,0 +1,100 @@
+2018-03-31 15:30:43|ERROR|App.User.Add|PDOException: Column 'name' cannot be null in D:\Development\www\SchoolRushServer\vendor\phalapi\notorm\src\NotORM\Result.php:261
+Stack trace:
+#0 D:\Development\www\SchoolRushServer\vendor\phalapi\notorm\src\NotORM\Result.php(338): NotORM_Result->query('INSERT INTO use...', Array)
+#1 D:\Development\www\SchoolRushServer\vendor\phalapi\notorm\src\NotORM\Result.php(355): NotORM_Result->insert_multi(Array)
+#2 D:\Development\www\SchoolRushServer\src\app\Model\User.php(31): NotORM_Result->insert(Array)
+#3 D:\Development\www\SchoolRushServer\src\app\Api\User.php(141): App\Model\User->add(Array)
+#4 [internal function]: App\Api\User->add()
+#5 D:\Development\www\SchoolRushServer\vendor\phalapi\kernal\src\PhalApi.php(49): call_user_func(Array)
+#6 D:\Development\www\SchoolRushServer\public\index.php(9): PhalApi\PhalApi->response()
+#7 {main}
+2018-03-31 15:33:05|ERROR|App.User.Add|PDOException: Column 'name' cannot be null in D:\Development\www\SchoolRushServer\vendor\phalapi\notorm\src\NotORM\Result.php:261
+Stack trace:
+#0 D:\Development\www\SchoolRushServer\vendor\phalapi\notorm\src\NotORM\Result.php(338): NotORM_Result->query('INSERT INTO use...', Array)
+#1 D:\Development\www\SchoolRushServer\vendor\phalapi\notorm\src\NotORM\Result.php(355): NotORM_Result->insert_multi(Array)
+#2 D:\Development\www\SchoolRushServer\src\app\Model\User.php(31): NotORM_Result->insert(Array)
+#3 D:\Development\www\SchoolRushServer\src\app\Api\User.php(141): App\Model\User->add(Array)
+#4 [internal function]: App\Api\User->add()
+#5 D:\Development\www\SchoolRushServer\vendor\phalapi\kernal\src\PhalApi.php(49): call_user_func(Array)
+#6 D:\Development\www\SchoolRushServer\public\index.php(9): PhalApi\PhalApi->response()
+#7 {main}
+2018-03-31 15:34:07|ERROR|App.User.Add|PDOException: Column 'name' cannot be null in D:\Development\www\SchoolRushServer\vendor\phalapi\notorm\src\NotORM\Result.php:261
+Stack trace:
+#0 D:\Development\www\SchoolRushServer\vendor\phalapi\notorm\src\NotORM\Result.php(338): NotORM_Result->query('INSERT INTO use...', Array)
+#1 D:\Development\www\SchoolRushServer\vendor\phalapi\notorm\src\NotORM\Result.php(355): NotORM_Result->insert_multi(Array)
+#2 D:\Development\www\SchoolRushServer\src\app\Model\User.php(31): NotORM_Result->insert(Array)
+#3 D:\Development\www\SchoolRushServer\src\app\Api\User.php(141): App\Model\User->add(Array)
+#4 [internal function]: App\Api\User->add()
+#5 D:\Development\www\SchoolRushServer\vendor\phalapi\kernal\src\PhalApi.php(49): call_user_func(Array)
+#6 D:\Development\www\SchoolRushServer\public\index.php(9): PhalApi\PhalApi->response()
+#7 {main}
+2018-03-31 15:34:42|ERROR|App.User.Add|PDOException: Column 'name' cannot be null in D:\Development\www\SchoolRushServer\vendor\phalapi\notorm\src\NotORM\Result.php:261
+Stack trace:
+#0 D:\Development\www\SchoolRushServer\vendor\phalapi\notorm\src\NotORM\Result.php(338): NotORM_Result->query('INSERT INTO use...', Array)
+#1 D:\Development\www\SchoolRushServer\vendor\phalapi\notorm\src\NotORM\Result.php(355): NotORM_Result->insert_multi(Array)
+#2 D:\Development\www\SchoolRushServer\src\app\Model\User.php(31): NotORM_Result->insert(Array)
+#3 D:\Development\www\SchoolRushServer\src\app\Api\User.php(141): App\Model\User->add(Array)
+#4 [internal function]: App\Api\User->add()
+#5 D:\Development\www\SchoolRushServer\vendor\phalapi\kernal\src\PhalApi.php(49): call_user_func(Array)
+#6 D:\Development\www\SchoolRushServer\public\index.php(9): PhalApi\PhalApi->response()
+#7 {main}
+2018-03-31 15:34:56|ERROR|App.User.Add|PDOException: Column 'name' cannot be null in D:\Development\www\SchoolRushServer\vendor\phalapi\notorm\src\NotORM\Result.php:261
+Stack trace:
+#0 D:\Development\www\SchoolRushServer\vendor\phalapi\notorm\src\NotORM\Result.php(338): NotORM_Result->query('INSERT INTO use...', Array)
+#1 D:\Development\www\SchoolRushServer\vendor\phalapi\notorm\src\NotORM\Result.php(355): NotORM_Result->insert_multi(Array)
+#2 D:\Development\www\SchoolRushServer\src\app\Model\User.php(31): NotORM_Result->insert(Array)
+#3 D:\Development\www\SchoolRushServer\src\app\Api\User.php(141): App\Model\User->add(Array)
+#4 [internal function]: App\Api\User->add()
+#5 D:\Development\www\SchoolRushServer\vendor\phalapi\kernal\src\PhalApi.php(49): call_user_func(Array)
+#6 D:\Development\www\SchoolRushServer\public\index.php(9): PhalApi\PhalApi->response()
+#7 {main}
+2018-03-31 15:37:44|ERROR|App.User.Add|PDOException: Column 'name' cannot be null in D:\Development\www\SchoolRushServer\vendor\phalapi\notorm\src\NotORM\Result.php:261
+Stack trace:
+#0 D:\Development\www\SchoolRushServer\vendor\phalapi\notorm\src\NotORM\Result.php(338): NotORM_Result->query('INSERT INTO use...', Array)
+#1 D:\Development\www\SchoolRushServer\vendor\phalapi\notorm\src\NotORM\Result.php(355): NotORM_Result->insert_multi(Array)
+#2 D:\Development\www\SchoolRushServer\src\app\Model\User.php(31): NotORM_Result->insert(Array)
+#3 D:\Development\www\SchoolRushServer\src\app\Api\User.php(141): App\Model\User->add(Array)
+#4 [internal function]: App\Api\User->add()
+#5 D:\Development\www\SchoolRushServer\vendor\phalapi\kernal\src\PhalApi.php(49): call_user_func(Array)
+#6 D:\Development\www\SchoolRushServer\public\index.php(9): PhalApi\PhalApi->response()
+#7 {main}
+2018-03-31 15:38:18|ERROR|App.User.Add|PDOException: Column 'name' cannot be null in D:\Development\www\SchoolRushServer\vendor\phalapi\notorm\src\NotORM\Result.php:261
+Stack trace:
+#0 D:\Development\www\SchoolRushServer\vendor\phalapi\notorm\src\NotORM\Result.php(338): NotORM_Result->query('INSERT INTO use...', Array)
+#1 D:\Development\www\SchoolRushServer\vendor\phalapi\notorm\src\NotORM\Result.php(355): NotORM_Result->insert_multi(Array)
+#2 D:\Development\www\SchoolRushServer\src\app\Model\User.php(31): NotORM_Result->insert(Array)
+#3 D:\Development\www\SchoolRushServer\src\app\Api\User.php(141): App\Model\User->add(Array)
+#4 [internal function]: App\Api\User->add()
+#5 D:\Development\www\SchoolRushServer\vendor\phalapi\kernal\src\PhalApi.php(49): call_user_func(Array)
+#6 D:\Development\www\SchoolRushServer\public\index.php(9): PhalApi\PhalApi->response()
+#7 {main}
+2018-03-31 15:38:18|ERROR|App.User.Add|PDOException: Column 'name' cannot be null in D:\Development\www\SchoolRushServer\vendor\phalapi\notorm\src\NotORM\Result.php:261
+Stack trace:
+#0 D:\Development\www\SchoolRushServer\vendor\phalapi\notorm\src\NotORM\Result.php(338): NotORM_Result->query('INSERT INTO use...', Array)
+#1 D:\Development\www\SchoolRushServer\vendor\phalapi\notorm\src\NotORM\Result.php(355): NotORM_Result->insert_multi(Array)
+#2 D:\Development\www\SchoolRushServer\src\app\Model\User.php(31): NotORM_Result->insert(Array)
+#3 D:\Development\www\SchoolRushServer\src\app\Api\User.php(141): App\Model\User->add(Array)
+#4 [internal function]: App\Api\User->add()
+#5 D:\Development\www\SchoolRushServer\vendor\phalapi\kernal\src\PhalApi.php(49): call_user_func(Array)
+#6 D:\Development\www\SchoolRushServer\public\index.php(9): PhalApi\PhalApi->response()
+#7 {main}
+2018-03-31 15:40:55|ERROR|App.User.Add|PDOException: Column 'pass' cannot be null in D:\Development\www\SchoolRushServer\vendor\phalapi\notorm\src\NotORM\Result.php:261
+Stack trace:
+#0 D:\Development\www\SchoolRushServer\vendor\phalapi\notorm\src\NotORM\Result.php(338): NotORM_Result->query('INSERT INTO use...', Array)
+#1 D:\Development\www\SchoolRushServer\vendor\phalapi\notorm\src\NotORM\Result.php(355): NotORM_Result->insert_multi(Array)
+#2 D:\Development\www\SchoolRushServer\src\app\Model\User.php(31): NotORM_Result->insert(Array)
+#3 D:\Development\www\SchoolRushServer\src\app\Api\User.php(141): App\Model\User->add(Array)
+#4 [internal function]: App\Api\User->add()
+#5 D:\Development\www\SchoolRushServer\vendor\phalapi\kernal\src\PhalApi.php(49): call_user_func(Array)
+#6 D:\Development\www\SchoolRushServer\public\index.php(9): PhalApi\PhalApi->response()
+#7 {main}
+2018-03-31 15:40:55|ERROR|App.User.Add|PDOException: Column 'pass' cannot be null in D:\Development\www\SchoolRushServer\vendor\phalapi\notorm\src\NotORM\Result.php:261
+Stack trace:
+#0 D:\Development\www\SchoolRushServer\vendor\phalapi\notorm\src\NotORM\Result.php(338): NotORM_Result->query('INSERT INTO use...', Array)
+#1 D:\Development\www\SchoolRushServer\vendor\phalapi\notorm\src\NotORM\Result.php(355): NotORM_Result->insert_multi(Array)
+#2 D:\Development\www\SchoolRushServer\src\app\Model\User.php(31): NotORM_Result->insert(Array)
+#3 D:\Development\www\SchoolRushServer\src\app\Api\User.php(141): App\Model\User->add(Array)
+#4 [internal function]: App\Api\User->add()
+#5 D:\Development\www\SchoolRushServer\vendor\phalapi\kernal\src\PhalApi.php(49): call_user_func(Array)
+#6 D:\Development\www\SchoolRushServer\public\index.php(9): PhalApi\PhalApi->response()
+#7 {main}

@@ -1,0 +1,10 @@
+2018-09-17 11:34:05|ERROR|App.Group.add|PDOException: Column 'uid' cannot be null in D:\Development\www\SchoolRushServer\vendor\phalapi\notorm\src\NotORM\Result.php:261
+Stack trace:
+#0 D:\Development\www\SchoolRushServer\vendor\phalapi\notorm\src\NotORM\Result.php(338): NotORM_Result->query('INSERT INTO `gr...', Array)
+#1 D:\Development\www\SchoolRushServer\vendor\phalapi\notorm\src\NotORM\Result.php(355): NotORM_Result->insert_multi(Array)
+#2 D:\Development\www\SchoolRushServer\src\app\Model\Group.php(41): NotORM_Result->insert(Array)
+#3 D:\Development\www\SchoolRushServer\src\app\Api\Group.php(149): App\Model\Group->add(Array)
+#4 [internal function]: App\Api\Group->add()
+#5 D:\Development\www\SchoolRushServer\vendor\phalapi\kernal\src\PhalApi.php(49): call_user_func(Array)
+#6 D:\Development\www\SchoolRushServer\public\index.php(9): PhalApi\PhalApi->response()
+#7 {main}

@@ -1,0 +1,27 @@
+2018-09-06 10:17:59|ERROR|App.Analysis.Demo|PDOException: You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 'keys FROM question' at line 1 in D:\Development\www\SchoolRushServer\vendor\phalapi\notorm\src\NotORM\Result.php:261
+Stack trace:
+#0 D:\Development\www\SchoolRushServer\vendor\phalapi\notorm\src\NotORM\Result.php(810): NotORM_Result->query('SELECT id, keys...', Array)
+#1 D:\Development\www\SchoolRushServer\vendor\phalapi\notorm\src\NotORM\Result.php(856): NotORM_Result->execute()
+#2 D:\Development\www\SchoolRushServer\src\app\Api\Analysis.php(131): NotORM_Result->fetch()
+#3 [internal function]: App\Api\Analysis->demo()
+#4 D:\Development\www\SchoolRushServer\vendor\phalapi\kernal\src\PhalApi.php(49): call_user_func(Array)
+#5 D:\Development\www\SchoolRushServer\public\index.php(9): PhalApi\PhalApi->response()
+#6 {main}
+2018-09-06 10:19:54|ERROR|App.Analysis.Demo|PDOException: You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 'keys FROM question WHERE (id > = 1)' at line 1 in D:\Development\www\SchoolRushServer\vendor\phalapi\notorm\src\NotORM\Result.php:261
+Stack trace:
+#0 D:\Development\www\SchoolRushServer\vendor\phalapi\notorm\src\NotORM\Result.php(810): NotORM_Result->query('SELECT id, keys...', Array)
+#1 D:\Development\www\SchoolRushServer\vendor\phalapi\notorm\src\NotORM\Result.php(856): NotORM_Result->execute()
+#2 D:\Development\www\SchoolRushServer\src\app\Api\Analysis.php(131): NotORM_Result->fetch()
+#3 [internal function]: App\Api\Analysis->demo()
+#4 D:\Development\www\SchoolRushServer\vendor\phalapi\kernal\src\PhalApi.php(49): call_user_func(Array)
+#5 D:\Development\www\SchoolRushServer\public\index.php(9): PhalApi\PhalApi->response()
+#6 {main}
+2018-09-06 10:22:42|ERROR|App.Analysis.Demo|PDOException: You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 'keys FROM question WHERE (id > 1)' at line 1 in D:\Development\www\SchoolRushServer\vendor\phalapi\notorm\src\NotORM\Result.php:261
+Stack trace:
+#0 D:\Development\www\SchoolRushServer\vendor\phalapi\notorm\src\NotORM\Result.php(810): NotORM_Result->query('SELECT id, keys...', Array)
+#1 D:\Development\www\SchoolRushServer\vendor\phalapi\notorm\src\NotORM\Result.php(856): NotORM_Result->execute()
+#2 D:\Development\www\SchoolRushServer\src\app\Api\Analysis.php(131): NotORM_Result->fetch()
+#3 [internal function]: App\Api\Analysis->demo()
+#4 D:\Development\www\SchoolRushServer\vendor\phalapi\kernal\src\PhalApi.php(49): call_user_func(Array)
+#5 D:\Development\www\SchoolRushServer\public\index.php(9): PhalApi\PhalApi->response()
+#6 {main}

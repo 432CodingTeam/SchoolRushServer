@@ -1,0 +1,10 @@
+2018-09-14 13:26:37|ERROR|App.NeiHan618_AlbumPic.Add|PDOException: Unknown column 'aid' in 'field list' in D:\Development\www\SchoolRushServer\vendor\phalapi\notorm\src\NotORM\Result.php:261
+Stack trace:
+#0 D:\Development\www\SchoolRushServer\vendor\phalapi\notorm\src\NotORM\Result.php(338): NotORM_Result->query('INSERT INTO pic...', Array)
+#1 D:\Development\www\SchoolRushServer\vendor\phalapi\notorm\src\NotORM\Result.php(355): NotORM_Result->insert_multi(Array)
+#2 D:\Development\www\SchoolRushServer\src\app\Model\NeiHan618\Pic.php(19): NotORM_Result->insert(Array)
+#3 D:\Development\www\SchoolRushServer\src\app\Api\NeiHan618\AlbumPic.php(34): App\Model\NeiHan618\Pic->add(Array)
+#4 [internal function]: App\Api\NeiHan618\AlbumPic->add()
+#5 D:\Development\www\SchoolRushServer\vendor\phalapi\kernal\src\PhalApi.php(49): call_user_func(Array)
+#6 D:\Development\www\SchoolRushServer\public\index.php(9): PhalApi\PhalApi->response()
+#7 {main}

@@ -1,0 +1,11 @@
+2018-08-11 20:17:56|ERROR|App.Bugs.GetAllByPage|PDOException: Unknown column 'uid' in 'where clause' in D:\Development\www\SchoolRushServer\vendor\phalapi\notorm\src\NotORM\Result.php:261
+Stack trace:
+#0 D:\Development\www\SchoolRushServer\vendor\phalapi\notorm\src\NotORM\Result.php(810): NotORM_Result->query('SELECT avatar F...', Array)
+#1 D:\Development\www\SchoolRushServer\vendor\phalapi\notorm\src\NotORM\Result.php(856): NotORM_Result->execute()
+#2 D:\Development\www\SchoolRushServer\vendor\phalapi\notorm\src\NotORM\Result.php(1058): NotORM_Result->fetch()
+#3 D:\Development\www\SchoolRushServer\src\app\Model\User.php(132): NotORM_Result->offsetGet('avatar')
+#4 D:\Development\www\SchoolRushServer\src\app\Api\Bugs.php(61): App\Model\User->getAvatarByUid('1')
+#5 [internal function]: App\Api\Bugs->getAllByPage()
+#6 D:\Development\www\SchoolRushServer\vendor\phalapi\kernal\src\PhalApi.php(49): call_user_func(Array)
+#7 D:\Development\www\SchoolRushServer\public\index.php(9): PhalApi\PhalApi->response()
+#8 {main}
