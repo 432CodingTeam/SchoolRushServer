@@ -14,7 +14,7 @@ class Upload {
     private $secret_key  = "FEC2IJQ1WsWJpQTFHLtp7ODwk4WKn9ppkqrEL0f1";
     private $bucket_name = "schoolrush";
     private $cloudDomain = "http://p6a87gauo.bkt.clouddn.com/";
-    
+
     //上传到七牛云 返回外链地址
     public function uploadToQNY($filePath, $imgName) {
         $Auth = new Auth($this -> access_key, $this -> secret_key);
