@@ -95,27 +95,37 @@ class GD {
         $code      = "";
         $fontStyle = 'font/exo/Exo-Bold.ttf';
         for($i = 0; $i < $num; $i++){
-            $fontSize  = 15;
+            $fontSize  = 20;
             $fontColor = ImageColorAllocate($canvas,10,10,10);
             $codeDataSource      = 'abcdefghijklmnopqrsguvwxyz0123456789'; // 用来生成随机的数字与字母的混合验证码
-            $letter      = substr($codeDataSource, rand(0,strlen($codeDataSource)),1);
+            $letter      = substr($codeDataSource, mt_rand(0,strlen($codeDataSource)-1),1);
             $code .= $letter;
             // 每个验证码之间的间隔
             $x     = ($i*$width/4) + rand(5,10);
-            $y     = rand(15,25);
-            // imagestring($canvas, $fontSize, $x, $y, $letter, $fontColor);
+            $y     = rand(18,28);
             imagettftext($canvas, $fontSize, 0, $x, $y, $fontColor, $fontStyle, $letter);
         }
         $codeArr['code'] = $code;
 
         /* 生成3条线干扰 */
-        for($i = 0;$i < 3; $i++){
-            $lineColor = imageColorAllocate($canvas, rand(80,255), rand(80,255), rand(80,255));
-            if($i == 2){
-                imagesetthickness($canvas,3);
-                imageline($canvas, 1, rand(10,20), 149, rand(10,22),$lineColor);
-            }else{
-                imageline($canvas, rand(1,149), rand(10,20), rand(1,149), rand(10,20),$lineColor);
+        $randSpot = rand(10,22); // 用于生成非直线干扰线
+        $randSpot1 = rand(10,22);
+        $color = $this->colors; // 获取默认的四种颜色作为干扰线颜色
+        $randcolor = $color[rand(0,3)];
+        for($i = 0;$i < 5; $i++){
+            $lineColor = imageColorAllocate($canvas, $randcolor['R'], $randcolor['G'], $randcolor['B']);
+            if($i == 2){ 
+                imagesetthickness($canvas,4);
+                imageline($canvas, 1, rand(10,22), 50, $randSpot,$lineColor);
+            }elseif($i == 3){ // 折线的第一个转折点
+                imagesetthickness($canvas,4);
+                imageline($canvas, 50, $randSpot, 55, $randSpot1, $lineColor);
+            }elseif($i == 4){ // 折线的第二个转折点
+                imagesetthickness($canvas,4);
+                imageline($canvas, 55, $randSpot1, 149, rand(10,22), $lineColor);
+            }
+            else{
+                imageline($canvas, rand(5,140), rand(18,25), rand(5,140), rand(18,25),$lineColor);
             }
         }
 
