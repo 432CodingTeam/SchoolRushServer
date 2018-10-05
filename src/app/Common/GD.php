@@ -94,7 +94,7 @@ class GD {
         /* 验证码设计 */
         $codeArr   = []; // 保存验证码，用来与用户验证码对比
         $code      = "";
-        $fontStyle = 'font/exo/Exo-Bold.ttf';
+        $fontStyle = 'font/Exo-ExtraBold.ttf';
         for($i = 0; $i < $num; $i++){
             $fontSize  = 20;
             $fontColor = ImageColorAllocate($canvas,10,10,10);
@@ -113,16 +113,17 @@ class GD {
         $randSpot1 = rand(10,22);
         $color = $this->colors; // 获取默认的四种颜色作为干扰线颜色
         $randcolor = $color[rand(0,3)];
+        $lineWidth = 2;
         for($i = 0;$i < 5; $i++){
             $lineColor = imageColorAllocate($canvas, $randcolor['R'], $randcolor['G'], $randcolor['B']);
-            if($i == 2){ 
-                imagesetthickness($canvas,4);
+            if($i == 2){
+                imagesetthickness($canvas,$lineWidth);
                 imageline($canvas, 1, rand(10,22), 50, $randSpot,$lineColor);
             }elseif($i == 3){ // 折线的第一个转折点
-                imagesetthickness($canvas,4);
+                imagesetthickness($canvas,$lineWidth);
                 imageline($canvas, 50, $randSpot, 55, $randSpot1, $lineColor);
             }elseif($i == 4){ // 折线的第二个转折点
-                imagesetthickness($canvas,4);
+                imagesetthickness($canvas,$lineWidth);
                 imageline($canvas, 55, $randSpot1, 149, rand(10,22), $lineColor);
             }
             else{
