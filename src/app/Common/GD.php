@@ -50,7 +50,7 @@ class GD {
         //字体颜色
         $color = rand(0, 3);
         //设置背景颜色 白色
-        $background_color = ImageColorAllocate($canvas, 255, 255, 255); 
+        $background_color = ImageColorAllocate($canvas, 255, 255, 255);
         //设置字体
         //设置字体大小
         $fontSize = 190;
@@ -81,6 +81,7 @@ class GD {
      * @return 返回一个数组，包含生成的验证码以及对应的base64格式的验证码图片信息
      */
     public function getUserVerificationCodeRandom($num){
+        //putenv('GDFONTPATH=' . realpath('../../public/font'));
         /* 创建画布 */
         $width     = 150;
         $height    = 40;
@@ -93,12 +94,12 @@ class GD {
         /* 验证码设计 */
         $codeArr   = []; // 保存验证码，用来与用户验证码对比
         $code      = "";
-        $fontStyle = 'font/exo/Exo-Bold.ttf';
+        $fontStyle = 'font/Exo-ExtraBold.ttf';
         for($i = 0; $i < $num; $i++){
             $fontSize  = 20;
             $fontColor = ImageColorAllocate($canvas,10,10,10);
             $codeDataSource      = 'abcdefghijklmnopqrsguvwxyz0123456789'; // 用来生成随机的数字与字母的混合验证码
-            $letter      = substr($codeDataSource, mt_rand(0,strlen($codeDataSource)-1),1);
+            $letter      = substr($codeDataSource, mt_rand(0,strlen($codeDataSource) - 1),1);
             $code .= $letter;
             // 每个验证码之间的间隔
             $x     = ($i*$width/4) + rand(5,10);
@@ -112,16 +113,17 @@ class GD {
         $randSpot1 = rand(10,22);
         $color = $this->colors; // 获取默认的四种颜色作为干扰线颜色
         $randcolor = $color[rand(0,3)];
+        $lineWidth = 2;
         for($i = 0;$i < 5; $i++){
             $lineColor = imageColorAllocate($canvas, $randcolor['R'], $randcolor['G'], $randcolor['B']);
-            if($i == 2){ 
-                imagesetthickness($canvas,4);
+            if($i == 2){
+                imagesetthickness($canvas,$lineWidth);
                 imageline($canvas, 1, rand(10,22), 50, $randSpot,$lineColor);
             }elseif($i == 3){ // 折线的第一个转折点
-                imagesetthickness($canvas,4);
+                imagesetthickness($canvas,$lineWidth);
                 imageline($canvas, 50, $randSpot, 55, $randSpot1, $lineColor);
             }elseif($i == 4){ // 折线的第二个转折点
-                imagesetthickness($canvas,4);
+                imagesetthickness($canvas,$lineWidth);
                 imageline($canvas, 55, $randSpot1, 149, rand(10,22), $lineColor);
             }
             else{
@@ -139,7 +141,7 @@ class GD {
         $res = 'data:image/png;base64,';
         $res .= chunk_split(base64_encode($img_base64));
         $codeArr['pic'] = $res;
-        
+
         return $codeArr;
     }
 
@@ -151,7 +153,7 @@ class GD {
         $canvas = imagecreate($width, $height);
 
         //设置背景颜色 白色
-        $background_color = ImageColorAllocate($canvas, 255, 255, 255); 
+        $background_color = ImageColorAllocate($canvas, 255, 255, 255);
 
         $row = 5; //5行5列的小格子
         $colum = 5;
@@ -167,7 +169,7 @@ class GD {
                 //生成随机颜色
                 $rand = rand(0,4);
                 $color = $rand == 4 ? $this->bgColor : $this->colors[$rand];
-                
+
                 $paint = imagecolorallocate($canvas,$color["R"], $color["G"], $color["B"]);
                 $startX = $i * $cellWidth + $border;
                 $startY = $j * $cellHeight + $border;
@@ -207,10 +209,10 @@ class GD {
         $Upload = new Upload();
 
         $toImgFile = $userModel -> base64toImg($base64, $name);
-        
+
         if(!$toImgFile)
             return array("res" => false, "msg" => "base64转换为图片时失败");
-        
+
         return $Upload->uploadToQNY($toImgFile["filePath"],$toImgFile["fileName"]);
     }
 }
