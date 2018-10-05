@@ -53,7 +53,7 @@ class Upload {
     /**
      * 返回本地图片的地址
      */
-    public function uploadToUPYUN($file) {
+    public function uploadToUPY($file) {
         if(\PhalApi\DI()->config->get('sys.debug'))
             return $this -> TEST_ROOT . $file["fileName"];
         return $this -> ROOT. $file["fileName"];
