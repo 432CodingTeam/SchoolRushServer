@@ -75,6 +75,64 @@ class GD {
         return $res;
     }
 
+    /**
+     * @desc   生成随机验证码
+     * @$num   生成验证码的位数
+     * @return 返回一个数组，包含生成的验证码以及对应的base64格式的验证码图片信息
+     */
+    public function getUserVerificationCodeRandom($num){
+        /* 创建画布 */
+        $width     = 150;
+        $height    = 40;
+        $canvas    =  imagecreate($width, $height);
+
+        // 将默认的背景有黑色改为白色
+        $bgColor   = ImageColorAllocate($canvas,255,255,255);
+        imagefill($canvas, 0, 0, $bgColor);
+
+        /* 验证码设计 */
+        $codeArr   = []; // 保存验证码，用来与用户验证码对比
+        $code      = "";
+        $fontStyle = 'font/exo/Exo-Bold.ttf';
+        for($i = 0; $i < $num; $i++){
+            $fontSize  = 15;
+            $fontColor = ImageColorAllocate($canvas,10,10,10);
+            $codeDataSource      = 'abcdefghijklmnopqrsguvwxyz0123456789'; // 用来生成随机的数字与字母的混合验证码
+            $letter      = substr($codeDataSource, rand(0,strlen($codeDataSource)),1);
+            $code .= $letter;
+            // 每个验证码之间的间隔
+            $x     = ($i*$width/4) + rand(5,10);
+            $y     = rand(15,25);
+            // imagestring($canvas, $fontSize, $x, $y, $letter, $fontColor);
+            imagettftext($canvas, $fontSize, 0, $x, $y, $fontColor, $fontStyle, $letter);
+        }
+        $codeArr['code'] = $code;
+
+        /* 生成3条线干扰 */
+        for($i = 0;$i < 3; $i++){
+            $lineColor = imageColorAllocate($canvas, rand(80,255), rand(80,255), rand(80,255));
+            if($i == 2){
+                imagesetthickness($canvas,3);
+                imageline($canvas, 1, rand(10,20), 149, rand(10,22),$lineColor);
+            }else{
+                imageline($canvas, rand(1,149), rand(10,20), rand(1,149), rand(10,20),$lineColor);
+            }
+        }
+
+        /* 截取base64 */
+        ob_start();
+            imagepng($canvas);
+            $img_base64 = ob_get_contents();
+            //销毁图片
+            imagedestroy($canvas);
+        ob_end_clean();
+        $res = 'data:image/png;base64,';
+        $res .= chunk_split(base64_encode($img_base64));
+        $codeArr['pic'] = $res;
+        
+        return $codeArr;
+    }
+
     //生成随机头像 类似github
     public function getUserDefaultAvatarRandom() {
         $width =300;
@@ -105,7 +163,6 @@ class GD {
                 $startY = $j * $cellHeight + $border;
                 $endX = $startX + $cellWidth - 2*$border;
                 $endY = $startY + $cellHeight - 2*$border;
-
                 imagefilledrectangle($canvas, $startX, $startY, $endX, $endY, $paint);
             }
         }
