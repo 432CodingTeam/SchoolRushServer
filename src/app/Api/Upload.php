@@ -77,11 +77,47 @@ class Upload extends Api {
    * @return 图片地址
    */
   public function base64UploadUPY() {
-        $GD     = new GD();
-        $upload = new MyUpload();
-        $image  = $GD -> uploadToLocal($this -> img, md5($this -> name . $_SERVER['REQUEST_TIME']));
+        $GD               = new GD();
+        $upload           = new MyUpload();
 
-        return $upload -> uploadToUPYUN($image);
+        $image            = $GD -> uploadToLocal($this -> img, md5($this -> name . $_SERVER['REQUEST_TIME']));
+        
+        $bucketName       = "iimtimg";           // 上传的服务
+        $operatorName     = "iimt";       // 操作员名称
+        $operatorPwd      = "ATyangguang";         // 操作员密码
+        $picSize          = filesize($image); // 被上传文件的大小
+        /*文件在upyun上的存储路径*/ 
+        $serverPath       = $image['fileName'];
+        $url              = "/$bucketName/$serverPath";
+        /* 生成签名 */
+        $date             = gmdate('D, d M Y H:i:s \G\M\T');
+        $sign             = md5("PUT&{$url}&{$data}&{$imgSize}&".md5($operatorPwd));
+
+        $ch               = curl_init('http://v0.api.upyun.com'.$url); // 基本域名为智能选择线路(电信/联通/移动)
+        
+        $header           = array(
+            'Expect:',
+            'Date:'.$date,
+            'Authorization: UpYun $operatorName:'.$sign
+        );
+        curl_setopt($ch, CURLOPT_INFILE,$header);
+        /* 上传图片到upyun */
+        curl_setopt($ch, CURLOPT_PUT, true);
+        $fn               = fopen($image,'rb');
+        curl_setopt($ch, CURLOPT_INFILE, $fn);
+        curl_setopt($ch, CURLOPT_INFILESIZE, $picSize);
+        curl_setopt($ch,CURLOPT_TIMEOUT,120);
+        curl_setopt($ch, CURLOPT_RETURNTRANSFER,1); // 设置以文件的方式返回数据，否则会自动输出返回结果
+        /* 回应 */
+        $result           = curl_exec($ch);
+        if(curl_getinfo($ch,CURLINFO_HTTP_CODE) == 200){
+            // return "";
+            return $upload -> uploadToUPY($url);
+        }else{
+            $errorMessage = sprintf("UpYun API ERROR:%s",$result);
+            return $errorMessage;
+        }
+        curl_close($ch);
     }
 
 }
