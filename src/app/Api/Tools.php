@@ -23,7 +23,7 @@ class Tools extends Api {
     public function getCaptcha(){
         $code = new codeGD;
         $image = $code->getUserVerificationCodeRandom(4);
-
+        $image['code'] = md5($image['code']);
         return $image;
     }
 

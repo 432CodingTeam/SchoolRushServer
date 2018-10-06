@@ -10,7 +10,7 @@ use App\Model\Campus as CampusModel;
 use App\Model\Token as TokenModel;
 use App\Domain\Token as TokenDomain;
 use App\Common\Upload as MyUpload;
-use App\Common\GD;
+use App\Common\GD as codeGD;
 /**
  * 用户接口类
  *
@@ -63,8 +63,10 @@ class User extends Api {
                  'id'=>array('name'=>'id'),
              ),
             "login" => array(
-                "name" => array("name" => "name"),
-                "pass" => array("name" => "pass"),
+                "name"  => array("name" => "name"),
+                "pass"  => array("name" => "pass"),
+                "ucode" => array("name" => "ucode"),
+                "scode" => array("name" => "scode"),
             ),
             "logout" => array(
                 "name" => array("name" => "name"),
@@ -302,11 +304,23 @@ class User extends Api {
      * 
      * @param string name 用户名
      * @param string pass 用户密码
-     * 
+     * @param string code 验证码
      * @return bool 成功信息 成功之后会返回token信息
      */
     public function login() {
-        $userModel = new UserModel();
+        $userModel  = new UserModel();
+
+        // 服务端的验证码
+        $serverCode = $this->scode;
+        // 用户端验证码
+        $userCode   = md5($this->ucode);
+        /* 判断验证码是否匹配 */
+        if($userCode != $serverCode){
+            return array(
+                "res" => false,
+                "msg" => "验证码不正确"
+            );
+        }
 
         //判断是邮箱还是用户名
         $emailPattern = "/^([0-9A-Za-z\\-_\\.]+)@([0-9a-z]+\\.[a-z]{2,3}(\\.[a-z]{2})?)$/i";
