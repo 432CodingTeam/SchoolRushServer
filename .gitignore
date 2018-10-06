@@ -1,6 +1,6 @@
 composer.lock
 runtime/*
-public/docs
+public/docs.php
 public/upload
 config/dbs.php
 gitc
