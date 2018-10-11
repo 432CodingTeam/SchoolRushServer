@@ -43,7 +43,11 @@ class AddLog extends Api {
         // $dataStr = '老高'; // 用于测试
         /* 目录信息 */
         $dirName    = date('Y-m');
-        $dirPath    = 'actionLog/Log/';
+        /* 判断存放日志文件的根目录是否存在，不存在就创建一个新的目录 */
+        if(!is_dir('actionLog')){
+            mkdir('actionLog');
+        }
+        $dirPath    = 'actionLog/';
         $monthDir   = scandir($dirPath); // 获取AddLog目录下的所有目录
         /* 判断是否需要建立本月的日志目录 */
         $isIn       = in_array($dirName,$monthDir);
